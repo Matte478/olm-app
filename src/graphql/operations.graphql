@@ -1,0 +1,50 @@
+mutation login($loginInput: LoginInput) {
+  login(input: $loginInput) {
+    access_token
+    refresh_token
+    expires_in
+    token_type
+    user {
+      id
+      name
+      email
+      created_at
+      updated_at
+    }
+  }
+}
+
+mutation register($registerInput: RegisterInput) {
+  register(input: $registerInput) {
+    tokens {
+      access_token
+      refresh_token
+      expires_in
+      token_type
+      user {
+        id
+        name
+        email
+        created_at
+        updated_at
+      }
+    }
+    status
+  }
+}
+
+mutation logout {
+  logout {
+    status
+    message
+  }
+}
+
+mutation refreshToken($refreshTokenInput: RefreshTokenInput) {
+  refreshToken(input: $refreshTokenInput) {
+    access_token
+    refresh_token
+    expires_in
+    token_type
+  }
+}

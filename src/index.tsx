@@ -1,14 +1,21 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import './index.css'
+import { BrowserRouter } from 'react-router-dom'
+import { CookiesProvider } from 'react-cookie'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
-import { BrowserRouter } from 'react-router-dom'
+import AppStateProvider from './provider'
 
 ReactDOM.render(
-  <BrowserRouter>
-    <App />
-  </BrowserRouter>,
+  <React.StrictMode>
+    <CookiesProvider>
+      <AppStateProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </AppStateProvider>
+    </CookiesProvider>
+  </React.StrictMode>,
   document.getElementById('root'),
 )
 

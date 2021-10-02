@@ -1,5 +1,8 @@
-import React from 'react'
+import React, { useState, useContext } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { Link } from 'react-router-dom'
+import { useLoginMutation, LoginInput } from '../../__generated__/graphql'
+import { AppStateContext } from '../../provider'
 import {
   CButton,
   CCard,
@@ -12,11 +15,44 @@ import {
   CInputGroup,
   CInputGroupText,
   CRow,
+  CAlert,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
 
-const Login = () => {
+const Login: React.FC = () => {
+  const { appSetLogin, gqlError, appSetRefreshToken } = useContext(AppStateContext)
+  const [login] = useLoginMutation()
+
+  const [loginInput, setLoginInput] = useState<LoginInput>({
+    username: '',
+    password: '',
+  })
+  const [show, setShow] = useState(false)
+  const navigate = useNavigate()
+
+  const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+
+    try {
+      setShow(false)
+      const { data } = await login({
+        variables: {
+          loginInput,
+        },
+      })
+      if (data === undefined || data?.login === undefined || data.login?.access_token === undefined)
+        throw new Error('Invalid credentials')
+
+      appSetRefreshToken(data?.login.refresh_token || '')
+      appSetLogin(data?.login.access_token!, data?.login.expires_in!)
+
+      navigate('/')
+    } catch {
+      setShow(true)
+    }
+  }
+
   return (
     <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
       <CContainer>
@@ -25,14 +61,27 @@ const Login = () => {
             <CCardGroup>
               <CCard className="p-4">
                 <CCardBody>
-                  <CForm>
+                  <CForm onSubmit={handleLogin}>
                     <h1>Login</h1>
                     <p className="text-medium-emphasis">Sign In to your account</p>
+                    {show ? (
+                      <CAlert color="danger" className="py-2">
+                        {gqlError.msg}
+                      </CAlert>
+                    ) : (
+                      ''
+                    )}
                     <CInputGroup className="mb-3">
                       <CInputGroupText>
                         <CIcon content={cilUser} />
                       </CInputGroupText>
-                      <CFormInput placeholder="Username" autoComplete="username" />
+                      <CFormInput
+                        placeholder="Username"
+                        autoComplete="username"
+                        onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                          setLoginInput({ ...loginInput, username: event.target.value })
+                        }
+                      />
                     </CInputGroup>
                     <CInputGroup className="mb-4">
                       <CInputGroupText>
@@ -42,11 +91,14 @@ const Login = () => {
                         type="password"
                         placeholder="Password"
                         autoComplete="current-password"
+                        onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                          setLoginInput({ ...loginInput, password: event.target.value })
+                        }
                       />
                     </CInputGroup>
                     <CRow>
                       <CCol xs={6}>
-                        <CButton color="primary" className="px-4">
+                        <CButton type="submit" color="primary" className="px-4">
                           Login
                         </CButton>
                       </CCol>
