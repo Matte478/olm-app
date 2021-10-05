@@ -1,26 +1,61 @@
 import React from 'react'
 import { Navigate } from 'react-router-dom'
 
-import Dashboard from './pages/Dashboard/Dashboard'
-import Login from './pages/Login/Login'
-import Register from './pages/Register/Register'
+// layout
+import AppLayout from './views/layouts/AppLayout'
+import MainLayout from './views/layouts/MainLayout'
 
-const routes = [
-  {
-    path: '/login',
-    element: <Login />,
-  },
-  {
-    path: '/register',
-    element: <Register />,
-  },
+// auth
+import Login from './views/pages/auth/Login'
+import Register from './views/pages/auth/Register'
+
+// error
+import Error404 from './views/pages/errors/Error404'
+
+// app
+import Dashboard from './views/pages/app/Dashboard'
+import Error500 from './views/pages/errors/Error500'
+
+const routes = (loggedIn: boolean) => [
   {
     path: '/',
-    element: <Dashboard />,
+    element: !loggedIn ? <MainLayout /> : <Navigate to="/app" />,
+    children: [
+      {
+        path: '/',
+        element: <Navigate to="/login" />,
+      },
+      {
+        path: '/login',
+        element: !loggedIn ? <Login /> : <Navigate to="/" />,
+      },
+      {
+        path: '/register',
+        element: !loggedIn ? <Register /> : <Navigate to="/" />,
+      },
+    ],
+  },
+  {
+    path: '/app',
+    element: loggedIn ? <AppLayout /> : <Navigate to="/" />,
+    children: [
+      {
+        path: '/',
+        element: <Navigate to="/app/dashboard" />,
+      },
+      {
+        path: '/dashboard',
+        element: <Dashboard />,
+      },
+    ],
+  },
+  {
+    path: '/500',
+    element: <Error500 />,
   },
   {
     path: '*',
-    element: <Navigate to="/404" />,
+    element: <Error404 />,
   },
 ]
 

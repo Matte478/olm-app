@@ -1,8 +1,8 @@
 import React, { useState, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Link } from 'react-router-dom'
-import { useLoginMutation, LoginInput } from '../../__generated__/graphql'
-import { AppStateContext } from '../../provider'
+import { useLoginMutation, LoginInput } from '../../../__generated__/graphql'
+import { AppStateContext } from '../../../provider'
 import {
   CButton,
   CCard,
@@ -54,7 +54,7 @@ const Login: React.FC = () => {
   }
 
   return (
-    <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
+    <div className="min-vh-100-nav py-3 d-flex flex-row align-items-center bg-light">
       <CContainer>
         <CRow className="justify-content-center">
           <CCol lg={8} md={12}>
@@ -76,8 +76,8 @@ const Login: React.FC = () => {
                         <CIcon content={cilUser} />
                       </CInputGroupText>
                       <CFormInput
-                        placeholder="Username"
-                        autoComplete="username"
+                        placeholder="E-mail"
+                        autoComplete="e-mail"
                         onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
                           setLoginInput({ ...loginInput, username: event.target.value })
                         }

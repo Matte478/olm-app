@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { RegisterInput, useRegisterMutation } from '../../__generated__/graphql'
-import { AppStateContext } from '../../provider'
+import { RegisterInput, useRegisterMutation } from '../../../__generated__/graphql'
+import { AppStateContext } from '../../../provider'
 import {
   CButton,
   CCard,
@@ -49,7 +49,7 @@ const Register: React.FC = () => {
   }
 
   return (
-    <div className="bg-light min-vh-100 d-flex flex-row align-items-center">
+    <div className="min-vh-100-nav py-3 d-flex flex-row align-items-center bg-light">
       <CContainer>
         <CRow className="justify-content-center">
           <CCol md={9} lg={7} xl={6}>

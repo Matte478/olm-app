@@ -1,22 +1,15 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { Link, Navigate, Route, Routes, useRoutes } from 'react-router-dom'
-import { AppStateContext, fetchAccessToken } from './provider'
-import './scss/style.scss'
-
-// import routes from './routes'
-
-import Dashboard from './pages/Dashboard/Dashboard'
-import Login from './pages/Login/Login'
-import Register from './pages/Register/Register'
 import { CSpinner } from '@coreui/react'
+import { AppStateContext, fetchAccessToken } from './provider'
+import routes from './routes'
+import './scss/style.scss'
 
 let initialized = false
 const App = () => {
   const [loading, setLoading] = useState(true)
   const { appState, appSetLogin, appSetLogout, appGetRefreshToken } = useContext(AppStateContext)
-  // const routing = useRoutes(routes)
-  // return <div className="wrapper">{routing}</div>
-  // const routing = useRoutes(routes)
+  const routing = useRoutes(routes(appState.loggedIn))
 
   useEffect(() => {
     if (initialized) return
@@ -47,41 +40,7 @@ const App = () => {
       </div>
     )
 
-  return (
-    <div>
-      <header>
-        {appState.loggedIn ? (
-          <div>
-            <div>
-              <Link to="/">Home</Link>
-            </div>            
-          </div>
-        ) : (
-          <div>
-            <div>
-              <Link to="/">Home</Link>
-            </div>
-            <div>
-              <Link to="/register">Register</Link>
-            </div>
-            <div>
-              <Link to="/login">Login</Link>
-            </div>
-          </div>
-        )}
-      </header>
-
-      <Routes>
-        <Route path="/">{appState.loggedIn ? <Dashboard /> : <Navigate to="/login" />}</Route>
-        <Route path="/login">{appState.loggedIn ? <Navigate to="/" /> : <Login />}</Route>
-        <Route path="/register">{appState.loggedIn ? <Navigate to="/" /> : <Register />}</Route>
-      </Routes>
-
-      {/* <div className="wrapper">
-          {routing}
-        </div> */}
-    </div>
-  )
+  return <div className="wrapper">{routing}</div>
 }
 
 export default App

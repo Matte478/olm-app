@@ -1,0 +1,9 @@
+.simplebar-track {
+  &.simplebar-horizontal {
+    display: none;
+  }
+}
+
+.simplebar-content {
+  overflow-x: hidden;
+}
