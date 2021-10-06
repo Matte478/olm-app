@@ -1,0 +1,54 @@
+{
+  "navbar": {
+    "title": "Online labaratory manager",
+    "login": "Login",
+    "register": "Register"
+  },
+
+  "login": {
+    "title": "Login",
+    "description": "Sign In to your account",
+    "form": {
+      "email": "E-mail",
+      "password": "Password",
+      "button": "Login"
+    },
+    "register": {
+      "title": "Sign up",
+      "description": "Don't have an account? Create an account now.",
+      "button": "Register Now!"
+    }
+  },
+
+  "register": {
+    "title": "Register",
+    "description": "Create your account",
+    "form": {
+      "name": "Name",
+      "email": "E-mail",
+      "password": "Password",
+      "password-confirm": "Repeact password",
+      "button": "Create Account"
+    }
+  },
+
+  "page404": {
+    "title": "Oops! You're lost.",
+    "description": "The page you are looking for was not found.",
+    "button": "Go to Home"
+  },
+
+  "page500": {
+    "title": "Houston, we have a problem!",
+    "description": "The page you are looking for is temporarily unavailable.",
+    "button": "Go to Home"
+  },
+
+  "navbar-app": {
+    "title": "Online laboratory<br />manager",
+    "acronym": "OLM",
+    "settings": "Settings",
+    "profile": "Profile",
+    "logout": "Logout"
+  }
+}

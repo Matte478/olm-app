@@ -9,20 +9,8 @@ body {
   @include transition(padding 0.15s);
 }
 
-.min-vh-100-nav {
-  min-height: calc(100vh - 65px);
-}
-
-.p-main {
-  padding-top: 65px;
-}
-
-.z-index-100 {
-  z-index: 100;
-}
-
-.text-sm-left {
-  @media screen and (min-width: 576px) {
-    text-align: left !important;
+.header-nav {
+  .active {
+    text-decoration: underline !important;
   }
 }

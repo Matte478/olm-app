@@ -1,8 +1,13 @@
-import { CCol, CContainer, CHeader, CRow } from '@coreui/react'
 import React from 'react'
-import { Link, Outlet } from 'react-router-dom'
+import { Link, NavLink, Outlet } from 'react-router-dom'
+import { CCol, CContainer, CHeader, CHeaderNav, CRow } from '@coreui/react'
+import { useTranslation } from 'react-i18next'
+
+import { LanguageDropdown } from '../components'
 
 const Layout: React.FC = () => {
+  const { t } = useTranslation()
+
   return (
     <React.Fragment>
       <CHeader className="position-fixed w-100 z-index-100" position="fixed">
@@ -11,20 +16,21 @@ const Layout: React.FC = () => {
             <CCol xs="12">
               <header className="d-flex flex-row justify-content-between align-items-center">
                 <Link to="/" className="text-decoration-none text-dark">
-                  <h6 className="mb-0 text-uppercase">Online labaratory manager</h6>
+                  <h6 className="mb-0 text-uppercase">{t('navbar.title')}</h6>
                 </Link>
-                <nav className="d-flex flex-row">
-                  <div className="me-2">
-                    <Link to="/login" className="text-decoration-none text-dark">
-                      Login
-                    </Link>
-                  </div>
-                  <div className="ms-2">
-                    <Link to="/register" className="text-decoration-none text-dark">
-                      Register
-                    </Link>
-                  </div>
-                </nav>
+                <CHeaderNav className="d-flex flex-row">
+                  <li className="nav-item">
+                    <NavLink to="/login" className="nav-link text-decoration-none text-dark">
+                    {t('navbar.login')}
+                    </NavLink>
+                  </li>
+                  <li className="nav-item">
+                    <NavLink to="/register" className="nav-link text-decoration-none text-dark">
+                    {t('navbar.register')}
+                    </NavLink>
+                  </li>
+                  <LanguageDropdown />
+                </CHeaderNav>
               </header>
             </CCol>
           </CRow>

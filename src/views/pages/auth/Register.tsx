@@ -1,7 +1,5 @@
 import React, { useState, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { RegisterInput, useRegisterMutation } from '../../../__generated__/graphql'
-import { AppStateContext } from '../../../provider'
 import {
   CButton,
   CCard,
@@ -17,9 +15,13 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
+import { useTranslation } from 'react-i18next'
+
+import { RegisterInput, useRegisterMutation } from '../../../__generated__/graphql'
+import { AppStateContext } from '../../../provider'
 
 const Register: React.FC = () => {
-  // const history = useHistory()
+  const { t } = useTranslation()
   const { gqlError } = useContext(AppStateContext)
   const [register] = useRegisterMutation()
 
@@ -56,8 +58,8 @@ const Register: React.FC = () => {
             <CCard className="mx-4">
               <CCardBody className="p-4">
                 <CForm onSubmit={handleRegister}>
-                  <h1>Register</h1>
-                  <p className="text-medium-emphasis">Create your account</p>
+                  <h1>{t('register.title')}</h1>
+                  <p className="text-medium-emphasis">{t('register.description')}</p>
                   {show ? (
                     <CAlert color="danger" className="py-2">
                       {gqlError.msg}
@@ -70,7 +72,7 @@ const Register: React.FC = () => {
                       <CIcon content={cilUser} />
                     </CInputGroupText>
                     <CFormInput
-                      placeholder="Name"
+                      placeholder={t('register.form.name')}
                       autoComplete="name"
                       value={registerInput.name}
                       onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
@@ -81,7 +83,7 @@ const Register: React.FC = () => {
                   <CInputGroup className="mb-3">
                     <CInputGroupText>@</CInputGroupText>
                     <CFormInput
-                      placeholder="Email"
+                      placeholder={t('register.form.email')}
                       autoComplete="email"
                       value={registerInput.email}
                       onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
@@ -95,7 +97,7 @@ const Register: React.FC = () => {
                     </CInputGroupText>
                     <CFormInput
                       type="password"
-                      placeholder="Password"
+                      placeholder={t('register.form.password')}
                       autoComplete="new-password"
                       value={registerInput.password}
                       onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
@@ -109,7 +111,7 @@ const Register: React.FC = () => {
                     </CInputGroupText>
                     <CFormInput
                       type="password"
-                      placeholder="Repeat password"
+                      placeholder={t('register.form.password-confirm')}
                       autoComplete="new-password"
                       value={registerInput.password_confirmation}
                       onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
@@ -122,7 +124,7 @@ const Register: React.FC = () => {
                   </CInputGroup>
                   <div className="d-grid">
                     <CButton type="submit" color="primary">
-                      Create Account
+                      {t('register.form.button')}
                     </CButton>
                   </div>
                 </CForm>

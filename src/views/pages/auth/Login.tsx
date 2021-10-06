@@ -1,8 +1,6 @@
 import React, { useState, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Link } from 'react-router-dom'
-import { useLoginMutation, LoginInput } from '../../../__generated__/graphql'
-import { AppStateContext } from '../../../provider'
 import {
   CButton,
   CCard,
@@ -19,8 +17,13 @@ import {
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
+import { useTranslation } from 'react-i18next'
+
+import { useLoginMutation, LoginInput } from '../../../__generated__/graphql'
+import { AppStateContext } from '../../../provider'
 
 const Login: React.FC = () => {
+  const { t } = useTranslation()
   const { appSetLogin, gqlError, appSetRefreshToken } = useContext(AppStateContext)
   const [login] = useLoginMutation()
 
@@ -62,8 +65,8 @@ const Login: React.FC = () => {
               <CCard className="p-4">
                 <CCardBody>
                   <CForm onSubmit={handleLogin}>
-                    <h1>Login</h1>
-                    <p className="text-medium-emphasis">Sign In to your account</p>
+                    <h1>{t('login.title')}</h1>
+                    <p className="text-medium-emphasis">{t('login.description')}</p>
                     {show ? (
                       <CAlert color="danger" className="py-2">
                         {gqlError.msg}
@@ -76,7 +79,7 @@ const Login: React.FC = () => {
                         <CIcon content={cilUser} />
                       </CInputGroupText>
                       <CFormInput
-                        placeholder="E-mail"
+                        placeholder={t('login.form.email')}
                         autoComplete="e-mail"
                         onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
                           setLoginInput({ ...loginInput, username: event.target.value })
@@ -89,7 +92,7 @@ const Login: React.FC = () => {
                       </CInputGroupText>
                       <CFormInput
                         type="password"
-                        placeholder="Password"
+                        placeholder={t('login.form.password')}
                         autoComplete="current-password"
                         onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
                           setLoginInput({ ...loginInput, password: event.target.value })
@@ -97,16 +100,16 @@ const Login: React.FC = () => {
                       />
                     </CInputGroup>
                     <CRow>
-                      <CCol xs={6}>
+                      <CCol sm={6}>
                         <CButton type="submit" color="primary" className="px-4">
-                          Login
+                          {t('login.form.button')}
                         </CButton>
                       </CCol>
-                      {/* <CCol xs={6} className="text-right">
-                        <CButton color="link" className="px-0">
+                      <CCol sm={6} className="text-left text-sm-right">
+                        <CButton color="link" className="mt-2 mt-sm-0 px-0">
                           Forgot password?
                         </CButton>
-                      </CCol> */}
+                      </CCol>
                     </CRow>
                   </CForm>
                 </CCardBody>
@@ -114,14 +117,13 @@ const Login: React.FC = () => {
               <CCard className="text-white bg-primary py-5">
                 <CCardBody className="text-center">
                   <div>
-                    <h2>Sign up</h2>
-                    <p>
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                      tempor incididunt ut labore et dolore magna aliqua.
+                    <h2>{t('login.register.title')}</h2>
+                    <p className="mx-auto" style={{maxWidth: '200px'}}>
+                    {t('login.register.description')}
                     </p>
                     <Link to="/register">
                       <CButton color="light" className="mt-3" tabIndex={-1}>
-                        Register Now!
+                      {t('login.register.button')}
                       </CButton>
                     </Link>
                   </div>

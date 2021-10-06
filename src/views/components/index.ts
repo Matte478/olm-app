@@ -1,4 +1,5 @@
 import AppSidebar from './AppSidebar'
 import AppHeader from './AppHeader'
+import LanguageDropdown from './LanguageDropdown'
 
-export { AppSidebar, AppHeader }
+export { AppSidebar, AppHeader, LanguageDropdown }

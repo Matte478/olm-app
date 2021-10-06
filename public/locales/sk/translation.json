@@ -1,0 +1,54 @@
+{
+  "navbar": {
+    "title": "Online labaratory manager",
+    "login": "Prihlásenie",
+    "register": "Registrácia"
+  },
+
+  "login": {
+    "title": "Prihlásenie",
+    "description": "Prihláste sa do svojho účtu",
+    "form": {
+      "email": "E-mail",
+      "password": "Heslo",
+      "button": "Prihlásiť"
+    },
+    "register": {
+      "title": "Vytvoriť účet",
+      "description": "Nemáte ešte účet? Vytvorte si účet teraz.",
+      "button": "Vytvoriť účet"
+    }
+  },
+
+  "register": {
+    "title": "Registrovať",
+    "description": "Vytvorte si účet",
+    "form": {
+      "name": "Meno",
+      "email": "E-mail",
+      "password": "Heslo",
+      "password-confirm": "Zopakujte heslo",
+      "button": "Vytvoriť účet"
+    }
+  },
+
+  "page404": {
+    "title": "Oops! Stratili sme sa.",
+    "description": "Stránka, ktorú hľadáte, nebola nájdená.",
+    "button": "Späť domov"
+  },
+
+  "page500": {
+    "title": "Houston, máme problém!",
+    "description": "Stránka, ktorú hľadáte je dočasne nedostupná.",
+    "button": "Späť domov"
+  },
+
+  "navbar-app": {
+    "title": "Online laboratory manager",
+    "acronym": "OLM",
+    "settings": "Nastavenia",
+    "profile": "Profil",
+    "logout": "Odhlásiť"
+  }
+}
