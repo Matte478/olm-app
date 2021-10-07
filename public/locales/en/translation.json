@@ -46,7 +46,7 @@
   },
 
   "navbar-app": {
-    "title": "Online laboratory<br />manager",
+    "title": "Online laboratory manager",
     "acronym": "OLM",
     "settings": "Settings",
     "profile": "Profile",

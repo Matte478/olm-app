@@ -44,11 +44,16 @@ const Login: React.FC = () => {
           loginInput,
         },
       })
-      if (data === undefined || data?.login === undefined || data.login?.access_token === undefined)
+      if (
+        data === undefined ||
+        data?.login === undefined ||
+        data.login?.access_token === undefined ||
+        data?.login.user === undefined
+      )
         throw new Error('Invalid credentials')
 
       appSetRefreshToken(data?.login.refresh_token || '')
-      appSetLogin(data?.login.access_token!, data?.login.expires_in!)
+      appSetLogin(data?.login.access_token!, data?.login.expires_in!, data?.login.user!)
 
       navigate('/')
     } catch {

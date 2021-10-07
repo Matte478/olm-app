@@ -14,7 +14,9 @@ const DefaultLayout: React.FC = () => {
       <AppSidebar visible={sidebarVisible} />
       <div className="wrapper d-flex flex-column min-vh-100 bg-light">
         <AppHeader changeSidebarVisibility={changeSidebarVisibility} />
-        <div className="body flex-grow-1 px-3"><Outlet /></div>
+        <div className="body flex-grow-1 px-3">
+          <Outlet />
+        </div>
       </div>
     </div>
   )

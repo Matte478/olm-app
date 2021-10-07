@@ -10,18 +10,23 @@ import {
 import { onError } from '@apollo/link-error'
 import { TokenRefreshLink } from 'apollo-link-token-refresh'
 import { Cookies } from 'react-cookie'
+import { useMeQuery, User } from './__generated__/graphql'
 
 const apiUri = 'http://olm-api.test/graphql'
 let authToken = ''
 let authTokenExp: Date | null = null
+
+const appStateInitial: { authUser?: User } = { authUser: undefined }
+
 const initial = {
-  appState: { loggedIn: false },
+  appState: appStateInitial,
   gqlError: { msg: '' },
-  appSetLogin: (token: string, expSec: number) => {},
+  appSetLogin: (token: string, expSec: number, authUser: User) => {},
   appSetLogout: () => {},
   appSetAuthToken: (token: string, expSec: number) => {},
   appClearAuthToken: () => {},
   appSetRefreshToken: (token: string) => {},
+  appSetAuthUser: (authUser: User) => {},
   appClearRefreshToken: () => {},
   appGetRefreshToken: (): string => '',
 }
@@ -29,18 +34,19 @@ const initial = {
 export const AppStateContext = createContext(initial)
 
 function AppStateProvider({ children }: { children: ReactNode }) {
-  const [appState, setAppState] = useState({ loggedIn: false })
+  const [appState, setAppState] = useState<{ authUser?: User }>({ authUser: undefined })
   const [gqlError, setGQLError] = useState({ msg: '' })
 
-  const appSetLogin = (token: string, expSec: number) => {
+  const appSetLogin = (token: string, expSec: number, authUser: User) => {
     appSetAuthToken(token, expSec)
-    setAppState({ ...appState, loggedIn: true })
+
+    setAppState({ ...appState, authUser: authUser })
   }
 
   const appSetLogout = () => {
     appClearAuthToken()
     appClearRefreshToken()
-    setAppState({ ...appState, loggedIn: false })
+    setAppState({ ...appState, authUser: undefined })
   }
 
   const appSetAuthToken = (token: string, expSec: number) => {
@@ -63,7 +69,6 @@ function AppStateProvider({ children }: { children: ReactNode }) {
 
     cookies.set('refresh_token', token, {
       path: '/',
-      httpOnly: false,
       expires: expDate,
     })
   }
@@ -71,6 +76,10 @@ function AppStateProvider({ children }: { children: ReactNode }) {
   const appClearRefreshToken = () => {
     const cookies = new Cookies()
     cookies.remove('refresh_token')
+  }
+
+  const appSetAuthUser = (authUser: User) => {
+    setAppState({ ...appState, authUser: authUser })
   }
 
   const appGetAuthToken = (): { token: string; exp: Date | null } => {
@@ -175,6 +184,7 @@ function AppStateProvider({ children }: { children: ReactNode }) {
         appSetAuthToken,
         appClearAuthToken,
         appSetRefreshToken,
+        appSetAuthUser,
         appClearRefreshToken,
         appGetRefreshToken,
       }}
@@ -223,7 +233,6 @@ export const fetchAccessToken = async (): Promise<any> => {
 
       cookies.set('refresh_token', response.data.refreshToken.refresh_token, {
         path: '/',
-        httpOnly: false,
         expires: expDate,
       })
 
@@ -234,7 +243,41 @@ export const fetchAccessToken = async (): Promise<any> => {
         },
       }
     })
-    .catch((e) => {
-      console.log(e)
+    .catch((error) => {
+      console.log(error)
+    })
+}
+
+export const fetchAuthUser = async (): Promise<any> => {
+  const payload = {
+    operationName: 'me',
+    variables: {},
+    query: `query me {
+      me {
+        id
+        name
+        email
+        created_at
+        updated_at
+      }
+    }`,
+  }
+  return fetch(apiUri, {
+    method: 'POST',
+    credentials: 'include',
+    body: JSON.stringify(payload),
+    headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+      Accept: 'application/json',
+      authorization: `Bearer ${authToken}`,
+    },
+  })
+    .then(async (res) => {
+      const response = await res.json()
+      const user: User = response.data.me
+      return user
+    })
+    .catch((error) => {
+      console.log(error)
     })
 }

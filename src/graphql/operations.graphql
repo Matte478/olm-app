@@ -48,3 +48,13 @@ mutation refreshToken($refreshTokenInput: RefreshTokenInput) {
     token_type
   }
 }
+
+query me {
+  me {
+    id
+    name
+    email
+    created_at
+    updated_at
+  }
+}
