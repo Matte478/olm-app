@@ -8,6 +8,7 @@
   "login": {
     "title": "Login",
     "description": "Sign In to your account",
+    "forgot-password": "Forgot password?",
     "form": {
       "email": "E-mail",
       "password": "Password",

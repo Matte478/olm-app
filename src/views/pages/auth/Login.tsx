@@ -107,7 +107,7 @@ const Login: React.FC = () => {
                       </CCol>
                       <CCol sm={6} className="text-left text-sm-right">
                         <CButton color="link" className="mt-2 mt-sm-0 px-0">
-                          Forgot password?
+                          {t('login.forgot-password')}
                         </CButton>
                       </CCol>
                     </CRow>
@@ -118,12 +118,12 @@ const Login: React.FC = () => {
                 <CCardBody className="text-center">
                   <div>
                     <h2>{t('login.register.title')}</h2>
-                    <p className="mx-auto" style={{maxWidth: '200px'}}>
-                    {t('login.register.description')}
+                    <p className="mx-auto" style={{ maxWidth: '200px' }}>
+                      {t('login.register.description')}
                     </p>
                     <Link to="/register">
                       <CButton color="light" className="mt-3" tabIndex={-1}>
-                      {t('login.register.button')}
+                        {t('login.register.button')}
                       </CButton>
                     </Link>
                   </div>

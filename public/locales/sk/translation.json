@@ -8,6 +8,7 @@
   "login": {
     "title": "Prihlásenie",
     "description": "Prihláste sa do svojho účtu",
+    "forgot-password": "Zabudnuté heslo?",
     "form": {
       "email": "E-mail",
       "password": "Heslo",

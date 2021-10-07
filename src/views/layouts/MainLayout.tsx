@@ -21,12 +21,12 @@ const Layout: React.FC = () => {
                 <CHeaderNav className="d-flex flex-row">
                   <li className="nav-item">
                     <NavLink to="/login" className="nav-link text-decoration-none text-dark">
-                    {t('navbar.login')}
+                      {t('navbar.login')}
                     </NavLink>
                   </li>
                   <li className="nav-item">
                     <NavLink to="/register" className="nav-link text-decoration-none text-dark">
-                    {t('navbar.register')}
+                      {t('navbar.register')}
                     </NavLink>
                   </li>
                   <LanguageDropdown />
