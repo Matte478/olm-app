@@ -7,10 +7,12 @@ import {
   CDropdownMenu,
   CDropdownToggle,
 } from '@coreui/react'
-import { cilLockLocked, cilUser } from '@coreui/icons'
+import { cilUser } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 import { useTranslation } from 'react-i18next'
+
 import { AppStateContext } from '../../provider'
+import AppHeaderDropdownLogout from './AppHeaderDropdownLogout'
 
 const AppHeaderDropdown: React.FC = () => {
   const { appState } = useContext(AppStateContext)
@@ -18,9 +20,7 @@ const AppHeaderDropdown: React.FC = () => {
 
   return (
     <CDropdown component="li" variant="nav-item" placement="bottom-end">
-      <CDropdownToggle className="py-2">
-        {appState.authUser!.name}
-      </CDropdownToggle>
+      <CDropdownToggle className="py-2">{appState.authUser!.name}</CDropdownToggle>
       <CDropdownMenu className="pt-0">
         <CDropdownHeader className="bg-light fw-semibold py-2">
           {t('navbar-app.settings')}
@@ -30,10 +30,7 @@ const AppHeaderDropdown: React.FC = () => {
           {t('navbar-app.profile')}
         </CDropdownItem>
         <CDropdownDivider />
-        <CDropdownItem href="#">
-          <CIcon content={cilLockLocked} className="me-2" />
-          {t('navbar-app.logout')}
-        </CDropdownItem>
+        <AppHeaderDropdownLogout />
       </CDropdownMenu>
     </CDropdown>
   )

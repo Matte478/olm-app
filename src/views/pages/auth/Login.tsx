@@ -48,7 +48,7 @@ const Login: React.FC = () => {
         data === undefined ||
         data?.login === undefined ||
         data.login?.access_token === undefined ||
-        data?.login.user === undefined
+        data.login?.user === undefined
       )
         throw new Error('Invalid credentials')
 
