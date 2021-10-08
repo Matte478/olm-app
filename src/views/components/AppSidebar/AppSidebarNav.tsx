@@ -1,12 +1,15 @@
 import React from 'react'
 import { NavLink, useLocation } from 'react-router-dom'
-import PropTypes from 'prop-types'
 
 import { CBadge } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { SidebarNavItem, SidebarNavItemBadge } from '../../types'
+import { SidebarNavItem, SidebarNavItemBadge } from '../../../types'
 
-export const AppSidebarNav = ({ items }: any) => {
+interface Props {
+  navigationItems: SidebarNavItem[]
+}
+
+const AppSidebarNav: React.FC<Props> = ({ navigationItems }: Props) => {
   const location = useLocation()
 
   const navLink = (name: string, icon?: CIcon, badge?: SidebarNavItemBadge) => {
@@ -48,7 +51,7 @@ export const AppSidebarNav = ({ items }: any) => {
         idx={String(index)}
         key={index}
         toggler={navLink(name, icon, undefined)}
-        visible={location.pathname.startsWith(to)}
+        visible={to && location.pathname.startsWith(to)}
         {...rest}
       >
         {item.items?.map((item: SidebarNavItem, index: number) =>
@@ -60,14 +63,11 @@ export const AppSidebarNav = ({ items }: any) => {
 
   return (
     <React.Fragment>
-      {items &&
-        items.map((item: SidebarNavItem, index: number) =>
-          item.items ? navGroup(item, index) : navItem(item, index),
-        )}
+      {navigationItems.map((item: SidebarNavItem, index: number) =>
+        item.items ? navGroup(item, index) : navItem(item, index),
+      )}
     </React.Fragment>
   )
 }
 
-AppSidebarNav.propTypes = {
-  items: PropTypes.arrayOf(PropTypes.any).isRequired,
-}
+export default AppSidebarNav

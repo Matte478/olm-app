@@ -3,7 +3,7 @@ import { CContainer, CHeader, CHeaderNav, CHeaderToggler } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilMenu } from '@coreui/icons'
 import AppHeaderDropdown from './AppHeaderDropdown'
-import { LanguageDropdown } from '.'
+import { LanguageDropdown } from '..'
 
 interface Props {
   changeSidebarVisibility: () => void

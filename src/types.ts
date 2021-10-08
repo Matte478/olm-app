@@ -17,7 +17,7 @@ export interface SidebarNavItemBadge {
 export interface SidebarNavItem {
   component: React.ForwardRefExoticComponent<any>
   name: string
-  to: string
+  to?: string
   icon?: CIcon
   badge?: SidebarNavItemBadge
   items?: SidebarNavItem[]

@@ -11,7 +11,7 @@ import { cilUser } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 import { useTranslation } from 'react-i18next'
 
-import { AppStateContext } from '../../provider'
+import { AppStateContext } from '../../../provider'
 import AppHeaderDropdownLogout from './AppHeaderDropdownLogout'
 
 const AppHeaderDropdown: React.FC = () => {

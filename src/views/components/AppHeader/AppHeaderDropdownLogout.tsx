@@ -5,8 +5,8 @@ import CIcon from '@coreui/icons-react'
 import { cilLockLocked } from '@coreui/icons'
 import { useTranslation } from 'react-i18next'
 
-import { AppStateContext } from '../../provider'
-import { useLogoutMutation } from '../../__generated__/graphql'
+import { AppStateContext } from '../../../provider'
+import { useLogoutMutation } from '../../../__generated__/graphql'
 
 const AppHeaderDropdownLogout: React.FC = () => {
   const { appSetLogout } = useContext(AppStateContext)
@@ -20,7 +20,7 @@ const AppHeaderDropdownLogout: React.FC = () => {
     logout().then(() => {
       appSetLogout()
 
-      navigate('/')
+      navigate('/login')
     })
   }
 
