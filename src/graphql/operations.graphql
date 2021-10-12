@@ -58,3 +58,23 @@ query me {
     updated_at
   }
 }
+
+query users($first: Int!, $page: Int) {
+  users(first: $first, page: $page) {
+    paginatorInfo {
+      count
+      currentPage
+      hasMorePages
+      lastPage
+      perPage
+      total
+    }
+    data {
+      id
+      name
+      email
+      created_at
+      updated_at
+    }
+  }
+}

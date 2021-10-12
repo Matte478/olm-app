@@ -4,6 +4,7 @@ import { NavLink, useLocation } from 'react-router-dom'
 import { CBadge } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { SidebarNavItem, SidebarNavItemBadge } from '../../../types'
+import { useTranslation } from 'react-i18next'
 
 interface Props {
   navigationItems: SidebarNavItem[]
@@ -11,12 +12,13 @@ interface Props {
 
 const AppSidebarNav: React.FC<Props> = ({ navigationItems }: Props) => {
   const location = useLocation()
+  const { t } = useTranslation()
 
   const navLink = (name: string, icon?: CIcon, badge?: SidebarNavItemBadge) => {
     return (
       <>
         {icon && icon}
-        {name && name}
+        {name && t(name)}
         {badge && (
           <CBadge color={badge.color} className="ms-auto">
             {badge.text}

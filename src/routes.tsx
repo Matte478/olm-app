@@ -16,6 +16,9 @@ import Error404 from './views/pages/errors/Error404'
 import Dashboard from './views/pages/app/Dashboard'
 import Error500 from './views/pages/errors/Error500'
 
+// users
+import UserIndex from './views/pages/app/user/Index'
+
 const routes = (loggedIn: boolean) => [
   {
     path: '/',
@@ -46,6 +49,15 @@ const routes = (loggedIn: boolean) => [
       {
         path: '/dashboard',
         element: <Dashboard />,
+      },
+      {
+        path: '/users',
+        children: [
+          {
+            path: '/',
+            element: <UserIndex />,
+          },
+        ],
       },
     ],
   },

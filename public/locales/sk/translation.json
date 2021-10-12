@@ -51,5 +51,29 @@
     "settings": "Nastavenia",
     "profile": "Profil",
     "logout": "Odhlásiť"
+  },
+
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "settings": "Nastavenia",
+    "users": "Užívatelia"
+  },
+
+  "actions": {
+    "create": "Vytvoriť",
+    "edit": "Upraviť",
+    "delete": "Zmazať"
+  },
+
+  "users": {
+    "columns": {
+      "id": "ID",
+      "name": "Meno",
+      "email": "E-mail",
+      "created-at": "Registrovaný"
+    },
+    "index": {
+      "title": "Užívatelia"
+    }
   }
 }

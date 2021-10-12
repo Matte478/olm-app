@@ -22,3 +22,34 @@ export interface SidebarNavItem {
   badge?: SidebarNavItemBadge
   items?: SidebarNavItem[]
 }
+
+export interface TableColumn {
+  column: string
+  name: string
+  style?: object
+}
+
+export interface TableAction {
+  color:
+    | 'primary'
+    | 'secondary'
+    | 'success'
+    | 'danger'
+    | 'warning'
+    | 'info'
+    | 'dark'
+    | 'light'
+    | string
+  text?: string
+  textColor?:
+    | 'primary'
+    | 'secondary'
+    | 'success'
+    | 'danger'
+    | 'warning'
+    | 'info'
+    | 'dark'
+    | 'light'
+    | string
+  icon?: CIcon
+}

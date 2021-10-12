@@ -1,12 +1,12 @@
 import React from 'react'
 import CIcon from '@coreui/icons-react'
-import { cilCursor, cilDrop, cilPencil, cilPuzzle, cilSpeedometer } from '@coreui/icons'
+import { cilCursor, cilPencil, cilPuzzle, cilSpeedometer, cilUser } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
 const navigationItems = [
   {
     component: CNavItem,
-    name: 'Dashboard',
+    name: 'sidebar.dashboard',
     to: '/app/dashboard',
     icon: <CIcon content={cilSpeedometer} customClasses="nav-icon" />,
     badge: {
@@ -16,13 +16,13 @@ const navigationItems = [
   },
   {
     component: CNavTitle,
-    name: 'Category 1',
+    name: 'sidebar.settings'
   },
   {
     component: CNavItem,
-    name: 'Item 1',
-    to: '/404',
-    icon: <CIcon content={cilDrop} customClasses="nav-icon" />,
+    name: 'sidebar.users',
+    to: '/app/users',
+    icon: <CIcon content={cilUser} customClasses="nav-icon" />,
   },
   {
     component: CNavItem,

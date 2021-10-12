@@ -51,5 +51,29 @@
     "settings": "Settings",
     "profile": "Profile",
     "logout": "Logout"
+  },
+
+  "sidebar": {
+    "dashboard": "Dashboard",
+    "settings": "Settings",
+    "users": "Users"
+  },
+
+  "actions": {
+    "create": "Create",
+    "edit": "Edit",
+    "delete": "Delete"
+  },
+
+  "users": {
+    "columns": {
+      "id": "ID",
+      "name": "Name",
+      "email": "E-mail",
+      "created-at": "Created At"
+    },
+    "index": {
+      "title": "Users"
+    }
   }
 }

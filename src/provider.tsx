@@ -10,7 +10,7 @@ import {
 import { onError } from '@apollo/link-error'
 import { TokenRefreshLink } from 'apollo-link-token-refresh'
 import { Cookies } from 'react-cookie'
-import { useMeQuery, User } from './__generated__/graphql'
+import { User } from './__generated__/graphql'
 
 const apiUri = 'http://olm-api.test/graphql'
 let authToken = ''
