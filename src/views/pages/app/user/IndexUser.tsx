@@ -4,7 +4,7 @@ import CIcon from '@coreui/icons-react'
 import { cilPencil, cilTrash, cilUser } from '@coreui/icons'
 import { useTranslation } from 'react-i18next'
 import { useUsersQuery } from '../../../../__generated__/graphql'
-import { Pagination, PerPageDropdown, TableList } from '../../../components'
+import { Pagination, PerPageDropdown, SpinnerOverlay, TableList } from '../../../components'
 import { TableAction, TableColumn } from '../../../../types'
 
 const IndexUser: React.FC = () => {
@@ -53,7 +53,7 @@ const IndexUser: React.FC = () => {
     },
   })
 
-  if (loading) return <p>Loading...</p>
+  if (loading) return <SpinnerOverlay transparent={true} />
   if (error) return <p>Error: {error.message}</p>
 
   const paginatorInfo = data!.users!.paginatorInfo

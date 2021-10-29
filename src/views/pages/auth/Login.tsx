@@ -13,7 +13,6 @@ import {
   CInputGroup,
   CInputGroupText,
   CRow,
-  CAlert,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
@@ -21,24 +20,23 @@ import { useTranslation } from 'react-i18next'
 
 import { useLoginMutation, LoginInput } from '../../../__generated__/graphql'
 import { AppStateContext } from '../../../provider'
+import { ErrorNotifier, SpinnerOverlay } from '../../components'
 
 const Login: React.FC = () => {
   const { t } = useTranslation()
-  const { appSetLogin, gqlError, appSetRefreshToken } = useContext(AppStateContext)
-  const [login] = useLoginMutation()
+  const { appSetLogin, appSetRefreshToken } = useContext(AppStateContext)
+  const [login, { loading, error }] = useLoginMutation()
 
   const [loginInput, setLoginInput] = useState<LoginInput>({
     username: '',
     password: '',
   })
-  const [show, setShow] = useState(false)
   const navigate = useNavigate()
 
   const handleLogin = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
 
     try {
-      setShow(false)
       const { data } = await login({
         variables: {
           loginInput,
@@ -56,13 +54,12 @@ const Login: React.FC = () => {
       appSetLogin(data?.login.access_token!, data?.login.expires_in!, data?.login.user!)
 
       navigate('/')
-    } catch {
-      setShow(true)
-    }
+    } catch {}
   }
 
   return (
     <div className="min-vh-100-nav py-3 d-flex flex-row align-items-center bg-light">
+      {loading && <SpinnerOverlay transparent={true} />}
       <CContainer>
         <CRow className="justify-content-center">
           <CCol lg={8} md={12}>
@@ -72,13 +69,7 @@ const Login: React.FC = () => {
                   <CForm onSubmit={handleLogin}>
                     <h1>{t('login.title')}</h1>
                     <p className="text-medium-emphasis">{t('login.description')}</p>
-                    {show ? (
-                      <CAlert color="danger" className="py-2">
-                        {gqlError.msg}
-                      </CAlert>
-                    ) : (
-                      ''
-                    )}
+                    <ErrorNotifier error={error} />
                     <CInputGroup className="mb-3">
                       <CInputGroupText>
                         <CIcon content={cilUser} />

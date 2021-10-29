@@ -6,11 +6,12 @@ import { CookiesProvider } from 'react-cookie'
 import App from './App'
 import reportWebVitals from './reportWebVitals'
 import AppStateProvider from './provider'
+import { SpinnerOverlay } from './views/components'
 import './i18n'
 
 ReactDOM.render(
   <React.StrictMode>
-    <React.Suspense fallback="Loading...">
+    <React.Suspense fallback={<SpinnerOverlay />}>
       <CookiesProvider>
         <AppStateProvider>
           <BrowserRouter>

@@ -1,11 +1,5 @@
 import React, { createContext, useState, ReactNode } from 'react'
-import {
-  ApolloProvider,
-  ApolloClient,
-  InMemoryCache,
-  HttpLink,
-  ApolloLink,
-} from '@apollo/client'
+import { ApolloProvider, ApolloClient, InMemoryCache, HttpLink, ApolloLink } from '@apollo/client'
 import { onError } from '@apollo/link-error'
 import { TokenRefreshLink } from 'apollo-link-token-refresh'
 import { setContext } from '@apollo/client/link/context'
@@ -20,7 +14,7 @@ const appStateInitial: { authUser?: User } = { authUser: undefined }
 
 const initial = {
   appState: appStateInitial,
-  gqlError: { msg: '' },
+  // gqlError: { msg: '' },
   appSetLogin: (token: string, expSec: number, authUser: User) => {},
   appSetLogout: () => {},
   appSetAuthToken: (token: string, expSec: number) => {},
@@ -35,7 +29,7 @@ export const AppStateContext = createContext(initial)
 
 function AppStateProvider({ children }: { children: ReactNode }) {
   const [appState, setAppState] = useState<{ authUser?: User }>({ authUser: undefined })
-  const [gqlError, setGQLError] = useState({ msg: '' })
+  // const [gqlError, setGQLError] = useState({ msg: '' })
 
   const appSetLogin = (token: string, expSec: number, authUser: User) => {
     appSetAuthToken(token, expSec)
@@ -92,7 +86,7 @@ function AppStateProvider({ children }: { children: ReactNode }) {
   }
 
   // apollo client
-  const cache = new InMemoryCache({})
+  const cache = new InMemoryCache()
   const authLink = setContext((_, { headers }) => {
     return {
       headers: {
@@ -103,34 +97,32 @@ function AppStateProvider({ children }: { children: ReactNode }) {
   })
 
   const errorLink = onError(({ graphQLErrors, networkError }) => {
-    if (graphQLErrors === undefined || graphQLErrors[0].path === undefined) return
-    if (graphQLErrors[0].path[0] === 'refresh') return
-    const msg = graphQLErrors[0].message
-    const reason = graphQLErrors[0]?.extensions?.reason
-    const validation = graphQLErrors[0]?.extensions?.validation
+    // if (graphQLErrors === undefined || graphQLErrors[0].path === undefined) return
+    // if (graphQLErrors[0].path[0] === 'refresh') return
+    // const msg = graphQLErrors[0].message
+    // const reason = graphQLErrors[0]?.extensions?.reason
+    // const validation = graphQLErrors[0]?.extensions?.validation
 
-    let validationList = null
-    if (Object.prototype.toString.call(validation) === '[object Object]') {
-      validationList = (
-        <ul className="mb-0">
-          {Object.entries(validation).map((entry) => {
-            const [key, value] = entry
-            return <li key={key}>{value as string}</li>
-          })}
-        </ul>
-      )
-    }
+    // let validationList = null
+    // if (Object.prototype.toString.call(validation) === '[object Object]') {
+    //   validationList = (
+    //     <ul className="mb-0">
+    //       {Object.entries(validation).map((entry) => {
+    //         const [key, value] = entry
+    //         return <li key={key}>{value as string}</li>
+    //       })}
+    //     </ul>
+    //   )
+    // }
 
     if (graphQLErrors)
       graphQLErrors.forEach(({ message, locations, path }) =>
-        console.log(
-          `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
-        ),
+        console.log(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`),
       )
 
     if (networkError) console.log(`[Network error]: ${networkError}`)
 
-    setGQLError({ msg: validationList || reason || msg || '' })
+    // setGQLError({ msg: validationList || reason || msg || '' })
   })
 
   const client = new ApolloClient({
@@ -161,7 +153,6 @@ function AppStateProvider({ children }: { children: ReactNode }) {
         },
       }),
       errorLink,
-      // requestLink,
       authLink,
       new HttpLink({
         uri: apiUri,
@@ -175,7 +166,7 @@ function AppStateProvider({ children }: { children: ReactNode }) {
     <AppStateContext.Provider
       value={{
         appState,
-        gqlError,
+        // gqlError,
         appSetLogin,
         appSetLogout,
         appSetAuthToken,

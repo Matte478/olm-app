@@ -1,6 +1,7 @@
 import React from 'react'
 import { useParams } from 'react-router-dom'
 import { useUserQuery } from '../../../../__generated__/graphql'
+import { ErrorNotifier, SpinnerOverlay } from '../../../components'
 import EditUserForm from './EditUserForm'
 
 const EditUser: React.FC = () => {
@@ -11,8 +12,8 @@ const EditUser: React.FC = () => {
     },
   })
 
-  if (loading) return <p>Loading...</p>
-  if (error) return <p>Error: {error.message}</p>
+  if (loading) return <SpinnerOverlay transparent={true} />
+  if (error) return <ErrorNotifier error={error} />
   if (!data?.user) return <div>404</div>
 
   return <EditUserForm user={data.user} />

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import {
   CButton,
@@ -11,19 +11,17 @@ import {
   CInputGroup,
   CInputGroupText,
   CRow,
-  CAlert,
 } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilLockLocked, cilUser } from '@coreui/icons'
 import { useTranslation } from 'react-i18next'
 
 import { RegisterInput, useRegisterMutation } from '../../../__generated__/graphql'
-import { AppStateContext } from '../../../provider'
+import { ErrorNotifier, SpinnerOverlay } from '../../components'
 
 const Register: React.FC = () => {
   const { t } = useTranslation()
-  const { gqlError } = useContext(AppStateContext)
-  const [register] = useRegisterMutation()
+  const [register, { loading, error }] = useRegisterMutation()
 
   const [registerInput, setRegisterInput] = useState<RegisterInput>({
     name: '',
@@ -31,13 +29,11 @@ const Register: React.FC = () => {
     password: '',
     password_confirmation: '',
   })
-  const [show, setShow] = useState(false)
   const navigate = useNavigate()
 
   const handleRegister = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     try {
-      setShow(false)
       const { data } = await register({
         variables: {
           registerInput,
@@ -45,13 +41,12 @@ const Register: React.FC = () => {
       })
       if (data === undefined || data?.register === undefined) throw new Error('Invalid credentials')
       navigate('/login')
-    } catch (error) {
-      setShow(true)
-    }
+    } catch (error) {}
   }
 
   return (
     <div className="min-vh-100-nav py-3 d-flex flex-row align-items-center bg-light">
+      {loading && <SpinnerOverlay transparent={true} />}
       <CContainer>
         <CRow className="justify-content-center">
           <CCol md={9} lg={7} xl={6}>
@@ -60,13 +55,7 @@ const Register: React.FC = () => {
                 <CForm onSubmit={handleRegister}>
                   <h1>{t('register.title')}</h1>
                   <p className="text-medium-emphasis">{t('register.description')}</p>
-                  {show ? (
-                    <CAlert color="danger" className="py-2">
-                      {gqlError.msg}
-                    </CAlert>
-                  ) : (
-                    ''
-                  )}
+                  <ErrorNotifier error={error} />
                   <CInputGroup className="mb-3">
                     <CInputGroupText>
                       <CIcon content={cilUser} />
