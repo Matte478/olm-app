@@ -30,6 +30,7 @@ export interface TableColumn {
 }
 
 export interface TableAction {
+  handleClick: (id: string) => void
   color:
     | 'primary'
     | 'secondary'

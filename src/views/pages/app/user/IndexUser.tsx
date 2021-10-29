@@ -3,14 +3,21 @@ import { CCard, CCardBody, CCardHeader } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilPencil, cilTrash, cilUser } from '@coreui/icons'
 import { useTranslation } from 'react-i18next'
-import { useUsersQuery } from '../../../../__generated__/graphql'
+import { useNavigate } from 'react-router-dom'
+import {
+  useDeleteUserMutation,
+  UsersDocument,
+  useUsersQuery,
+} from '../../../../__generated__/graphql'
 import { Pagination, PerPageDropdown, SpinnerOverlay, TableList } from '../../../components'
 import { TableAction, TableColumn } from '../../../../types'
 
 const IndexUser: React.FC = () => {
+  const { t } = useTranslation()
+  const navigate = useNavigate()
   const [currentPage, setCurrentPage] = useState(1)
   const [perPage, setPerPage] = useState(10)
-  const { t } = useTranslation()
+  const [deleteUserMutation, deleteRes] = useDeleteUserMutation()
 
   const columns: TableColumn[] = [
     {
@@ -37,12 +44,32 @@ const IndexUser: React.FC = () => {
       color: 'primary',
       // text: t('actions.edit'),
       icon: <CIcon content={cilPencil} />,
+      handleClick: (id: string) => {
+        navigate(`/app/users/${id}/edit`)
+      },
     },
     {
       color: 'danger',
       // text: t('actions.delete'),
       textColor: 'light',
       icon: <CIcon content={cilTrash} />,
+      handleClick: async (id: string) => {
+        let response = window.confirm(t('users.delete.confirm'))
+        if (response) {
+          await deleteUserMutation({
+            variables: { id },
+            refetchQueries: [
+              {
+                query: UsersDocument,
+                variables: {
+                  first: perPage,
+                  page: currentPage,
+                },
+              },
+            ],
+          }).catch(() => {})
+        }
+      },
     },
   ]
 
@@ -57,6 +84,8 @@ const IndexUser: React.FC = () => {
   if (error) return <p>Error: {error.message}</p>
 
   const paginatorInfo = data!.users!.paginatorInfo
+
+  if (currentPage > paginatorInfo.lastPage) setCurrentPage(paginatorInfo.lastPage)
 
   return (
     <CCard>

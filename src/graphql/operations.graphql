@@ -98,3 +98,9 @@ mutation editUser($updateUserInput: UpdateUserInput!) {
     updated_at
   }
 }
+
+mutation deleteUser($id: ID!) {
+  deleteUser(id: $id) {
+    id
+  }
+}

@@ -75,6 +75,9 @@
     },
     "index": {
       "title": "Užívatelia"
+    },
+    "delete": {
+      "confirm": "Naozaj chcete vymazať daného užívateľa?"
     }
   }
 }
