@@ -17,7 +17,8 @@ import Dashboard from './views/pages/app/Dashboard'
 import Error500 from './views/pages/errors/Error500'
 
 // users
-import UserIndex from './views/pages/app/user/Index'
+import IndexUser from './views/pages/app/user/IndexUser'
+import EditUser from './views/pages/app/user/EditUser'
 
 const routes = (loggedIn: boolean) => [
   {
@@ -55,7 +56,11 @@ const routes = (loggedIn: boolean) => [
         children: [
           {
             path: '/',
-            element: <UserIndex />,
+            element: <IndexUser />,
+          },
+          {
+            path: ':id/edit',
+            element: <EditUser />,
           },
         ],
       },

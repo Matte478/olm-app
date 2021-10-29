@@ -5,10 +5,10 @@ import {
   InMemoryCache,
   HttpLink,
   ApolloLink,
-  Observable,
 } from '@apollo/client'
 import { onError } from '@apollo/link-error'
 import { TokenRefreshLink } from 'apollo-link-token-refresh'
+import { setContext } from '@apollo/client/link/context'
 import { Cookies } from 'react-cookie'
 import { User } from './__generated__/graphql'
 
@@ -93,29 +93,45 @@ function AppStateProvider({ children }: { children: ReactNode }) {
 
   // apollo client
   const cache = new InMemoryCache({})
-  const requestLink = new ApolloLink(
-    (operation, forward) =>
-      new Observable((observer) => {
-        let handle: any
-        Promise.resolve(operation)
-          .then((operation) => {
-            operation.setContext({
-              headers: { authorization: `Bearer ${appGetAuthToken().token}` },
-            })
-          })
-          .then(() => {
-            handle = forward(operation).subscribe({
-              next: observer.next.bind(observer),
-              error: observer.error.bind(observer),
-              complete: observer.complete.bind(observer),
-            })
-          })
-          .catch(observer.error.bind(observer))
-        return () => {
-          if (handle) handle.unsubscribe()
-        }
-      }),
-  )
+  const authLink = setContext((_, { headers }) => {
+    return {
+      headers: {
+        ...headers,
+        authorization: appGetAuthToken().token ? `Bearer ${appGetAuthToken().token}` : '',
+      },
+    }
+  })
+
+  const errorLink = onError(({ graphQLErrors, networkError }) => {
+    if (graphQLErrors === undefined || graphQLErrors[0].path === undefined) return
+    if (graphQLErrors[0].path[0] === 'refresh') return
+    const msg = graphQLErrors[0].message
+    const reason = graphQLErrors[0]?.extensions?.reason
+    const validation = graphQLErrors[0]?.extensions?.validation
+
+    let validationList = null
+    if (Object.prototype.toString.call(validation) === '[object Object]') {
+      validationList = (
+        <ul className="mb-0">
+          {Object.entries(validation).map((entry) => {
+            const [key, value] = entry
+            return <li key={key}>{value as string}</li>
+          })}
+        </ul>
+      )
+    }
+
+    if (graphQLErrors)
+      graphQLErrors.forEach(({ message, locations, path }) =>
+        console.log(
+          `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
+        ),
+      )
+
+    if (networkError) console.log(`[Network error]: ${networkError}`)
+
+    setGQLError({ msg: validationList || reason || msg || '' })
+  })
 
   const client = new ApolloClient({
     link: ApolloLink.from([
@@ -144,28 +160,9 @@ function AppStateProvider({ children }: { children: ReactNode }) {
           appSetLogout()
         },
       }),
-      onError(({ graphQLErrors, networkError }) => {
-        if (graphQLErrors === undefined || graphQLErrors[0].path === undefined) return
-        if (graphQLErrors[0].path[0] === 'refresh') return
-        const msg = graphQLErrors[0].message
-        const reason = graphQLErrors[0]?.extensions?.reason
-        const validation = graphQLErrors[0]?.extensions?.validation
-
-        let validationList = null
-        if (Object.prototype.toString.call(validation) === '[object Object]') {
-          validationList = (
-            <ul className="mb-0">
-              {Object.entries(validation).map((entry) => {
-                const [key, value] = entry
-                return <li key={key}>{value as string}</li>
-              })}
-            </ul>
-          )
-        }
-
-        setGQLError({ msg: validationList || reason || msg || '' })
-      }),
-      requestLink,
+      errorLink,
+      // requestLink,
+      authLink,
       new HttpLink({
         uri: apiUri,
         credentials: 'include',

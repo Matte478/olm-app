@@ -7,7 +7,7 @@ import { useUsersQuery } from '../../../../__generated__/graphql'
 import { Pagination, PerPageDropdown, TableList } from '../../../components'
 import { TableAction, TableColumn } from '../../../../types'
 
-const Index: React.FC = () => {
+const IndexUser: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1)
   const [perPage, setPerPage] = useState(10)
   const { t } = useTranslation()
@@ -79,4 +79,4 @@ const Index: React.FC = () => {
   )
 }
 
-export default Index
+export default IndexUser

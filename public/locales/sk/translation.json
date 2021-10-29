@@ -62,6 +62,7 @@
   "actions": {
     "create": "Vytvoriť",
     "edit": "Upraviť",
+    "save": "Uložiť",
     "delete": "Zmazať"
   },
 
