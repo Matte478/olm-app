@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { CDropdownItem } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
-import { cilLockLocked } from '@coreui/icons'
+import { cilAccountLogout } from '@coreui/icons'
 import { useTranslation } from 'react-i18next'
 
 import { AppStateContext } from '../../../provider'
@@ -26,7 +26,7 @@ const AppHeaderDropdownLogout: React.FC = () => {
 
   return (
     <CDropdownItem component="button" onClick={logoutHandler}>
-      <CIcon content={cilLockLocked} className="me-2" />
+      <CIcon content={cilAccountLogout} className="me-2" />
       {t('navbar-app.logout')}
     </CDropdownItem>
   )

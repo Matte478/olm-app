@@ -104,3 +104,10 @@ mutation deleteUser($id: ID!) {
     id
   }
 }
+
+mutation updatePassword($updatePasswordInput: UpdatePassword!) {
+  updatePassword(input: $updatePasswordInput) {
+    status
+    message
+  }
+}

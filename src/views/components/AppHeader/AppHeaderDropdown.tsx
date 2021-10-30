@@ -7,7 +7,7 @@ import {
   CDropdownMenu,
   CDropdownToggle,
 } from '@coreui/react'
-import { cilUser } from '@coreui/icons'
+import { cilLockLocked, cilUser } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 import { useTranslation } from 'react-i18next'
 
@@ -25,9 +25,13 @@ const AppHeaderDropdown: React.FC = () => {
         <CDropdownHeader className="bg-light fw-semibold py-2">
           {t('navbar-app.settings')}
         </CDropdownHeader>
-        <CDropdownItem href="#">
+        <CDropdownItem href="/app/users/profile">
           <CIcon content={cilUser} className="me-2" />
           {t('navbar-app.profile')}
+        </CDropdownItem>
+        <CDropdownItem href="/app/users/update-password">
+          <CIcon content={cilLockLocked} className="me-2" />
+          {t('navbar-app.update-password')}
         </CDropdownItem>
         <CDropdownDivider />
         <AppHeaderDropdownLogout />

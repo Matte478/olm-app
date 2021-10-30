@@ -50,6 +50,7 @@
     "acronym": "OLM",
     "settings": "Nastavenia",
     "profile": "Profil",
+    "update-password": "Zmeniť heslo",
     "logout": "Odhlásiť"
   },
 
@@ -78,6 +79,17 @@
     },
     "delete": {
       "confirm": "Naozaj chcete vymazať daného užívateľa?"
+    }
+  },
+
+  "update-password": {
+    "index": {
+      "title": "Zmeniť heslo"
+    },
+    "columns": {
+      "old_password": "Staré heslo",
+      "password": "Nové heslo",
+      "password_confirmation": "Zopakujte nové heslo"
     }
   }
 }

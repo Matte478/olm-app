@@ -28,7 +28,7 @@
       "name": "Name",
       "email": "E-mail",
       "password": "Password",
-      "password-confirm": "Repeact password",
+      "password-confirm": "Repeat password",
       "button": "Create Account"
     }
   },
@@ -50,6 +50,7 @@
     "acronym": "OLM",
     "settings": "Settings",
     "profile": "Profile",
+    "update-password": "Update password",
     "logout": "Logout"
   },
 
@@ -78,6 +79,17 @@
     },
     "delete": {
       "confirm": "Are you sure you want to delete this user?"
+    }
+  },
+
+  "update-password": {
+    "index": {
+      "title": "Update password"
+    },
+    "columns": {
+      "old_password": "Old password",
+      "password": "New password",
+      "password_confirmation": "Repeat new password"
     }
   }
 }

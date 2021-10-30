@@ -17,6 +17,7 @@ import { ErrorNotifier, SpinnerOverlay } from '../../../components'
 
 interface Props {
   user: User
+  handleUpdateUser?: (user: User) => void
 }
 
 const EditUserForm: React.FC<Props> = (props: Props) => {
@@ -38,7 +39,11 @@ const EditUserForm: React.FC<Props> = (props: Props) => {
       },
     })
       .then((data) => {
-        if (data.data?.updateUser) setUser(data.data.updateUser)
+        if (data.data?.updateUser) {
+          setUser(data.data.updateUser)
+
+          if (props.handleUpdateUser) props.handleUpdateUser(data.data.updateUser)
+        }
       })
       .catch(() => {})
   }
