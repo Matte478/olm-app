@@ -1,5 +1,5 @@
 import React, { createContext, useState, ReactNode } from 'react'
-import { ApolloProvider, ApolloClient, InMemoryCache, HttpLink, ApolloLink } from '@apollo/client'
+import { ApolloProvider, ApolloClient, InMemoryCache, HttpLink, ApolloLink, DefaultOptions } from '@apollo/client'
 import { onError } from '@apollo/link-error'
 import { TokenRefreshLink } from 'apollo-link-token-refresh'
 import { setContext } from '@apollo/client/link/context'
@@ -87,6 +87,15 @@ function AppStateProvider({ children }: { children: ReactNode }) {
 
   // apollo client
   const cache = new InMemoryCache()
+  const defaultOptions: DefaultOptions = {
+    watchQuery: {
+      fetchPolicy: 'no-cache',
+    },
+    query: {
+      fetchPolicy: 'no-cache',
+      errorPolicy: 'all',
+    },
+  }
   const authLink = setContext((_, { headers }) => {
     return {
       headers: {
@@ -160,6 +169,7 @@ function AppStateProvider({ children }: { children: ReactNode }) {
       }),
     ]),
     cache,
+    defaultOptions
   })
 
   return (
