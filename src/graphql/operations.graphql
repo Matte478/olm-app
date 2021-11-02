@@ -111,3 +111,41 @@ mutation updatePassword($updatePasswordInput: UpdatePassword!) {
     message
   }
 }
+
+query roles {
+  roles {
+    id
+    name
+    guard_name
+    created_at
+    updated_at
+    permissions {
+      id
+      name
+      guard_name
+      created_at
+      updated_at
+    }
+  }
+}
+
+query role($id: ID!) {
+  role(id: $id) {
+    id
+    name
+    guard_name
+    created_at
+    updated_at
+    permissions {
+      name
+      guard_name
+    }
+  }
+}
+
+mutation deleteRole($id: ID!) {
+  deleteRole(id: $id) {
+    name
+    id
+  }
+}

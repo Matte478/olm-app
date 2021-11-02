@@ -57,7 +57,8 @@
   "sidebar": {
     "dashboard": "Dashboard",
     "settings": "Nastavenia",
-    "users": "Užívatelia"
+    "users": "Užívatelia",
+    "roles": "Role a práva"
   },
 
   "actions": {
@@ -90,6 +91,16 @@
       "old_password": "Staré heslo",
       "password": "Nové heslo",
       "password_confirmation": "Zopakujte nové heslo"
+    }
+  },
+
+  "roles": {
+    "columns": {
+      "id": "ID",
+      "name": "Názov"
+    },
+    "index": {
+      "title": "Role"
     }
   }
 }

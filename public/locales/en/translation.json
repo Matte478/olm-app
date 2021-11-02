@@ -57,7 +57,8 @@
   "sidebar": {
     "dashboard": "Dashboard",
     "settings": "Settings",
-    "users": "Users"
+    "users": "Users",
+    "roles": "Roles and permissions"
   },
 
   "actions": {
@@ -90,6 +91,16 @@
       "old_password": "Old password",
       "password": "New password",
       "password_confirmation": "Repeat new password"
+    }
+  },
+
+  "roles": {
+    "columns": {
+      "id": "ID",
+      "name": "Name"
+    },
+    "index": {
+      "title": "Roles"
     }
   }
 }
