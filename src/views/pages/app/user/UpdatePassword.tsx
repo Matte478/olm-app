@@ -1,13 +1,8 @@
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import {
-  CAlert,
-  CForm,
-  CFormFloating,
-  CFormInput,
-  CFormLabel,
-} from '@coreui/react'
+import { CForm, CFormFloating, CFormInput, CFormLabel } from '@coreui/react'
 import { cilLockLocked } from '@coreui/icons'
+import { toast } from 'react-toast'
 import {
   UpdatePassword as UpdatePasswordInput,
   useUpdatePasswordMutation,
@@ -34,7 +29,10 @@ const UpdatePassword = () => {
         updatePasswordInput,
       },
     })
-      .then(() => setUpdatePasswordInput(initialUpdatePasswordInput))
+      .then(() => {
+        setUpdatePasswordInput(initialUpdatePasswordInput)
+        toast.success(t('update-password.actions.success'))
+      })
       .catch(() => {})
   }
 
@@ -43,11 +41,6 @@ const UpdatePassword = () => {
       {loading ? <SpinnerOverlay transparent={true} /> : <></>}
       <CForm onSubmit={handleUpdatePassowrd}>
         <ErrorNotifier error={error} />
-        {data?.updatePassword.message && (
-          <CAlert color="success" className="py-2">
-            {data.updatePassword.message}
-          </CAlert>
-        )}
         <CFormFloating className="mb-3">
           <CFormInput
             type="password"

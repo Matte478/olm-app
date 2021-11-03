@@ -1,0 +1,32 @@
+.app-toast {
+  position: relative;
+  z-index: 1031;
+
+  --toast-default: #8b1dd0;
+  // --toast-success: #d5f1de;
+  --toast-success: var(--cui-success);
+  --toast-error: #c52965;
+  --toast-info: #004eff;
+  --toast-warning: #d0761d;
+  --toast-black: #221d26;
+  --toast-white: #ffffff;
+
+  .toastContainer {
+    .toast {
+      box-shadow: none;
+      &:not(.showing):not(.show) {
+        opacity: inherit;
+      }
+
+      .icon {
+        width: 22px;
+        height: 22px;
+        font-size: initial;
+      }
+
+      .content {
+        color: #fff;
+      }
+    }
+  }
+}

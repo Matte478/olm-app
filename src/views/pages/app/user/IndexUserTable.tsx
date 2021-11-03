@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { cilPencil, cilTrash } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
+import { toast } from 'react-toast'
 import { TableAction, TableColumn } from '../../../../types'
 import { PaginatorInfo, useDeleteUserMutation, User } from '../../../../__generated__/graphql'
 import { ErrorNotifier, Pagination, TableList } from '../../../components'
@@ -32,7 +33,10 @@ const IndexUserTable: React.FC<Props> = ({
       await deleteUserMutation({
         variables: { id },
       })
-        .then(refetch)
+        .then(() => {
+          refetch()
+          toast.success(t('users.delete.success'))
+        })
         .catch(() => {})
     }
   }
