@@ -1,7 +1,8 @@
 import React from 'react'
+import { AppCard } from '../../components'
 
 const Dashboard: React.FC = () => {
-  return <h2>Dashboard</h2>
+  return <AppCard title="Dashboard">Dashboard</AppCard>
 }
 
 export default Dashboard
