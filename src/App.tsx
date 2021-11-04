@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { useRoutes } from 'react-router-dom'
+import { ToastContainer } from 'react-toast'
 import { AppStateContext, fetchAccessToken, fetchAuthUser } from './provider'
 import routes from './routes'
 import { User } from './__generated__/graphql'
@@ -9,8 +10,13 @@ import './scss/style.scss'
 let initialized = false
 const App: React.FC = () => {
   const [loading, setLoading] = useState(true)
-  const { appState, appSetLogout, appSetAuthToken, appSetAuthUser, appGetRefreshToken } =
-    useContext(AppStateContext)
+  const {
+    appState,
+    appSetLogout,
+    appSetAuthToken,
+    appSetAuthUser,
+    appGetRefreshToken,
+  } = useContext(AppStateContext)
   const routing = useRoutes(routes(!!appState.authUser))
 
   useEffect(() => {
@@ -45,7 +51,15 @@ const App: React.FC = () => {
 
   if (loading) return <SpinnerOverlay />
 
-  return <div className="wrapper">{routing}</div>
+  return (
+    <div className="wrapper">
+      {routing}
+
+      <div className="app-toast">
+        <ToastContainer delay={5000} position="bottom-right" />
+      </div>
+    </div>
+  )
 }
 
 export default App

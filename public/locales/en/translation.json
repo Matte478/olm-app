@@ -79,7 +79,11 @@
       "title": "Users"
     },
     "delete": {
-      "confirm": "Are you sure you want to delete this user?"
+      "confirm": "Are you sure you want to delete this user?",
+      "success": "User has been deleted!"
+    },
+    "update": {
+      "success": "User has been updated!"
     }
   },
 
@@ -91,6 +95,9 @@
       "old_password": "Old password",
       "password": "New password",
       "password_confirmation": "Repeat new password"
+    },
+    "actions": {
+      "success": "Your password has been updated!"
     }
   },
 

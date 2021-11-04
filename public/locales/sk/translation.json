@@ -79,7 +79,11 @@
       "title": "Užívatelia"
     },
     "delete": {
-      "confirm": "Naozaj chcete vymazať daného užívateľa?"
+      "confirm": "Naozaj chcete vymazať daného užívateľa?",
+      "success": "Užívateľ bol vymazaný!"
+    },
+    "update": {
+      "success": "Užívateľ bol upravený!"
     }
   },
 
@@ -91,6 +95,9 @@
       "old_password": "Staré heslo",
       "password": "Nové heslo",
       "password_confirmation": "Zopakujte nové heslo"
+    },
+    "actions": {
+      "success": "Vaše heslo bolo zmenené!"
     }
   },
 

@@ -26,13 +26,13 @@ const AppHeaderDropdown: React.FC = () => {
         <CDropdownHeader className="bg-light fw-semibold py-2">
           {t('navbar-app.settings')}
         </CDropdownHeader>
-        <Link className="text-decoration-none" to="/app/users/profile">
+        <Link className="text-decoration-none" to="/app/profile">
           <CDropdownItem component="span">
             <CIcon content={cilUser} className="me-2" />
             {t('navbar-app.profile')}
           </CDropdownItem>
         </Link>
-        <Link className="text-decoration-none" to="/app/users/update-password">
+        <Link className="text-decoration-none" to="/app/update-password">
           <CDropdownItem component="span">
             <CIcon content={cilLockLocked} className="me-2" />
             {t('navbar-app.update-password')}

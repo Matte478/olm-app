@@ -1,19 +1,17 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
-import { cilPencil, cilTrash, cilUser } from '@coreui/icons'
+import { cilPencil, cilTrash } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
-import { CCard, CCardBody, CCardHeader } from '@coreui/react'
+import { toast } from 'react-toast'
 import { TableAction, TableColumn } from '../../../../types'
 import { PaginatorInfo, useDeleteUserMutation, User } from '../../../../__generated__/graphql'
-import { ErrorNotifier, Pagination, PerPageDropdown, TableList } from '../../../components'
+import { ErrorNotifier, Pagination, TableList } from '../../../components'
 
 interface Props {
   users: User[]
   refetch: any
   paginatorInfo: PaginatorInfo
-  perPage: number
-  setPerPage: (perPage: number) => void
   currentPage: number
   setCurrentPage: (page: number) => void
 }
@@ -22,8 +20,6 @@ const IndexUserTable: React.FC<Props> = ({
   users,
   refetch,
   paginatorInfo,
-  perPage,
-  setPerPage,
   currentPage,
   setCurrentPage,
 }: Props) => {
@@ -37,7 +33,10 @@ const IndexUserTable: React.FC<Props> = ({
       await deleteUserMutation({
         variables: { id },
       })
-        .then(refetch)
+        .then(() => {
+          refetch()
+          toast.success(t('users.delete.success'))
+        })
         .catch(() => {})
     }
   }
@@ -65,7 +64,6 @@ const IndexUserTable: React.FC<Props> = ({
   const actions: TableAction[] = [
     {
       color: 'primary',
-      // text: t('actions.edit'),
       icon: <CIcon content={cilPencil} />,
       handleClick: (id: string) => {
         navigate(`/app/users/${id}/edit`)
@@ -73,7 +71,6 @@ const IndexUserTable: React.FC<Props> = ({
     },
     {
       color: 'danger',
-      // text: t('actions.delete'),
       textColor: 'light',
       icon: <CIcon content={cilTrash} />,
       handleClick: handleDeleteUser,
@@ -83,23 +80,14 @@ const IndexUserTable: React.FC<Props> = ({
   if (error) return <ErrorNotifier error={error} />
 
   return (
-    <CCard>
-      <CCardHeader className="d-flex align-items-center justify-content-between">
-        <strong className="d-flex align-items-center justify-content-center">
-          <CIcon content={cilUser} className="me-1" />
-          {t('users.index.title')}
-        </strong>
-        <PerPageDropdown selected={perPage} handleChange={setPerPage} />
-      </CCardHeader>
-      <CCardBody>
-        <TableList columns={columns} data={users} actions={actions} />
-        <Pagination
-          currentPage={currentPage}
-          lastPage={paginatorInfo.lastPage}
-          setCurrentPage={setCurrentPage}
-        />
-      </CCardBody>
-    </CCard>
+    <>
+      <TableList columns={columns} data={users} actions={actions} />
+      <Pagination
+        currentPage={currentPage}
+        lastPage={paginatorInfo.lastPage}
+        setCurrentPage={setCurrentPage}
+      />
+    </>
   )
 }
 

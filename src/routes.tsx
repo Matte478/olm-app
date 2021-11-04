@@ -55,19 +55,19 @@ const routes = (loggedIn: boolean) => [
         element: <Dashboard />,
       },
       {
+        path: '/profile',
+        element: <UserProfile />,
+      },
+      {
+        path: '/update-password',
+        element: <UpdatePassword />,
+      },
+      {
         path: '/users',
         children: [
           {
             path: '/',
             element: <IndexUser />,
-          },
-          {
-            path: '/profile',
-            element: <UserProfile />
-          },
-          {
-            path: '/update-password',
-            element: <UpdatePassword />
           },
           {
             path: ':id/edit',
