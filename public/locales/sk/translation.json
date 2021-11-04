@@ -108,6 +108,9 @@
     },
     "index": {
       "title": "Role"
+    },
+    "update": {
+      "success": "Rola bola zmenená!"
     }
   }
 }

@@ -137,8 +137,24 @@ query role($id: ID!) {
     created_at
     updated_at
     permissions {
+      id
       name
       guard_name
+      created_at
+      updated_at
+    }
+  }
+}
+
+mutation updateRole($updateRoleInput: UpdateRoleInput!) {
+  updateRole(input: $updateRoleInput) {
+    id
+    permissions {
+      id
+      name
+      guard_name
+      created_at
+      updated_at
     }
   }
 }
@@ -147,5 +163,15 @@ mutation deleteRole($id: ID!) {
   deleteRole(id: $id) {
     name
     id
+  }
+}
+
+query permissions {
+  permissions {
+    id
+    name
+    guard_name
+    created_at
+    updated_at
   }
 }

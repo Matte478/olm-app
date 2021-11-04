@@ -108,6 +108,9 @@
     },
     "index": {
       "title": "Roles"
+    },
+    "update": {
+      "success": "Role has been updated!"
     }
   }
 }

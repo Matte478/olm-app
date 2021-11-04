@@ -10,12 +10,12 @@ interface Props {
   handleUpdateUser?: (user: User) => void
 }
 
-const EditUserForm: React.FC<Props> = (props: Props) => {
+const EditUserForm: React.FC<Props> = ({user, handleUpdateUser}: Props) => {
   const { t } = useTranslation()
   const [updateUserInput, setUpdateUserInput] = useState<UpdateUserInput>({
-    id: props.user.id,
-    name: props.user.name,
-    email: props.user.email,
+    id: user.id,
+    name: user.name,
+    email: user.email,
   })
   const [editUserMutation, { loading, error }] = useEditUserMutation()
 
@@ -30,8 +30,8 @@ const EditUserForm: React.FC<Props> = (props: Props) => {
       .then((data) => {
         if (data.data?.updateUser) {
           toast.success(t('users.update.success'))
-          if(props.handleUpdateUser) {
-            props.handleUpdateUser(data.data.updateUser)
+          if(handleUpdateUser) {
+            handleUpdateUser(data.data.updateUser)
           }
         }
       })

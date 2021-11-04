@@ -21,7 +21,10 @@ import IndexUser from './views/pages/app/user/IndexUser'
 import EditUser from './views/pages/app/user/EditUser'
 import UserProfile from './views/pages/app/user/UserProfile'
 import UpdatePassword from './views/pages/app/user/UpdatePassword'
+
+// roles
 import IndexRole from './views/pages/app/role/IndexRole'
+import EditRole from './views/pages/app/role/EditRole'
 
 const routes = (loggedIn: boolean) => [
   {
@@ -81,6 +84,10 @@ const routes = (loggedIn: boolean) => [
           {
             path: '/',
             element: <IndexRole />,
+          },
+          {
+            path: ':id/edit',
+            element: <EditRole />,
           },
         ]
       }

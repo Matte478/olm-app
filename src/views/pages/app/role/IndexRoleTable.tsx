@@ -1,9 +1,8 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { Link, useNavigate } from 'react-router-dom'
-import { cilLockLocked, cilPencil, cilPlus, cilTrash, cilUser } from '@coreui/icons'
+import { useNavigate } from 'react-router-dom'
+import { cilPencil, cilTrash } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
-import { CButton, CCard, CCardBody, CCardHeader } from '@coreui/react'
 import { TableAction, TableColumn } from '../../../../types'
 import { Role, useDeleteRoleMutation } from '../../../../__generated__/graphql'
 import { ErrorNotifier, TableList } from '../../../components'
@@ -59,26 +58,7 @@ const IndexRoleTable: React.FC<Props> = ({ roles, refetch }: Props) => {
 
   if (error) return <ErrorNotifier error={error} />
 
-  return (
-    <div>
-      <CCard>
-        <CCardHeader className="d-flex align-items-center justify-content-between">
-          <strong className="d-flex align-items-center justify-content-center">
-            <CIcon content={cilLockLocked} className="me-1" />
-            {t('roles.index.title')}
-          </strong>
-          <Link to="/app/roles/create">
-            <CButton className="text-center">
-              <CIcon content={cilPlus} />
-            </CButton>
-          </Link>
-        </CCardHeader>
-        <CCardBody>
-          <TableList columns={columns} data={roles} actions={actions} />
-        </CCardBody>
-      </CCard>
-    </div>
-  )
+  return <TableList columns={columns} data={roles} actions={actions} />
 }
 
 export default IndexRoleTable
