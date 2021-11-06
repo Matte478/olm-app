@@ -8,6 +8,7 @@ import TableList from './TableList/TableList'
 import SpinnerOverlay from './SpinnerOverlay/SpinnerOverlay'
 import ErrorNotifier from './ErrorNotifier/ErrorNotifier'
 import ButtonSave from './ButtonSave/ButtonSave'
+import ButtonAdd from './ButtonAdd/ButtonAdd'
 
 export {
   AppSidebar,
@@ -20,4 +21,5 @@ export {
   SpinnerOverlay,
   ErrorNotifier,
   ButtonSave,
+  ButtonAdd,
 }

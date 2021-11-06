@@ -1,12 +1,9 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { cilLockLocked, cilPlus } from '@coreui/icons'
+import { cilLockLocked } from '@coreui/icons'
 import { useRolesQuery } from '../../../../__generated__/graphql'
-import { AppCard, ErrorNotifier, SpinnerOverlay } from '../../../components'
+import { AppCard, ButtonAdd, ErrorNotifier, SpinnerOverlay } from '../../../components'
 import IndexRoleTable from './IndexRoleTable'
-import { Link } from 'react-router-dom'
-import { CButton } from '@coreui/react'
-import CIcon from '@coreui/icons-react'
 
 const IndexRole: React.FC = () => {
   const { t } = useTranslation()
@@ -19,13 +16,7 @@ const IndexRole: React.FC = () => {
     <AppCard
       icon={cilLockLocked}
       title={t('roles.index.title')}
-      aditional={
-        <Link to="/app/roles/create">
-          <CButton className="text-center">
-            <CIcon content={cilPlus} />
-          </CButton>
-        </Link>
-      }
+      aditional={<ButtonAdd to="/app/roles/create" />}
     >
       <IndexRoleTable roles={data!.roles} refetch={refetch} />
     </AppCard>

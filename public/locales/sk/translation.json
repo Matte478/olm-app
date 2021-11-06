@@ -109,6 +109,9 @@
     "index": {
       "title": "Role"
     },
+    "create": {
+      "success": "Rola bola vytvorená!"
+    },
     "update": {
       "success": "Rola bola zmenená!"
     }

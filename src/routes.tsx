@@ -11,10 +11,10 @@ import Register from './views/pages/auth/Register'
 
 // error
 import Error404 from './views/pages/errors/Error404'
+import Error500 from './views/pages/errors/Error500'
 
 // app
 import Dashboard from './views/pages/app/Dashboard'
-import Error500 from './views/pages/errors/Error500'
 
 // users
 import IndexUser from './views/pages/app/user/IndexUser'
@@ -24,6 +24,7 @@ import UpdatePassword from './views/pages/app/user/UpdatePassword'
 
 // roles
 import IndexRole from './views/pages/app/role/IndexRole'
+import CreateRole from './views/pages/app/role/CreateRole'
 import EditRole from './views/pages/app/role/EditRole'
 
 const routes = (loggedIn: boolean) => [
@@ -84,6 +85,10 @@ const routes = (loggedIn: boolean) => [
           {
             path: '/',
             element: <IndexRole />,
+          },
+          {
+            path: '/create',
+            element: <CreateRole />,
           },
           {
             path: ':id/edit',

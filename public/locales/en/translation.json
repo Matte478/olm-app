@@ -109,6 +109,9 @@
     "index": {
       "title": "Roles"
     },
+    "create": {
+      "success": "Role has been created!"
+    },
     "update": {
       "success": "Role has been updated!"
     }
