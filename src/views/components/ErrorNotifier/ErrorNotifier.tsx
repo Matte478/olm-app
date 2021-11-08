@@ -3,13 +3,15 @@ import { CAlert } from '@coreui/react'
 import React from 'react'
 
 interface Props {
-  error?: ApolloError
+  error?: ApolloError | string
 }
 
 const ErrorNotifier: React.FC<Props> = ({ error }: Props) => {
   if (!error) return <></>
 
   const formatError = () => {
+    if (typeof error === 'string') return error
+
     const { graphQLErrors, message } = error
     const msg = graphQLErrors[0].message
     const reason = graphQLErrors[0]?.extensions?.reason

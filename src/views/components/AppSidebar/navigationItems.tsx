@@ -21,12 +21,14 @@ const navigationItems = [
   {
     component: CNavItem,
     name: 'sidebar.users',
+    permission: 'user.index',
     to: '/app/users',
     icon: <CIcon content={cilUser} customClasses="nav-icon" />,
   },
   {
     component: CNavItem,
     name: 'sidebar.roles',
+    permission: 'role.index',
     to: '/app/roles',
     icon: <CIcon content={cilLockLocked} customClasses="nav-icon" />,
   },

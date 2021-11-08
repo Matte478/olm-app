@@ -26,6 +26,7 @@ import UpdatePassword from './views/pages/app/user/UpdatePassword'
 import IndexRole from './views/pages/app/role/IndexRole'
 import CreateRole from './views/pages/app/role/CreateRole'
 import EditRole from './views/pages/app/role/EditRole'
+import Can from './views/components/Can/Can'
 
 const routes = (loggedIn: boolean) => [
   {
@@ -71,11 +72,19 @@ const routes = (loggedIn: boolean) => [
         children: [
           {
             path: '/',
-            element: <IndexUser />,
+            element: (
+              <Can permission="user.index" notify={true}>
+                <IndexUser />
+              </Can>
+            ),
           },
           {
             path: ':id/edit',
-            element: <EditUser />,
+            element: (
+              <Can permission="user.edit" notify={true}>
+                <EditUser />
+              </Can>
+            ),
           },
         ],
       },
@@ -84,18 +93,30 @@ const routes = (loggedIn: boolean) => [
         children: [
           {
             path: '/',
-            element: <IndexRole />,
+            element: (
+              <Can permission="role.index" notify={true}>
+                <IndexRole />
+              </Can>
+            ),
           },
           {
             path: '/create',
-            element: <CreateRole />,
+            element: (
+              <Can permission="role.create" notify={true}>
+                <CreateRole />
+              </Can>
+            ),
           },
           {
             path: ':id/edit',
-            element: <EditRole />,
+            element: (
+              <Can permission="role.edit" notify={true}>
+                <EditRole />
+              </Can>
+            ),
           },
-        ]
-      }
+        ],
+      },
     ],
   },
   {

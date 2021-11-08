@@ -9,6 +9,7 @@ import {
   CTableRow,
 } from '@coreui/react'
 import { TableAction, TableColumn } from '../../../types'
+import Can from '../Can/Can'
 
 interface Props {
   data: object[]
@@ -50,19 +51,25 @@ const TableList: React.FC<Props> = ({
               {actions && (
                 <CTableDataCell scope="row" className="text-right" style={{ width: '100px' }}>
                   <div className="d-flex justify-content-end align-items-stretch">
-                    {actions.map(({ color, icon, text, textColor, handleClick }: TableAction, index: number) => (
-                      <CButton
-                        color={color}
-                        className={`ms-1 d-inline-flex justify-content-center align-items-center ${
-                          textColor && 'text-' + textColor
-                        }`}
-                        key={index}
-                        onClick={() => handleClick(item.id)}
-                      >
-                        {icon && icon}
-                        {text && <span className={icon && 'ms-1'}>{text}</span>}
-                      </CButton>
-                    ))}
+                    {actions.map(
+                      (
+                        { color, icon, permission, text, textColor, handleClick }: TableAction,
+                        index: number,
+                      ) => (
+                        <Can permission={permission} key={index}>
+                          <CButton
+                            color={color}
+                            className={`ms-1 d-inline-flex justify-content-center align-items-center ${
+                              textColor && 'text-' + textColor
+                            }`}
+                            onClick={() => handleClick(item.id)}
+                          >
+                            {icon && icon}
+                            {text && <span className={icon && 'ms-1'}>{text}</span>}
+                          </CButton>
+                        </Can>
+                      ),
+                    )}
                   </div>
                 </CTableDataCell>
               )}

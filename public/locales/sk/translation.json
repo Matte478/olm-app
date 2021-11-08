@@ -65,7 +65,10 @@
     "create": "Vytvoriť",
     "edit": "Upraviť",
     "save": "Uložiť",
-    "delete": "Zmazať"
+    "delete": "Zmazať",
+    "error": {
+      "not-authorized": "Neoprávnené"
+    }
   },
 
   "users": {
@@ -73,6 +76,7 @@
       "id": "ID",
       "name": "Meno",
       "email": "E-mail",
+      "roles": "Role",
       "created-at": "Registrovaný"
     },
     "index": {

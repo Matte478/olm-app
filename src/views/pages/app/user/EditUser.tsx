@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 import { useUserQuery } from '../../../../__generated__/graphql'
 import { AppCard, ErrorNotifier, SpinnerOverlay } from '../../../components'
+import Can from '../../../components/Can/Can'
 import EditUserForm from './EditUserForm'
 
 const EditUser: React.FC = () => {
@@ -20,9 +21,11 @@ const EditUser: React.FC = () => {
   if (!data?.user) return <div>404</div>
 
   return (
-    <AppCard icon={cilUser} title={t('actions.edit')}>
-      <EditUserForm user={data.user} />
-    </AppCard>
+    <Can permission="user.edit" notify={true}>
+      <AppCard icon={cilUser} title={t('actions.edit')}>
+        <EditUserForm user={data.user} />
+      </AppCard>
+    </Can>
   )
 }
 

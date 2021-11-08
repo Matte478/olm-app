@@ -5,6 +5,7 @@ import { CBadge } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { SidebarNavItem, SidebarNavItemBadge } from '../../../types'
 import { useTranslation } from 'react-i18next'
+import Can from '../Can/Can'
 
 interface Props {
   navigationItems: SidebarNavItem[]
@@ -66,7 +67,11 @@ const AppSidebarNav: React.FC<Props> = ({ navigationItems }: Props) => {
   return (
     <React.Fragment>
       {navigationItems.map((item: SidebarNavItem, index: number) =>
-        item.items ? navGroup(item, index) : navItem(item, index),
+        item.items ? (
+          <Can permission={item.permission} key={index}>{navGroup(item, index)}</Can>
+        ) : (
+          <Can permission={item.permission} key={index}>{navItem(item, index)}</Can>
+        ),
       )}
     </React.Fragment>
   )

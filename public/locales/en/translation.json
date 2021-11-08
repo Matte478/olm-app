@@ -65,7 +65,10 @@
     "create": "Create",
     "edit": "Edit",
     "save": "Save",
-    "delete": "Delete"
+    "delete": "Delete",
+    "error": {
+      "not-authorized": "Not authorized"
+    }
   },
 
   "users": {
@@ -73,6 +76,7 @@
       "id": "ID",
       "name": "Name",
       "email": "E-mail",
+      "roles": "Roles",
       "created-at": "Created At"
     },
     "index": {

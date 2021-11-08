@@ -17,6 +17,7 @@ export interface SidebarNavItemBadge {
 export interface SidebarNavItem {
   component: React.ForwardRefExoticComponent<any>
   name: string
+  permission?: string
   to?: string
   icon?: CIcon
   badge?: SidebarNavItemBadge
@@ -53,4 +54,5 @@ export interface TableAction {
     | 'light'
     | string
   icon?: CIcon
+  permission?: string
 }

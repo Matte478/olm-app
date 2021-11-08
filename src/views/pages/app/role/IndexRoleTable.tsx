@@ -44,6 +44,7 @@ const IndexRoleTable: React.FC<Props> = ({ roles, refetch }: Props) => {
     {
       color: 'primary',
       icon: <CIcon content={cilPencil} />,
+      permission: 'role.edit',
       handleClick: (id: string) => {
         navigate(`/app/roles/${id}/edit`)
       },
@@ -51,6 +52,7 @@ const IndexRoleTable: React.FC<Props> = ({ roles, refetch }: Props) => {
     {
       color: 'danger',
       textColor: 'light',
+      permission: 'role.delete',
       icon: <CIcon content={cilTrash} />,
       handleClick: handleDeleteUser,
     },

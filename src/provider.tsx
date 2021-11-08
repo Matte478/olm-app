@@ -1,5 +1,12 @@
 import React, { createContext, useState, ReactNode } from 'react'
-import { ApolloProvider, ApolloClient, InMemoryCache, HttpLink, ApolloLink, DefaultOptions } from '@apollo/client'
+import {
+  ApolloProvider,
+  ApolloClient,
+  InMemoryCache,
+  HttpLink,
+  ApolloLink,
+  DefaultOptions,
+} from '@apollo/client'
 import { onError } from '@apollo/link-error'
 import { TokenRefreshLink } from 'apollo-link-token-refresh'
 import { setContext } from '@apollo/client/link/context'
@@ -73,6 +80,7 @@ function AppStateProvider({ children }: { children: ReactNode }) {
   }
 
   const appSetAuthUser = (authUser: User) => {
+    console.log(authUser)
     setAppState({ ...appState, authUser: authUser })
   }
 
@@ -169,7 +177,7 @@ function AppStateProvider({ children }: { children: ReactNode }) {
       }),
     ]),
     cache,
-    defaultOptions
+    defaultOptions,
   })
 
   return (
@@ -255,6 +263,7 @@ export const fetchAuthUser = async (): Promise<any> => {
         id
         name
         email
+        permissionsList
         created_at
         updated_at
       }
