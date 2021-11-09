@@ -57,14 +57,18 @@
   "sidebar": {
     "dashboard": "Dashboard",
     "settings": "Settings",
-    "users": "Users"
+    "users": "Users",
+    "roles": "Roles and permissions"
   },
 
   "actions": {
     "create": "Create",
     "edit": "Edit",
     "save": "Save",
-    "delete": "Delete"
+    "delete": "Delete",
+    "error": {
+      "not-authorized": "Not authorized"
+    }
   },
 
   "users": {
@@ -72,6 +76,7 @@
       "id": "ID",
       "name": "Name",
       "email": "E-mail",
+      "roles": "Roles",
       "created-at": "Created At"
     },
     "index": {
@@ -97,6 +102,22 @@
     },
     "actions": {
       "success": "Your password has been updated!"
+    }
+  },
+
+  "roles": {
+    "columns": {
+      "id": "ID",
+      "name": "Name"
+    },
+    "index": {
+      "title": "Roles"
+    },
+    "create": {
+      "success": "Role has been created!"
+    },
+    "update": {
+      "success": "Role has been updated!"
     }
   }
 }

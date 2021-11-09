@@ -11,7 +11,7 @@ const UserProfile: React.FC = () => {
 
   return (
     <AppCard icon={cilUser} title={t('actions.edit')}>
-      <EditUserForm user={appState.authUser!} handleUpdateUser={appSetAuthUser} />
+      <EditUserForm user={appState.authUser!} handleUpdateUser={appSetAuthUser} withRoles={false} />
     </AppCard>
   )
 }

@@ -2,20 +2,29 @@ import React, { useState } from 'react'
 import { CForm, CFormFloating, CFormInput, CFormLabel } from '@coreui/react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toast'
-import { UpdateUserInput, useEditUserMutation, User } from '../../../../__generated__/graphql'
+import Select from 'react-select'
+import {
+  UpdateUserInput,
+  useEditUserMutation,
+  User,
+  useRolesQuery,
+} from '../../../../__generated__/graphql'
 import { ButtonSave, ErrorNotifier, SpinnerOverlay } from '../../../components'
 
 interface Props {
   user: User
+  withRoles?: boolean
   handleUpdateUser?: (user: User) => void
 }
 
-const EditUserForm: React.FC<Props> = (props: Props) => {
+const EditUserForm: React.FC<Props> = ({ user, withRoles = true, handleUpdateUser }: Props) => {
   const { t } = useTranslation()
+  const { data: rolesData, loading: rolesLoading, error: rolesError } = useRolesQuery()
   const [updateUserInput, setUpdateUserInput] = useState<UpdateUserInput>({
-    id: props.user.id,
-    name: props.user.name,
-    email: props.user.email,
+    id: user.id,
+    name: user.name,
+    email: user.email,
+    roles: withRoles ? user.roles.map((role) => role.name) : undefined,
   })
   const [editUserMutation, { loading, error }] = useEditUserMutation()
 
@@ -30,8 +39,8 @@ const EditUserForm: React.FC<Props> = (props: Props) => {
       .then((data) => {
         if (data.data?.updateUser) {
           toast.success(t('users.update.success'))
-          if(props.handleUpdateUser) {
-            props.handleUpdateUser(data.data.updateUser)
+          if (handleUpdateUser) {
+            handleUpdateUser(data.data.updateUser)
           }
         }
       })
@@ -40,8 +49,8 @@ const EditUserForm: React.FC<Props> = (props: Props) => {
 
   return (
     <CForm onSubmit={handleEdit}>
-      {loading ? <SpinnerOverlay transparent={true} /> : <></>}
-      <ErrorNotifier error={error} />
+      {loading || rolesLoading ? <SpinnerOverlay transparent={true} /> : <></>}
+      <ErrorNotifier error={error || rolesError} />
       <CFormFloating className="mb-3">
         <CFormInput
           type="text"
@@ -65,6 +74,32 @@ const EditUserForm: React.FC<Props> = (props: Props) => {
         />
         <CFormLabel>{t('users.columns.email')}</CFormLabel>
       </CFormFloating>
+
+      {withRoles && (
+        <>
+          <label>{t('users.columns.roles')}</label>
+          <Select
+            className="mb-3"
+            options={rolesData?.roles.map((role) => {
+              return {
+                value: role.name,
+                label: role.name,
+              }
+            })}
+            value={updateUserInput.roles?.map((roleName) => {
+              return {
+                value: roleName,
+                label: roleName,
+              }
+            })}
+            isMulti
+            onChange={(input) =>
+              setUpdateUserInput({ ...updateUserInput, roles: input.map((i) => i.value) })
+            }
+          />
+        </>
+      )}
+
       <div className="text-right">
         <ButtonSave />
       </div>

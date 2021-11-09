@@ -11,16 +11,22 @@ import Register from './views/pages/auth/Register'
 
 // error
 import Error404 from './views/pages/errors/Error404'
+import Error500 from './views/pages/errors/Error500'
 
 // app
 import Dashboard from './views/pages/app/Dashboard'
-import Error500 from './views/pages/errors/Error500'
 
 // users
 import IndexUser from './views/pages/app/user/IndexUser'
 import EditUser from './views/pages/app/user/EditUser'
 import UserProfile from './views/pages/app/user/UserProfile'
 import UpdatePassword from './views/pages/app/user/UpdatePassword'
+
+// roles
+import IndexRole from './views/pages/app/role/IndexRole'
+import CreateRole from './views/pages/app/role/CreateRole'
+import EditRole from './views/pages/app/role/EditRole'
+import Can from './views/components/Can/Can'
 
 const routes = (loggedIn: boolean) => [
   {
@@ -66,11 +72,48 @@ const routes = (loggedIn: boolean) => [
         children: [
           {
             path: '/',
-            element: <IndexUser />,
+            element: (
+              <Can permission="user.index" notify={true}>
+                <IndexUser />
+              </Can>
+            ),
           },
           {
             path: ':id/edit',
-            element: <EditUser />,
+            element: (
+              <Can permission="user.edit" notify={true}>
+                <EditUser />
+              </Can>
+            ),
+          },
+        ],
+      },
+      {
+        path: '/roles',
+        children: [
+          {
+            path: '/',
+            element: (
+              <Can permission="role.index" notify={true}>
+                <IndexRole />
+              </Can>
+            ),
+          },
+          {
+            path: '/create',
+            element: (
+              <Can permission="role.create" notify={true}>
+                <CreateRole />
+              </Can>
+            ),
+          },
+          {
+            path: ':id/edit',
+            element: (
+              <Can permission="role.edit" notify={true}>
+                <EditRole />
+              </Can>
+            ),
           },
         ],
       },

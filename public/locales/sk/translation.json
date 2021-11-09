@@ -57,14 +57,18 @@
   "sidebar": {
     "dashboard": "Dashboard",
     "settings": "Nastavenia",
-    "users": "Užívatelia"
+    "users": "Užívatelia",
+    "roles": "Role a práva"
   },
 
   "actions": {
     "create": "Vytvoriť",
     "edit": "Upraviť",
     "save": "Uložiť",
-    "delete": "Zmazať"
+    "delete": "Zmazať",
+    "error": {
+      "not-authorized": "Neoprávnené"
+    }
   },
 
   "users": {
@@ -72,6 +76,7 @@
       "id": "ID",
       "name": "Meno",
       "email": "E-mail",
+      "roles": "Role",
       "created-at": "Registrovaný"
     },
     "index": {
@@ -97,6 +102,22 @@
     },
     "actions": {
       "success": "Vaše heslo bolo zmenené!"
+    }
+  },
+
+  "roles": {
+    "columns": {
+      "id": "ID",
+      "name": "Názov"
+    },
+    "index": {
+      "title": "Role"
+    },
+    "create": {
+      "success": "Rola bola vytvorená!"
+    },
+    "update": {
+      "success": "Rola bola zmenená!"
     }
   }
 }

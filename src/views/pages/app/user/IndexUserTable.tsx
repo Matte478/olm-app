@@ -65,6 +65,7 @@ const IndexUserTable: React.FC<Props> = ({
     {
       color: 'primary',
       icon: <CIcon content={cilPencil} />,
+      permission: 'user.edit',
       handleClick: (id: string) => {
         navigate(`/app/users/${id}/edit`)
       },
@@ -72,6 +73,7 @@ const IndexUserTable: React.FC<Props> = ({
     {
       color: 'danger',
       textColor: 'light',
+      permission: 'user.delete',
       icon: <CIcon content={cilTrash} />,
       handleClick: handleDeleteUser,
     },

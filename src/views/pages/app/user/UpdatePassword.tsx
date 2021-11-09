@@ -19,7 +19,7 @@ const UpdatePassword = () => {
   }
 
   const [updatePasswordInput, setUpdatePasswordInput] = useState(initialUpdatePasswordInput)
-  const [updatePasswordMutation, { data, loading, error }] = useUpdatePasswordMutation()
+  const [updatePasswordMutation, { loading, error }] = useUpdatePasswordMutation()
 
   const handleUpdatePassowrd = async (event: React.FormEvent) => {
     event.preventDefault()

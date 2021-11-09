@@ -1,6 +1,6 @@
 import React from 'react'
 import CIcon from '@coreui/icons-react'
-import { cilCursor, cilPencil, cilPuzzle, cilSpeedometer, cilUser } from '@coreui/icons'
+import { cilCursor, cilLockLocked, cilPuzzle, cilSpeedometer, cilUser } from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
 const navigationItems = [
@@ -21,14 +21,16 @@ const navigationItems = [
   {
     component: CNavItem,
     name: 'sidebar.users',
+    permission: 'user.index',
     to: '/app/users',
     icon: <CIcon content={cilUser} customClasses="nav-icon" />,
   },
   {
     component: CNavItem,
-    name: 'Item 2',
-    to: '/404',
-    icon: <CIcon content={cilPencil} customClasses="nav-icon" />,
+    name: 'sidebar.roles',
+    permission: 'role.index',
+    to: '/app/roles',
+    icon: <CIcon content={cilLockLocked} customClasses="nav-icon" />,
   },
   {
     component: CNavTitle,

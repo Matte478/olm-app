@@ -8,8 +8,23 @@ mutation login($loginInput: LoginInput) {
       id
       name
       email
+      permissionsList
       created_at
       updated_at
+      roles {
+        id
+        name
+        guard_name
+        created_at
+        updated_at
+        permissions {
+          id
+          name
+          guard_name
+          created_at
+          updated_at
+        }
+      }
     }
   }
 }
@@ -25,8 +40,23 @@ mutation register($registerInput: RegisterInput) {
         id
         name
         email
+        permissionsList
         created_at
         updated_at
+        roles {
+          id
+          name
+          guard_name
+          created_at
+          updated_at
+          permissions {
+            id
+            name
+            guard_name
+            created_at
+            updated_at
+          }
+        }
       }
     }
     status
@@ -54,8 +84,23 @@ query me {
     id
     name
     email
+    permissionsList
     created_at
     updated_at
+    roles {
+      id
+      name
+      guard_name
+      created_at
+      updated_at
+      permissions {
+        id
+        name
+        guard_name
+        created_at
+        updated_at
+      }
+    }
   }
 }
 
@@ -73,8 +118,23 @@ query users($first: Int!, $page: Int) {
       id
       name
       email
+      permissionsList
       created_at
       updated_at
+      roles {
+        id
+        name
+        guard_name
+        created_at
+        updated_at
+        permissions {
+          id
+          name
+          guard_name
+          created_at
+          updated_at
+        }
+      }
     }
   }
 }
@@ -84,8 +144,23 @@ query user($id: ID) {
     id
     name
     email
+    permissionsList
     created_at
     updated_at
+    roles {
+      id
+      name
+      guard_name
+      created_at
+      updated_at
+      permissions {
+        id
+        name
+        guard_name
+        created_at
+        updated_at
+      }
+    }
   }
 }
 
@@ -94,8 +169,23 @@ mutation editUser($updateUserInput: UpdateUserInput!) {
     id
     name
     email
+    permissionsList
     created_at
     updated_at
+    roles {
+      id
+      name
+      guard_name
+      created_at
+      updated_at
+      permissions {
+        id
+        name
+        guard_name
+        created_at
+        updated_at
+      }
+    }
   }
 }
 
@@ -109,5 +199,83 @@ mutation updatePassword($updatePasswordInput: UpdatePassword!) {
   updatePassword(input: $updatePasswordInput) {
     status
     message
+  }
+}
+
+query roles {
+  roles {
+    id
+    name
+    guard_name
+    created_at
+    updated_at
+    permissions {
+      id
+      name
+      guard_name
+      created_at
+      updated_at
+    }
+  }
+}
+
+query role($id: ID!) {
+  role(id: $id) {
+    id
+    name
+    guard_name
+    created_at
+    updated_at
+    permissions {
+      id
+      name
+      guard_name
+      created_at
+      updated_at
+    }
+  }
+}
+
+mutation createRole($createRoleInput: CreateRoleInput!) {
+  createRole(input: $createRoleInput) {
+    id
+    name
+    guard_name
+    created_at
+    updated_at
+    permissions {
+      name
+      guard_name
+    }
+  }
+}
+
+mutation updateRole($updateRoleInput: UpdateRoleInput!) {
+  updateRole(input: $updateRoleInput) {
+    id
+    permissions {
+      id
+      name
+      guard_name
+      created_at
+      updated_at
+    }
+  }
+}
+
+mutation deleteRole($id: ID!) {
+  deleteRole(id: $id) {
+    name
+    id
+  }
+}
+
+query permissions {
+  permissions {
+    id
+    name
+    guard_name
+    created_at
+    updated_at
   }
 }
