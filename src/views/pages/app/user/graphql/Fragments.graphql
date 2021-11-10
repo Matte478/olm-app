@@ -1,0 +1,20 @@
+fragment Profile on User {
+  id
+  name
+  email
+}
+
+fragment UserBasic on User {
+  id
+  name
+  email
+  created_at
+}
+
+fragment UserExtended on User {
+  ...UserBasic
+  permissionsList
+  roles {
+    name
+  }
+}

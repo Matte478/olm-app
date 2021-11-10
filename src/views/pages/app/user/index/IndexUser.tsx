@@ -1,8 +1,8 @@
 import { cilUser } from '@coreui/icons'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useUsersQuery } from '../../../../__generated__/graphql'
-import { AppCard, ErrorNotifier, PerPageDropdown, SpinnerOverlay } from '../../../components'
+import { useUsersQuery } from '../../../../../__generated__/graphql'
+import { AppCard, ErrorNotifier, PerPageDropdown, SpinnerOverlay } from '../../../../components'
 import IndexUserTable from './IndexUserTable'
 
 const IndexUser: React.FC = () => {

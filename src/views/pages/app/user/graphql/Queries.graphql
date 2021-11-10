@@ -1,0 +1,22 @@
+query Users($first: Int!, $page: Int) {
+  users(first: $first, page: $page) {
+    paginatorInfo {
+      ...PaginatorInfo
+    }
+    data {
+      ...UserBasic
+    }
+  }
+}
+
+query User($id: ID) {
+  user(id: $id) {
+    ...UserExtended
+  }
+}
+
+query Profile($id: ID) {
+  user(id: $id) {
+    ...Profile
+  }
+}

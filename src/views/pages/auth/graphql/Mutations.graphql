@@ -1,0 +1,26 @@
+mutation Register($registerInput: RegisterInput) {
+  register(input: $registerInput) {
+    status
+  }
+}
+
+mutation Login($loginInput: LoginInput) {
+  login(input: $loginInput) {
+    access_token
+    refresh_token
+    expires_in
+    token_type
+    user {
+      ...AuthenticatedUser
+    }
+  }
+}
+
+mutation RefreshToken($refreshTokenInput: RefreshTokenInput) {
+  refreshToken(input: $refreshTokenInput) {
+    access_token
+    refresh_token
+    expires_in
+    token_type
+  }
+}

@@ -118,6 +118,10 @@
     },
     "update": {
       "success": "Rola bola zmenená!"
+    },
+    "delete": {
+      "confirm": "Naozaj chcete vymazať danú rolu?",
+      "success": "Rola bola vymazaná!"
     }
   }
 }

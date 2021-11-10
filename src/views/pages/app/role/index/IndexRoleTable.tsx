@@ -3,12 +3,13 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { cilPencil, cilTrash } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
-import { TableAction, TableColumn } from '../../../../types'
-import { Role, useDeleteRoleMutation } from '../../../../__generated__/graphql'
-import { ErrorNotifier, TableList } from '../../../components'
+import { toast } from 'react-toast'
+import { TableAction, TableColumn } from '../../../../../types'
+import { RoleBasicFragment, useDeleteRoleMutation } from '../../../../../__generated__/graphql'
+import { ErrorNotifier, TableList } from '../../../../components'
 
 interface Props {
-  roles: Role[]
+  roles: RoleBasicFragment[]
   refetch: any
 }
 
@@ -23,7 +24,10 @@ const IndexRoleTable: React.FC<Props> = ({ roles, refetch }: Props) => {
       await deleteRoleMutation({
         variables: { id },
       })
-        .then(refetch)
+        .then(() => {
+          refetch()
+          toast.success(t('roles.delete.success'))
+        })
         .catch(() => {})
     }
   }

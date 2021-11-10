@@ -2,9 +2,9 @@ import { cilUser } from '@coreui/icons'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
-import { useUserQuery } from '../../../../__generated__/graphql'
-import { AppCard, ErrorNotifier, SpinnerOverlay } from '../../../components'
-import Can from '../../../components/Can/Can'
+import { useUserQuery } from '../../../../../__generated__/graphql'
+import { AppCard, ErrorNotifier, SpinnerOverlay } from '../../../../components'
+import Can from '../../../../components/Can/Can'
 import EditUserForm from './EditUserForm'
 
 const EditUser: React.FC = () => {

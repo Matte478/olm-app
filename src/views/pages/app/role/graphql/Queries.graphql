@@ -1,0 +1,17 @@
+query Roles {
+  roles {
+    ...RoleBasic
+  }
+}
+
+query Role($id: ID!) {
+  role(id: $id) {
+   ...RoleExtended
+  }
+}
+
+query Permissions {
+  permissions {
+    ...PermissionBasic
+  }
+}

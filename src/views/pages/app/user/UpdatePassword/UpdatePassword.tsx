@@ -6,8 +6,8 @@ import { toast } from 'react-toast'
 import {
   UpdatePassword as UpdatePasswordInput,
   useUpdatePasswordMutation,
-} from '../../../../__generated__/graphql'
-import { AppCard, ButtonSave, ErrorNotifier, SpinnerOverlay } from '../../../components'
+} from '../../../../../__generated__/graphql'
+import { AppCard, ButtonSave, ErrorNotifier, SpinnerOverlay } from '../../../../components'
 
 const UpdatePassword = () => {
   const { t } = useTranslation()

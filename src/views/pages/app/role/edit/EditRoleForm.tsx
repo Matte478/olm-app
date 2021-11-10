@@ -3,16 +3,17 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toast'
 import {
-  Permission,
+  PermissionBasicFragment,
   Role,
+  RoleExtendedFragment,
   UpdateRoleInput,
   useUpdateRoleMutation,
-} from '../../../../__generated__/graphql'
-import { ButtonSave, ErrorNotifier, SpinnerOverlay } from '../../../components'
-import RoleFormPermissions from './RoleFormPermissions'
+} from '../../../../../__generated__/graphql'
+import { ButtonSave, ErrorNotifier, SpinnerOverlay } from '../../../../components'
+import RoleFormPermissions from '../RoleFormPermissions'
 
 interface Props {
-  role: Role
+  role: RoleExtendedFragment
   handleUpdateRole?: (role: Role) => void
 }
 
@@ -21,7 +22,7 @@ const EditRoleForm = ({ role, handleUpdateRole }: Props) => {
   const [updateRoleInput, setUpdateRoleInput] = useState<UpdateRoleInput>({
     id: role.id,
     name: role.name,
-    permissions: role.permissions.map((permission: Permission) => permission.id),
+    permissions: role.permissions.map((permission: PermissionBasicFragment) => permission.id),
   })
 
   const [editRoleMutation, { loading, error }] = useUpdateRoleMutation()

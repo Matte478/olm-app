@@ -1,0 +1,7 @@
+
+fragment AuthenticatedUser on User {
+  id
+  name
+  email
+  permissionsList
+}

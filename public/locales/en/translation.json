@@ -118,6 +118,10 @@
     },
     "update": {
       "success": "Role has been updated!"
+    },
+    "delete": {
+      "confirm": "Are you sure you want to delete this role?",
+      "success": "Role has been deleted!"
     }
   }
 }

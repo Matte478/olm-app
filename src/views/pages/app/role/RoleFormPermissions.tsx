@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Select from 'react-select'
-import { Permission, usePermissionsQuery } from '../../../../__generated__/graphql'
+import { PermissionBasicFragment, usePermissionsQuery } from '../../../../__generated__/graphql'
 import { ErrorNotifier, SpinnerOverlay } from '../../../components'
 
 interface Props {
@@ -10,7 +10,7 @@ interface Props {
 
 type format = { [U: string]: { value: string; label: string }[] }
 
-const formattedPermissions = (permissions: Permission[], preselected: string[]) => {
+const formattedPermissions = (permissions: PermissionBasicFragment[], preselected: string[]) => {
   let preselectedFormatted: format = {}
   let formatted: format = {}
   permissions.forEach((permission) => {

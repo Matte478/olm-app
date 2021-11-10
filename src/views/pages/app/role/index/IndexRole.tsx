@@ -1,10 +1,10 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { cilLockLocked } from '@coreui/icons'
-import { useRolesQuery } from '../../../../__generated__/graphql'
-import { AppCard, ButtonAdd, ErrorNotifier, SpinnerOverlay } from '../../../components'
+import { useRolesQuery } from '../../../../../__generated__/graphql'
+import { AppCard, ButtonAdd, ErrorNotifier, SpinnerOverlay } from '../../../../components'
 import IndexRoleTable from './IndexRoleTable'
-import Can from '../../../components/Can/Can'
+import Can from '../../../../components/Can/Can'
 
 const IndexRole: React.FC = () => {
   const { t } = useTranslation()

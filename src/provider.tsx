@@ -11,23 +11,23 @@ import { onError } from '@apollo/link-error'
 import { TokenRefreshLink } from 'apollo-link-token-refresh'
 import { setContext } from '@apollo/client/link/context'
 import { Cookies } from 'react-cookie'
-import { User } from './__generated__/graphql'
+import { AuthenticatedUserFragment } from './__generated__/graphql'
 
 const apiUri = 'http://olm-api.test/graphql'
 let authToken = ''
 let authTokenExp: Date | null = null
 
-const appStateInitial: { authUser?: User } = { authUser: undefined }
+const appStateInitial: { authUser?: AuthenticatedUserFragment } = { authUser: undefined }
 
 const initial = {
   appState: appStateInitial,
   // gqlError: { msg: '' },
-  appSetLogin: (token: string, expSec: number, authUser: User) => {},
+  appSetLogin: (token: string, expSec: number, authUser: AuthenticatedUserFragment) => {},
   appSetLogout: () => {},
   appSetAuthToken: (token: string, expSec: number) => {},
   appClearAuthToken: () => {},
   appSetRefreshToken: (token: string) => {},
-  appSetAuthUser: (authUser: User) => {},
+  appSetAuthUser: (authUser: AuthenticatedUserFragment) => {},
   appClearRefreshToken: () => {},
   appGetRefreshToken: (): string => '',
 }
@@ -35,10 +35,12 @@ const initial = {
 export const AppStateContext = createContext(initial)
 
 function AppStateProvider({ children }: { children: ReactNode }) {
-  const [appState, setAppState] = useState<{ authUser?: User }>({ authUser: undefined })
+  const [appState, setAppState] = useState<{ authUser?: AuthenticatedUserFragment }>({
+    authUser: undefined,
+  })
   // const [gqlError, setGQLError] = useState({ msg: '' })
 
-  const appSetLogin = (token: string, expSec: number, authUser: User) => {
+  const appSetLogin = (token: string, expSec: number, authUser: AuthenticatedUserFragment) => {
     appSetAuthToken(token, expSec)
 
     setAppState({ ...appState, authUser: authUser })
@@ -79,7 +81,7 @@ function AppStateProvider({ children }: { children: ReactNode }) {
     cookies.remove('refresh_token')
   }
 
-  const appSetAuthUser = (authUser: User) => {
+  const appSetAuthUser = (authUser: AuthenticatedUserFragment) => {
     console.log(authUser)
     setAppState({ ...appState, authUser: authUser })
   }
@@ -281,7 +283,7 @@ export const fetchAuthUser = async (): Promise<any> => {
   })
     .then(async (res) => {
       const response = await res.json()
-      const user: User = response.data.me
+      const user: AuthenticatedUserFragment = response.data.me
       return user
     })
     .catch((error) => {

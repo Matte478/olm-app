@@ -1,0 +1,24 @@
+mutation UpdateUser($updateUserInput: UpdateUserInput!) {
+  updateUser(input: $updateUserInput) {
+    ...UserExtended
+  }
+}
+
+mutation DeleteUser($id: ID!) {
+  deleteUser(id: $id) {
+    id
+  }
+}
+
+mutation UpdatePassword($updatePasswordInput: UpdatePassword!) {
+  updatePassword(input: $updatePasswordInput) {
+    status
+    message
+  }
+}
+
+mutation UpdateProfile($updateUserInput: UpdateUserInput!) {
+  updateUser(input: $updateUserInput) {
+    ...AuthenticatedUser
+  }
+}

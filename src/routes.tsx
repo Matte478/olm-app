@@ -5,6 +5,9 @@ import { Navigate } from 'react-router-dom'
 import AppLayout from './views/layouts/AppLayout'
 import MainLayout from './views/layouts/MainLayout'
 
+// wrapper
+import Can from './views/components/Can/Can'
+
 // auth
 import Login from './views/pages/auth/Login'
 import Register from './views/pages/auth/Register'
@@ -17,16 +20,15 @@ import Error500 from './views/pages/errors/Error500'
 import Dashboard from './views/pages/app/Dashboard'
 
 // users
-import IndexUser from './views/pages/app/user/IndexUser'
-import EditUser from './views/pages/app/user/EditUser'
-import UserProfile from './views/pages/app/user/UserProfile'
-import UpdatePassword from './views/pages/app/user/UpdatePassword'
+import IndexUser from './views/pages/app/user/index/IndexUser'
+import EditUser from './views/pages/app/user/edit/EditUser'
+import UpdateProfile from './views/pages/app/user/UpdateProfile/UpdateProfile'
+import UpdatePassword from './views/pages/app/user/UpdatePassword/UpdatePassword'
 
 // roles
-import IndexRole from './views/pages/app/role/IndexRole'
-import CreateRole from './views/pages/app/role/CreateRole'
-import EditRole from './views/pages/app/role/EditRole'
-import Can from './views/components/Can/Can'
+import IndexRole from './views/pages/app/role/index/IndexRole'
+import CreateRole from './views/pages/app/role/create/CreateRole'
+import EditRole from './views/pages/app/role/edit/EditRole'
 
 const routes = (loggedIn: boolean) => [
   {
@@ -61,7 +63,7 @@ const routes = (loggedIn: boolean) => [
       },
       {
         path: '/profile',
-        element: <UserProfile />,
+        element: <UpdateProfile />,
       },
       {
         path: '/update-password',

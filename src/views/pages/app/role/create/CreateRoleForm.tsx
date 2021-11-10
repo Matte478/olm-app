@@ -2,13 +2,9 @@ import { CForm, CFormFloating, CFormInput, CFormLabel } from '@coreui/react'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toast'
-import {
-  Role,
-  CreateRoleInput,
-  useCreateRoleMutation,
-} from '../../../../__generated__/graphql'
-import { ButtonSave, ErrorNotifier, SpinnerOverlay } from '../../../components'
-import RoleFormPermissions from './RoleFormPermissions'
+import { Role, CreateRoleInput, useCreateRoleMutation } from '../../../../../__generated__/graphql'
+import { ButtonSave, ErrorNotifier, SpinnerOverlay } from '../../../../components'
+import RoleFormPermissions from '../RoleFormPermissions'
 
 interface Props {
   handleCreateRole?: (role: Role) => void
@@ -18,7 +14,7 @@ const CreateRoleForm = ({ handleCreateRole }: Props) => {
   const { t } = useTranslation()
   const [createRoleInput, setCreateRoleInput] = useState<CreateRoleInput>({
     name: '',
-    permissions: []
+    permissions: [],
   })
 
   const [createRoleMutation, { loading, error }] = useCreateRoleMutation()

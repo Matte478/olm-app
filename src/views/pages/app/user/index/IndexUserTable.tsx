@@ -4,12 +4,12 @@ import { useNavigate } from 'react-router-dom'
 import { cilPencil, cilTrash } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 import { toast } from 'react-toast'
-import { TableAction, TableColumn } from '../../../../types'
-import { PaginatorInfo, useDeleteUserMutation, User } from '../../../../__generated__/graphql'
-import { ErrorNotifier, Pagination, TableList } from '../../../components'
+import { TableAction, TableColumn } from '../../../../../types'
+import { UserBasicFragment, PaginatorInfo, useDeleteUserMutation } from '../../../../../__generated__/graphql'
+import { ErrorNotifier, Pagination, TableList } from '../../../../components'
 
 interface Props {
-  users: User[]
+  users: UserBasicFragment[]
   refetch: any
   paginatorInfo: PaginatorInfo
   currentPage: number

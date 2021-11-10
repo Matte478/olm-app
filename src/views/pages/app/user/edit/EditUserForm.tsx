@@ -4,17 +4,17 @@ import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toast'
 import Select from 'react-select'
 import {
+  UserExtendedFragment,
   UpdateUserInput,
-  useEditUserMutation,
-  User,
+  useUpdateUserMutation,
   useRolesQuery,
-} from '../../../../__generated__/graphql'
-import { ButtonSave, ErrorNotifier, SpinnerOverlay } from '../../../components'
+} from '../../../../../__generated__/graphql'
+import { ButtonSave, ErrorNotifier, SpinnerOverlay } from '../../../../components'
 
 interface Props {
-  user: User
+  user: UserExtendedFragment
   withRoles?: boolean
-  handleUpdateUser?: (user: User) => void
+  handleUpdateUser?: (user: UserExtendedFragment) => void
 }
 
 const EditUserForm: React.FC<Props> = ({ user, withRoles = true, handleUpdateUser }: Props) => {
@@ -26,12 +26,12 @@ const EditUserForm: React.FC<Props> = ({ user, withRoles = true, handleUpdateUse
     email: user.email,
     roles: withRoles ? user.roles.map((role) => role.name) : undefined,
   })
-  const [editUserMutation, { loading, error }] = useEditUserMutation()
+  const [updateUserMutation, { loading, error }] = useUpdateUserMutation()
 
   const handleEdit = async (event: React.FormEvent) => {
     event.preventDefault()
 
-    await editUserMutation({
+    await updateUserMutation({
       variables: {
         updateUserInput,
       },
