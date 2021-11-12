@@ -3,11 +3,11 @@ import ReactDOM from 'react-dom'
 import { BrowserRouter } from 'react-router-dom'
 import { CookiesProvider } from 'react-cookie'
 
-import App from './App'
-import reportWebVitals from './reportWebVitals'
-import AppStateProvider from './provider'
-import { SpinnerOverlay } from './views/components'
-import './i18n'
+import App from 'App'
+import reportWebVitals from 'reportWebVitals'
+import AppStateProvider from 'provider'
+import { SpinnerOverlay } from 'components'
+import 'i18n'
 
 ReactDOM.render(
   <React.StrictMode>

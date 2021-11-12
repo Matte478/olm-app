@@ -11,7 +11,8 @@ import { onError } from '@apollo/link-error'
 import { TokenRefreshLink } from 'apollo-link-token-refresh'
 import { setContext } from '@apollo/client/link/context'
 import { Cookies } from 'react-cookie'
-import { AuthenticatedUserFragment } from './__generated__/graphql'
+
+import { AuthenticatedUserFragment } from '__generated__/graphql'
 
 const apiUri = 'http://olm-api.test/graphql'
 let authToken = ''
@@ -21,7 +22,6 @@ const appStateInitial: { authUser?: AuthenticatedUserFragment } = { authUser: un
 
 const initial = {
   appState: appStateInitial,
-  // gqlError: { msg: '' },
   appSetLogin: (token: string, expSec: number, authUser: AuthenticatedUserFragment) => {},
   appSetLogout: () => {},
   appSetAuthToken: (token: string, expSec: number) => {},
@@ -38,7 +38,6 @@ function AppStateProvider({ children }: { children: ReactNode }) {
   const [appState, setAppState] = useState<{ authUser?: AuthenticatedUserFragment }>({
     authUser: undefined,
   })
-  // const [gqlError, setGQLError] = useState({ msg: '' })
 
   const appSetLogin = (token: string, expSec: number, authUser: AuthenticatedUserFragment) => {
     appSetAuthToken(token, expSec)
@@ -116,32 +115,12 @@ function AppStateProvider({ children }: { children: ReactNode }) {
   })
 
   const errorLink = onError(({ graphQLErrors, networkError }) => {
-    // if (graphQLErrors === undefined || graphQLErrors[0].path === undefined) return
-    // if (graphQLErrors[0].path[0] === 'refresh') return
-    // const msg = graphQLErrors[0].message
-    // const reason = graphQLErrors[0]?.extensions?.reason
-    // const validation = graphQLErrors[0]?.extensions?.validation
-
-    // let validationList = null
-    // if (Object.prototype.toString.call(validation) === '[object Object]') {
-    //   validationList = (
-    //     <ul className="mb-0">
-    //       {Object.entries(validation).map((entry) => {
-    //         const [key, value] = entry
-    //         return <li key={key}>{value as string}</li>
-    //       })}
-    //     </ul>
-    //   )
-    // }
-
     if (graphQLErrors)
       graphQLErrors.forEach(({ message, locations, path }) =>
         console.log(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`),
       )
 
     if (networkError) console.log(`[Network error]: ${networkError}`)
-
-    // setGQLError({ msg: validationList || reason || msg || '' })
   })
 
   const client = new ApolloClient({
@@ -186,7 +165,6 @@ function AppStateProvider({ children }: { children: ReactNode }) {
     <AppStateContext.Provider
       value={{
         appState,
-        // gqlError,
         appSetLogin,
         appSetLogout,
         appSetAuthToken,
@@ -217,10 +195,10 @@ export const fetchAccessToken = async (): Promise<any> => {
           refresh_token: "${refreshToken}"
         }
       ) {
-        refresh_token
         access_token
+        refresh_token
         expires_in
-        __typename
+        token_type
       }
     }`,
   }
@@ -260,14 +238,12 @@ export const fetchAuthUser = async (): Promise<any> => {
   const payload = {
     operationName: 'me',
     variables: {},
-    query: `query me {
+    query: `query Me {
       me {
         id
         name
         email
         permissionsList
-        created_at
-        updated_at
       }
     }`,
   }

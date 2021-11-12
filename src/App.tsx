@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { useRoutes } from 'react-router-dom'
 import { ToastContainer } from 'react-toast'
-import { AppStateContext, fetchAccessToken, fetchAuthUser } from './provider'
+import { AppStateContext, fetchAccessToken, fetchAuthUser } from 'provider'
 import routes from './routes'
-import { User } from './__generated__/graphql'
-import { SpinnerOverlay } from './views/components'
-import './scss/style.scss'
+import { User } from '__generated__/graphql'
+import { SpinnerOverlay } from 'components'
+import 'scss/style.scss'
 
 let initialized = false
 const App: React.FC = () => {
