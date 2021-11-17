@@ -81,7 +81,6 @@ function AppStateProvider({ children }: { children: ReactNode }) {
   }
 
   const appSetAuthUser = (authUser: AuthenticatedUserFragment) => {
-    console.log(authUser)
     setAppState({ ...appState, authUser: authUser })
   }
 
@@ -236,7 +235,7 @@ export const fetchAccessToken = async (): Promise<any> => {
 
 export const fetchAuthUser = async (): Promise<any> => {
   const payload = {
-    operationName: 'me',
+    operationName: 'Me',
     variables: {},
     query: `query Me {
       me {

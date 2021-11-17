@@ -30,6 +30,9 @@ import IndexRole from 'pages/app/roles/index'
 import CreateRole from 'pages/app/roles/create'
 import EditRole from 'pages/app/roles/edit'
 
+// reservations
+import Reservation from 'pages/app/reservations'
+
 const routes = (loggedIn: boolean) => [
   {
     path: '/',
@@ -118,6 +121,10 @@ const routes = (loggedIn: boolean) => [
             ),
           },
         ],
+      },
+      {
+        path: '/reservations',
+        element: <Reservation />,
       },
     ],
   },

@@ -56,6 +56,7 @@
 
   "sidebar": {
     "dashboard": "Dashboard",
+    "reservations": "Reservations",
     "settings": "Settings",
     "users": "Users",
     "roles": "Roles and permissions"
@@ -122,6 +123,22 @@
     "delete": {
       "confirm": "Are you sure you want to delete this role?",
       "success": "Role has been deleted!"
+    }
+  },
+
+  "reservations": {
+    "index": {
+      "title": "Reservations"
+    },
+    "create": {
+      "success": "Reservation has been created!"
+    },
+    "update": {
+      "success": "Reservation has been updated!"
+    },
+    "delete": {
+      "confirm": "Are you sure you want to delete this reservation?",
+      "success": "Reservation has been deleted!"
     }
   }
 }

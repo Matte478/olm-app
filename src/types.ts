@@ -56,3 +56,17 @@ export interface TableAction {
   icon?: CIcon
   permission?: string
 }
+
+export interface Event {
+  id: number
+  title: string
+  start: Date
+  end: Date
+}
+
+export interface Reservation {
+  id: number
+  title: string
+  start: Date
+  end: Date
+}

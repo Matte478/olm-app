@@ -1,5 +1,12 @@
 import CIcon from '@coreui/icons-react'
-import { cilCursor, cilLockLocked, cilPuzzle, cilSpeedometer, cilUser } from '@coreui/icons'
+import {
+  cilCalendar,
+  cilCursor,
+  cilLockLocked,
+  cilPuzzle,
+  cilSpeedometer,
+  cilUser,
+} from '@coreui/icons'
 import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
 
 const navigationItems = [
@@ -14,8 +21,14 @@ const navigationItems = [
     },
   },
   {
+    component: CNavItem,
+    name: 'sidebar.reservations',
+    to: '/app/reservations',
+    icon: <CIcon content={cilCalendar} customClasses="nav-icon" />,
+  },
+  {
     component: CNavTitle,
-    name: 'sidebar.settings'
+    name: 'sidebar.settings',
   },
   {
     component: CNavItem,
