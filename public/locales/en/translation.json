@@ -49,7 +49,7 @@
     "title": "Online laboratory manager",
     "acronym": "OLM",
     "settings": "Settings",
-    "profile": "Profile",
+    "update-profile": "Update profile",
     "update-password": "Update password",
     "logout": "Logout"
   },
@@ -89,6 +89,16 @@
     },
     "update": {
       "success": "User has been updated!"
+    }
+  },
+
+  "update-profile": {
+    "columns": {
+      "name": "Name",
+      "email": "E-mail"
+    },
+    "update": {
+      "success": "Profile has been updated!"
     }
   },
 

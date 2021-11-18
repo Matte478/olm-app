@@ -12,7 +12,7 @@ const UpdateProfile: React.FC = () => {
 
   return (
     <Card icon={cilUser} title={t('actions.edit')}>
-      <UpdateProfileForm user={appState.authUser!} handleUpdateUser={appSetAuthUser} />
+      <UpdateProfileForm user={appState.authUser!} handleUpdateProfile={appSetAuthUser} />
     </Card>
   )
 }

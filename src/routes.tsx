@@ -65,7 +65,7 @@ const routes = (loggedIn: boolean) => [
         element: <Dashboard />,
       },
       {
-        path: '/profile',
+        path: '/update-profile',
         element: <UpdateProfile />,
       },
       {
@@ -78,7 +78,7 @@ const routes = (loggedIn: boolean) => [
           {
             path: '/',
             element: (
-              <Can permission="user.index" notify={true}>
+              <Can permission="user.show" notify={true}>
                 <IndexUser />
               </Can>
             ),
@@ -86,7 +86,7 @@ const routes = (loggedIn: boolean) => [
           {
             path: ':id/edit',
             element: (
-              <Can permission="user.edit" notify={true}>
+              <Can permission="user.update" notify={true}>
                 <EditUser />
               </Can>
             ),
@@ -99,7 +99,7 @@ const routes = (loggedIn: boolean) => [
           {
             path: '/',
             element: (
-              <Can permission="role.index" notify={true}>
+              <Can permission="role.show" notify={true}>
                 <IndexRole />
               </Can>
             ),
@@ -115,7 +115,7 @@ const routes = (loggedIn: boolean) => [
           {
             path: ':id/edit',
             element: (
-              <Can permission="role.edit" notify={true}>
+              <Can permission="role.update" notify={true}>
                 <EditRole />
               </Can>
             ),

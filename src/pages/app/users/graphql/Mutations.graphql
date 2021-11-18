@@ -17,8 +17,8 @@ mutation UpdatePassword($updatePasswordInput: UpdatePassword!) {
   }
 }
 
-mutation UpdateProfile($updateUserInput: UpdateUserInput!) {
-  updateUser(input: $updateUserInput) {
+mutation UpdateProfile($updateProfileInput: UpdateProfileInput!) {
+  updateProfile(input: $updateProfileInput) {
     ...AuthenticatedUser
   }
 }

@@ -66,7 +66,7 @@ const IndexUserTable: React.FC<Props> = ({
     {
       color: 'primary',
       icon: <CIcon content={cilPencil} />,
-      permission: 'user.edit',
+      permission: 'user.update',
       handleClick: (id: string) => {
         navigate(`/app/users/${id}/edit`)
       },

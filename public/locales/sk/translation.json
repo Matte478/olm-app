@@ -49,7 +49,7 @@
     "title": "Online laboratory manager",
     "acronym": "OLM",
     "settings": "Nastavenia",
-    "profile": "Profil",
+    "update-profile": "Upraviť profil",
     "update-password": "Zmeniť heslo",
     "logout": "Odhlásiť"
   },
@@ -89,6 +89,16 @@
     },
     "update": {
       "success": "Užívateľ bol upravený!"
+    }
+  },
+
+  "update-profile": {
+    "columns": {
+      "name": "Meno",
+      "email": "E-mail"
+    },
+    "update": {
+      "success": "Profil bol upravený!"
     }
   },
 

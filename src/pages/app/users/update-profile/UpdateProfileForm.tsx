@@ -6,20 +6,19 @@ import { toast } from 'react-toast'
 import {
   AuthenticatedUserFragment,
   ProfileFragment,
-  UpdateUserInput,
+  UpdateProfileInput,
   useUpdateProfileMutation,
 } from '__generated__/graphql'
 import { ButtonSave, ErrorNotifier, SpinnerOverlay } from 'components'
 
 interface Props {
   user: ProfileFragment
-  handleUpdateUser?: (user: AuthenticatedUserFragment) => void
+  handleUpdateProfile?: (user: AuthenticatedUserFragment) => void
 }
 
-const UpdateProfileForm: React.FC<Props> = ({ user, handleUpdateUser }: Props) => {
+const UpdateProfileForm: React.FC<Props> = ({ user, handleUpdateProfile }: Props) => {
   const { t } = useTranslation()
-  const [updateUserInput, setUpdateUserInput] = useState<UpdateUserInput>({
-    id: user.id,
+  const [updateProfileInput, setUpdateProfileInput] = useState<UpdateProfileInput>({
     name: user.name,
     email: user.email,
   })
@@ -30,14 +29,14 @@ const UpdateProfileForm: React.FC<Props> = ({ user, handleUpdateUser }: Props) =
 
     await updateProfileMutation({
       variables: {
-        updateUserInput,
+        updateProfileInput,
       },
     })
       .then((data) => {
-        if (data.data?.updateUser) {
-          toast.success(t('users.update.success'))
-          if (handleUpdateUser) {
-            handleUpdateUser(data.data.updateUser)
+        if (data.data?.updateProfile) {
+          toast.success(t('update-profile.update.success'))
+          if (handleUpdateProfile) {
+            handleUpdateProfile(data.data.updateProfile)
           }
         }
       })
@@ -52,24 +51,24 @@ const UpdateProfileForm: React.FC<Props> = ({ user, handleUpdateUser }: Props) =
         <CFormInput
           type="text"
           id="name"
-          value={updateUserInput.name || ''}
+          value={updateProfileInput.name || ''}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-            setUpdateUserInput({ ...updateUserInput, name: event.target.value })
+            setUpdateProfileInput({ ...updateProfileInput, name: event.target.value })
           }
         />
-        <CFormLabel>{t('users.columns.name')}</CFormLabel>
+        <CFormLabel>{t('update-profile.columns.name')}</CFormLabel>
       </CFormFloating>
 
       <CFormFloating className="mb-3">
         <CFormInput
           type="email"
           id="email"
-          value={updateUserInput?.email || ''}
+          value={updateProfileInput?.email || ''}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-            setUpdateUserInput({ ...updateUserInput, email: event.target.value })
+            setUpdateProfileInput({ ...updateProfileInput, email: event.target.value })
           }
         />
-        <CFormLabel>{t('users.columns.email')}</CFormLabel>
+        <CFormLabel>{t('update-profile.columns.email')}</CFormLabel>
       </CFormFloating>
 
       <div className="text-right">
