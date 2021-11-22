@@ -81,7 +81,6 @@ function AppStateProvider({ children }: { children: ReactNode }) {
   }
 
   const appSetAuthUser = (authUser: AuthenticatedUserFragment) => {
-    console.log(authUser)
     setAppState({ ...appState, authUser: authUser })
   }
 

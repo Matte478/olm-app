@@ -21,7 +21,7 @@ const EditUser: React.FC = () => {
   if (!data?.user) return <div>404</div>
 
   return (
-    <Can permission="user.edit" notify={true}>
+    <Can permission="user.update" notify={true}>
       <Card icon={cilUser} title={t('actions.edit')}>
         <EditUserForm user={data.user} />
       </Card>

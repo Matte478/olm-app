@@ -30,6 +30,9 @@ import IndexRole from 'pages/app/roles/index'
 import CreateRole from 'pages/app/roles/create'
 import EditRole from 'pages/app/roles/edit'
 
+// reservations
+import Reservation from 'pages/app/reservations'
+
 const routes = (loggedIn: boolean) => [
   {
     path: '/',
@@ -62,7 +65,7 @@ const routes = (loggedIn: boolean) => [
         element: <Dashboard />,
       },
       {
-        path: '/profile',
+        path: '/update-profile',
         element: <UpdateProfile />,
       },
       {
@@ -75,7 +78,7 @@ const routes = (loggedIn: boolean) => [
           {
             path: '/',
             element: (
-              <Can permission="user.index" notify={true}>
+              <Can permission="user.show" notify={true}>
                 <IndexUser />
               </Can>
             ),
@@ -83,7 +86,7 @@ const routes = (loggedIn: boolean) => [
           {
             path: ':id/edit',
             element: (
-              <Can permission="user.edit" notify={true}>
+              <Can permission="user.update" notify={true}>
                 <EditUser />
               </Can>
             ),
@@ -96,7 +99,7 @@ const routes = (loggedIn: boolean) => [
           {
             path: '/',
             element: (
-              <Can permission="role.index" notify={true}>
+              <Can permission="role.show" notify={true}>
                 <IndexRole />
               </Can>
             ),
@@ -112,12 +115,16 @@ const routes = (loggedIn: boolean) => [
           {
             path: ':id/edit',
             element: (
-              <Can permission="role.edit" notify={true}>
+              <Can permission="role.update" notify={true}>
                 <EditRole />
               </Can>
             ),
           },
         ],
+      },
+      {
+        path: '/reservations',
+        element: <Reservation />,
       },
     ],
   },

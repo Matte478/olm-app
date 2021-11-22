@@ -49,13 +49,14 @@
     "title": "Online laboratory manager",
     "acronym": "OLM",
     "settings": "Settings",
-    "profile": "Profile",
+    "update-profile": "Update profile",
     "update-password": "Update password",
     "logout": "Logout"
   },
 
   "sidebar": {
     "dashboard": "Dashboard",
+    "reservations": "Reservations",
     "settings": "Settings",
     "users": "Users",
     "roles": "Roles and permissions"
@@ -91,6 +92,16 @@
     }
   },
 
+  "update-profile": {
+    "columns": {
+      "name": "Name",
+      "email": "E-mail"
+    },
+    "update": {
+      "success": "Profile has been updated!"
+    }
+  },
+
   "update-password": {
     "index": {
       "title": "Update password"
@@ -122,6 +133,22 @@
     "delete": {
       "confirm": "Are you sure you want to delete this role?",
       "success": "Role has been deleted!"
+    }
+  },
+
+  "reservations": {
+    "index": {
+      "title": "Reservations"
+    },
+    "create": {
+      "success": "Reservation has been created!"
+    },
+    "update": {
+      "success": "Reservation has been updated!"
+    },
+    "delete": {
+      "confirm": "Are you sure you want to delete this reservation?",
+      "success": "Reservation has been deleted!"
     }
   }
 }

@@ -49,13 +49,14 @@
     "title": "Online laboratory manager",
     "acronym": "OLM",
     "settings": "Nastavenia",
-    "profile": "Profil",
+    "update-profile": "Upraviť profil",
     "update-password": "Zmeniť heslo",
     "logout": "Odhlásiť"
   },
 
   "sidebar": {
     "dashboard": "Dashboard",
+    "reservations": "Rezervácie",
     "settings": "Nastavenia",
     "users": "Užívatelia",
     "roles": "Role a práva"
@@ -91,6 +92,16 @@
     }
   },
 
+  "update-profile": {
+    "columns": {
+      "name": "Meno",
+      "email": "E-mail"
+    },
+    "update": {
+      "success": "Profil bol upravený!"
+    }
+  },
+
   "update-password": {
     "index": {
       "title": "Zmeniť heslo"
@@ -122,6 +133,22 @@
     "delete": {
       "confirm": "Naozaj chcete vymazať danú rolu?",
       "success": "Rola bola vymazaná!"
+    }
+  },
+
+  "reservations": {
+    "index": {
+      "title": "Rezervácie"
+    },
+    "create": {
+      "success": "Rezervácia bola vytvorená!"
+    },
+    "update": {
+      "success": "Rezervácia bola zmenená!"
+    },
+    "delete": {
+      "confirm": "Naozaj chcete vymazať danú rezerváciu?",
+      "success": "Rezervácia bola vymazaná!"
     }
   }
 }

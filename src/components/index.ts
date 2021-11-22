@@ -8,6 +8,7 @@ import ErrorNotifier from './ErrorNotifier/ErrorNotifier'
 import ButtonSave from './ButtonSave/ButtonSave'
 import ButtonAdd from './ButtonAdd/ButtonAdd'
 import Can from './Can/Can'
+import DnDCalendar from './DnDCalendar/DnDCalendar'
 
 export {
   Card,
@@ -20,4 +21,5 @@ export {
   ButtonSave,
   ButtonAdd,
   Can,
+  DnDCalendar
 }

@@ -10,17 +10,17 @@ import { SpinnerOverlay } from 'components'
 import 'i18n'
 
 ReactDOM.render(
-  <React.StrictMode>
-    <React.Suspense fallback={<SpinnerOverlay />}>
-      <CookiesProvider>
-        <AppStateProvider>
-          <BrowserRouter>
-            <App />
-          </BrowserRouter>
-        </AppStateProvider>
-      </CookiesProvider>
-    </React.Suspense>
-  </React.StrictMode>,
+  // <React.StrictMode>
+  <React.Suspense fallback={<SpinnerOverlay />}>
+    <CookiesProvider>
+      <AppStateProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </AppStateProvider>
+    </CookiesProvider>
+  </React.Suspense>,
+//  </React.StrictMode>,
   document.getElementById('root'),
 )
 
