@@ -236,7 +236,7 @@ export const fetchAccessToken = async (): Promise<any> => {
 
 export const fetchAuthUser = async (): Promise<any> => {
   const payload = {
-    operationName: 'me',
+    operationName: 'Me',
     variables: {},
     query: `query Me {
       me {

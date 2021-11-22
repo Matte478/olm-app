@@ -21,6 +21,7 @@ import { cilLockLocked, cilUser } from '@coreui/icons'
 import { useLoginMutation, LoginInput } from '__generated__/graphql'
 import { AppStateContext } from 'provider'
 import { ErrorNotifier, SpinnerOverlay } from 'components'
+import GoogleAuth from './GoogleAuth'
 
 const Login: React.FC = () => {
   const { t } = useTranslation()
@@ -69,6 +70,8 @@ const Login: React.FC = () => {
                   <CForm onSubmit={handleLogin}>
                     <h1>{t('login.title')}</h1>
                     <p className="text-medium-emphasis">{t('login.description')}</p>
+                    <GoogleAuth />
+                    <hr />
                     <ErrorNotifier error={error} />
                     <CInputGroup className="mb-3">
                       <CInputGroupText>

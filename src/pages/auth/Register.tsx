@@ -18,6 +18,7 @@ import { cilLockLocked, cilUser } from '@coreui/icons'
 
 import { RegisterInput, useRegisterMutation } from '__generated__/graphql'
 import { ErrorNotifier, SpinnerOverlay } from 'components'
+import GoogleAuth from './GoogleAuth'
 
 const Register: React.FC = () => {
   const { t } = useTranslation()
@@ -55,6 +56,8 @@ const Register: React.FC = () => {
                 <CForm onSubmit={handleRegister}>
                   <h1>{t('register.title')}</h1>
                   <p className="text-medium-emphasis">{t('register.description')}</p>
+                  <GoogleAuth />
+                  <hr />
                   <ErrorNotifier error={error} />
                   <CInputGroup className="mb-3">
                     <CInputGroupText>

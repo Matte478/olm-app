@@ -24,3 +24,15 @@ mutation RefreshToken($refreshTokenInput: RefreshTokenInput) {
     token_type
   }
 }
+
+mutation SocialLogin($socialLoginInput: SocialLoginInput!) {
+  socialLogin(input: $socialLoginInput) {
+    access_token
+    refresh_token
+    expires_in
+    token_type
+    user {
+      ...AuthenticatedUser
+    }
+  }
+}
