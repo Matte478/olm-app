@@ -22,7 +22,7 @@ const EditUser: React.FC = () => {
 
   return (
     <Can permission="user.update" notify={true}>
-      <Card icon={cilUser} title={t('actions.edit')}>
+      <Card icon={cilUser} title={t('actions.update')}>
         <EditUserForm user={data.user} />
       </Card>
     </Can>

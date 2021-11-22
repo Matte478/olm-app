@@ -11,7 +11,7 @@ const UpdateProfile: React.FC = () => {
   const { appState, appSetAuthUser } = useContext(AppStateContext)
 
   return (
-    <Card icon={cilUser} title={t('actions.edit')}>
+    <Card icon={cilUser} title={t('actions.update')}>
       <UpdateProfileForm user={appState.authUser!} handleUpdateProfile={appSetAuthUser} />
     </Card>
   )

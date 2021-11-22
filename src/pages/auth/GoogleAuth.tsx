@@ -1,11 +1,12 @@
 import React, { useContext } from 'react'
-import GoogleLogin, { GoogleLoginResponse, GoogleLoginResponseOffline } from 'react-google-login'
 import { useNavigate } from 'react-router-dom'
+import GoogleLogin, { GoogleLoginResponse, GoogleLoginResponseOffline } from 'react-google-login'
 import { AppStateContext } from 'provider'
 import { useSocialLoginMutation } from '__generated__/graphql'
+import { SpinnerOverlay } from 'components'
 
 const GoogleAuth: React.FC = () => {
-  const [socialLogin] = useSocialLoginMutation()
+  const [socialLogin, { loading }] = useSocialLoginMutation()
   const { appSetLogin, appSetRefreshToken } = useContext(AppStateContext)
   const navigate = useNavigate()
 
@@ -50,13 +51,16 @@ const GoogleAuth: React.FC = () => {
   }
 
   return (
-    <GoogleLogin
-      clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID!}
-      buttonText="Log in with Google"
-      onSuccess={responseGoogle}
-      onFailure={console.log}
-      cookiePolicy={'single_host_origin'}
-    />
+    <>
+      {loading && <SpinnerOverlay transparent={true} />}
+      <GoogleLogin
+        clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID!}
+        buttonText="Log in with Google"
+        onSuccess={responseGoogle}
+        onFailure={console.log}
+        cookiePolicy={'single_host_origin'}
+      />
+    </>
   )
 }
 
