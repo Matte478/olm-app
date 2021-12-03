@@ -59,7 +59,8 @@
     "reservations": "Rezervácie",
     "settings": "Nastavenia",
     "users": "Užívatelia",
-    "roles": "Role a práva"
+    "roles": "Role a práva",
+    "servers": "Servery"
   },
 
   "actions": {
@@ -149,6 +150,24 @@
     "delete": {
       "confirm": "Naozaj chcete vymazať danú rezerváciu?",
       "success": "Rezervácia bola vymazaná!"
+    }
+  },
+
+  "servers": {
+    "columns": {
+      "id": "ID",
+      "name": "Názov",
+      "ip_address": "IP adresa",
+      "port": "Port",
+      "websocket_port": "Websocket port",
+      "available": "Dostupný",
+      "production": "Produkčný",
+      "enabled": "Povolený",
+      "created_at": "Vytvorený",
+      "updated_at": "Upravený"
+    },
+    "index": {
+      "title": "Servery"
     }
   }
 }

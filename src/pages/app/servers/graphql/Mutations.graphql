@@ -1,0 +1,17 @@
+# mutation createRole($createRoleInput: CreateRoleInput!) {
+#   createRole(input: $createRoleInput) {
+#     ...RoleExtended
+#   }
+# }
+
+# mutation UpdateRole($updateRoleInput: UpdateRoleInput!) {
+#   updateRole(input: $updateRoleInput) {
+#     ...RoleExtended
+#   }
+# }
+
+# mutation DeleteRole($id: ID!) {
+#   deleteRole(id: $id) {
+#     id
+#   }
+# }

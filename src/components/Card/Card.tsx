@@ -6,10 +6,10 @@ interface Props {
   children?: JSX.Element | JSX.Element[] | string
   icon?: any
   title: string
-  aditional?: JSX.Element
+  actions?: JSX.Element | JSX.Element[]
 }
 
-const Card: React.FC<Props> = ({ children, icon, title, aditional }: Props) => {
+const Card: React.FC<Props> = ({ children, icon, title, actions }: Props) => {
   return (
     <CCard>
       <CCardHeader className="d-flex align-items-center justify-content-between">
@@ -17,7 +17,7 @@ const Card: React.FC<Props> = ({ children, icon, title, aditional }: Props) => {
           {icon && <CIcon content={icon} className="me-1" />}
           {title}
         </strong>
-        {aditional && aditional}
+        {actions && <div>{actions}</div>}
       </CCardHeader>
       <CCardBody>{children}</CCardBody>
     </CCard>

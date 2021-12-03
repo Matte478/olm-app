@@ -1,0 +1,16 @@
+# fragment RoleBasic on Role {
+#   id
+#   name
+# }
+
+# fragment RoleExtended on Role {
+#   ...RoleBasic
+#   permissions {
+#     ...PermissionBasic
+#   }
+# }
+
+# fragment PermissionBasic on Permission {
+#   id
+#   name
+# }

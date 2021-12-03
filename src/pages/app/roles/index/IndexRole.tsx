@@ -17,7 +17,7 @@ const IndexRole: React.FC = () => {
     <Card
       icon={cilLockLocked}
       title={t('roles.index.title')}
-      aditional={
+      actions={
         <Can permission="role.create">
           <ButtonAdd to="/app/roles/create" />
         </Can>

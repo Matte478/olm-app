@@ -59,7 +59,8 @@
     "reservations": "Reservations",
     "settings": "Settings",
     "users": "Users",
-    "roles": "Roles and permissions"
+    "roles": "Roles and permissions",
+    "servers": "Servers"
   },
 
   "actions": {
@@ -149,6 +150,24 @@
     "delete": {
       "confirm": "Are you sure you want to delete this reservation?",
       "success": "Reservation has been deleted!"
+    }
+  },
+
+  "servers": {
+    "columns": {
+      "id": "ID",
+      "name": "Name",
+      "ip_address": "IP address",
+      "port": "Port",
+      "websocket_port": "Websocket port",
+      "available": "Available",
+      "production": "Production",
+      "enabled": "Enabled",
+      "created_at": "Created at",
+      "updated_at": "Updated at"
+    },
+    "index": {
+      "title": "Servers"
     }
   }
 }
