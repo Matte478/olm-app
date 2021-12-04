@@ -35,6 +35,7 @@ import Reservation from 'pages/app/reservations'
 
 // servers
 import IndexServer from 'pages/app/servers/index'
+import CreateServer from 'pages/app/servers/create'
 
 const routes = (loggedIn: boolean) => [
   {
@@ -137,6 +138,14 @@ const routes = (loggedIn: boolean) => [
             element: (
               <Can permission="server.show" notify={true}>
                 <IndexServer />
+              </Can>
+            ),
+          },
+          {
+            path: '/create',
+            element: (
+              <Can permission="server.create" notify={true}>
+                <CreateServer />
               </Can>
             ),
           },

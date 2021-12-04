@@ -4,17 +4,34 @@ import { Table } from 'components'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'react-toast'
 import { TableAction, TableColumn } from 'types'
-import { Server } from '__generated__/graphql'
+import { Server, useDeleteServerMutation } from '__generated__/graphql'
 
 interface Props {
   servers: any
+  refetch: any
 }
 
-const IndexServerTable: React.FC<Props> = ({ servers }: Props) => {
+const IndexServerTable: React.FC<Props> = ({ servers, refetch }: Props) => {
   console.log(servers)
   const { t } = useTranslation()
   const navigate = useNavigate()
+  const [deleteServerMutation, { error }] = useDeleteServerMutation()
+
+  const handleDeleteServer = async (id: string) => {
+    let response = window.confirm(t('servers.delete.confirm'))
+    if (response) {
+      await deleteServerMutation({
+        variables: { id },
+      })
+        .then(() => {
+          refetch()
+          toast.success(t('servers.delete.success'))
+        })
+        .catch(() => {})
+    }
+  }
 
   const columns: TableColumn[] = [
     {
@@ -62,24 +79,24 @@ const IndexServerTable: React.FC<Props> = ({ servers }: Props) => {
 
   const columnsNested = {
     key: 'devices',
-    name: 'devices',
+    name: t('servers.columns.devices.title'),
     columns: [
       {
         column: 'id',
-        name: 'id',
+        name: t('servers.columns.devices.id'),
         style: { width: '80px' },
       },
       {
         column: 'name',
-        name: 'name',
+        name: t('servers.columns.devices.name'),
       },
       {
         column: 'deviceType.name',
-        name: 'type',
+        name: t('servers.columns.devices.type'),
       },
       {
         column: 'software.name',
-        name: 'software',
+        name: t('servers.columns.devices.software'),
       },
     ],
   }
@@ -105,7 +122,7 @@ const IndexServerTable: React.FC<Props> = ({ servers }: Props) => {
       textColor: 'light',
       permission: 'server.delete',
       icon: <CIcon content={cilTrash} />,
-      handleClick: console.log,
+      handleClick: handleDeleteServer,
     },
   ]
 

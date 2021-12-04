@@ -154,6 +154,10 @@
   },
 
   "servers": {
+    "with_deleted_servers": "Show deleted servers",
+    "with_deleted_devices": "Show deleted devices",
+    "sync": "Sync",
+    "sync_all": "Sync all",
     "columns": {
       "id": "ID",
       "name": "Name",
@@ -164,10 +168,27 @@
       "production": "Production",
       "enabled": "Enabled",
       "created_at": "Created at",
-      "updated_at": "Updated at"
+      "updated_at": "Updated at",
+      "devices": {
+        "title": "Devices",
+        "id": "ID",
+        "name": "Name",
+        "type": "Type",
+        "software": "Software"
+      }
     },
     "index": {
       "title": "Servers"
+    },
+    "create": {
+      "success": "Server has been created!"
+    },
+    "update": {
+      "success": "Server has been updated!"
+    },
+    "delete": {
+      "confirm": "Are you sure you want to delete this server?",
+      "success": "Server has been deleted!"
     }
   }
 }

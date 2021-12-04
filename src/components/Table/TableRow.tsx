@@ -27,7 +27,7 @@ const TableRow: React.FC<Props> = ({
 
   return (
     <>
-      <CTableRow>
+      <CTableRow style={{ backgroundColor: data.deleted_at ? "rgba(255,0,0,0.2)" : '' }}>
         {columns.map(({ column }: TableColumn, columnIndex: number) => (
           <CTableDataCell scope="row" key={columnIndex}>
             <TableRowItem item={data} keys={column} />

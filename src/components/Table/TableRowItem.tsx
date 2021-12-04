@@ -1,7 +1,7 @@
+import React from 'react'
 import { cilCheckAlt, cilX } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 import { CBadge } from '@coreui/react'
-import React from 'react'
 
 interface Props {
   item: any

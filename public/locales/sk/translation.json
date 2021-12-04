@@ -154,6 +154,10 @@
   },
 
   "servers": {
+    "with_deleted_servers": "Zobraziť zmazané servery",
+    "with_deleted_devices": "Zobraziť zmazané zariadenia",
+    "sync": "Synchronizovať",
+    "sync_all": "Synchronizovať všetky",
     "columns": {
       "id": "ID",
       "name": "Názov",
@@ -164,10 +168,27 @@
       "production": "Produkčný",
       "enabled": "Povolený",
       "created_at": "Vytvorený",
-      "updated_at": "Upravený"
+      "updated_at": "Upravený",
+      "devices": {
+        "title": "Zariadenia",
+        "id": "ID",
+        "name": "Názov",
+        "type": "Typ",
+        "software": "Softvér"
+      }
     },
     "index": {
       "title": "Servery"
+    },
+    "create": {
+      "success": "Server bol vytvorený!"
+    },
+    "update": {
+      "success": "Server bol zmenený!"
+    },
+    "delete": {
+      "confirm": "Naozaj chcete vymazať daný server?",
+      "success": "Server bol vymazaný!"
     }
   }
 }

@@ -1,17 +1,89 @@
-# mutation createRole($createRoleInput: CreateRoleInput!) {
-#   createRole(input: $createRoleInput) {
-#     ...RoleExtended
-#   }
-# }
+mutation createServer($createServerInput: CreateServerInput!) {
+  createServer(input: $createServerInput) {
+    id
+    name
+    ip_address
+    port
+    websocket_port
+    available
+    production
+    enabled
+    created_at
+    updated_at
+    deleted_at
+    devices {
+      id
+      name
+      deviceType {
+        id
+        name
+        created_at
+        updated_at
+      }
+      software {
+        id
+        name
+        created_at
+        updated_at
+      }
+    }
+  }
+}
 
-# mutation UpdateRole($updateRoleInput: UpdateRoleInput!) {
-#   updateRole(input: $updateRoleInput) {
-#     ...RoleExtended
-#   }
-# }
+mutation deleteServer($id: ID!) {
+  deleteServer(id: $id) {
+    id
+    name
+    ip_address
+    port
+    websocket_port
+    available
+    production
+    enabled
+    created_at
+    updated_at
+    deleted_at
+    devices {
+      id
+      name
+      deviceType {
+        id
+        name
+        created_at
+        updated_at
+      }
+    }
+  }
+}
 
-# mutation DeleteRole($id: ID!) {
-#   deleteRole(id: $id) {
-#     id
-#   }
-# }
+mutation syncAllServers($trashedServers: Trashed, $trashedDevices: Trashed) {
+  syncAllServers(trashed: $trashedServers) {
+    id
+    name
+    ip_address
+    port
+    websocket_port
+    available
+    production
+    enabled
+    created_at
+    updated_at
+    deleted_at
+    devices(trashed: $trashedDevices) {
+      id
+      name
+      deviceType {
+        id
+        name
+        created_at
+        updated_at
+      }
+      software {
+        id
+        name
+        created_at
+        updated_at
+      }
+    }
+  }
+}
