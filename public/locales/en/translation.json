@@ -156,8 +156,6 @@
   "servers": {
     "with_deleted_servers": "Show deleted servers",
     "with_deleted_devices": "Show deleted devices",
-    "sync": "Sync",
-    "sync_all": "Sync all",
     "columns": {
       "id": "ID",
       "name": "Name",
@@ -189,6 +187,19 @@
     "delete": {
       "confirm": "Are you sure you want to delete this server?",
       "success": "Server has been deleted!"
+    },
+    "restore": {
+      "button": "Restore",
+      "confirm": "Are you sure you want to restore this server?",
+      "success": "Server has been restored!"
+    },
+    "sync": {
+      "button": "Sync",
+      "success": "Server has been synchronized!"
+    },
+    "sync_all": {
+      "button": "Sync all",
+      "success": "Servers has been synchronized!"
     }
   }
 }

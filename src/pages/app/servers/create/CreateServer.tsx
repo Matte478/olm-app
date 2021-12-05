@@ -1,7 +1,8 @@
-import { cilLan } from '@coreui/icons'
-import { Card } from 'components'
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import { cilLan } from '@coreui/icons'
+
+import { Card } from 'components'
 import CreateServerForm from './CreateServerForm'
 
 const CreateServer: React.FC = () => {

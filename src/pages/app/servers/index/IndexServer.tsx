@@ -4,15 +4,15 @@ import { CFormSwitch } from '@coreui/react'
 import { useTranslation } from 'react-i18next'
 
 import { ButtonAdd, Can, Card, ErrorNotifier, SpinnerOverlay } from 'components'
-import { Server, Trashed, useServersAndDevicesQuery } from '__generated__/graphql'
+import { ServerBasicFragment, Trashed, useServersAndDevicesQuery } from '__generated__/graphql'
 import IndexServerTable from './IndexServerTable'
 import ButtonSyncAll from './ButtonSyncAll'
 
 const IndexServer: React.FC = () => {
+  const { t } = useTranslation()
   const [withTrashedServers, setWithTrashedServers] = useState(false)
   const [withTrashedDevices, setWithTrashedDevices] = useState(false)
-  const [servers, setServers] = useState<any>()
-  const { t } = useTranslation()
+  const [servers, setServers] = useState<ServerBasicFragment[]>()
   const { data, loading, error, refetch } = useServersAndDevicesQuery({
     variables: {
       trashedServers: withTrashedServers ? Trashed.With : Trashed.Without,
@@ -21,8 +21,7 @@ const IndexServer: React.FC = () => {
   })
 
   useEffect(() => {
-    if(data?.servers)
-      setServers(data?.servers)
+    if (data?.servers) setServers(data.servers)
   }, [data])
 
   if (error) return <ErrorNotifier error={error} />

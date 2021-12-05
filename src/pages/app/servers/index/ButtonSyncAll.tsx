@@ -1,16 +1,17 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { cilReload } from '@coreui/icons'
+import { cilSync } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 import { CButton } from '@coreui/react'
 import { toast } from 'react-toast'
+
 import { Can, ErrorNotifier, SpinnerOverlay } from 'components'
-import { Trashed, useSyncAllServersMutation } from '__generated__/graphql'
+import { ServerBasicFragment, Trashed, useSyncAllServersMutation } from '__generated__/graphql'
 
 interface Props {
   withTrashedServers?: Trashed
   withTrashedDevices?: Trashed
-  handleSync: any
+  handleSync: (servers: ServerBasicFragment[]) => void
 }
 
 const ButtonSyncAll: React.FC<Props> = ({
@@ -51,8 +52,8 @@ const ButtonSyncAll: React.FC<Props> = ({
           color="success"
           onClick={handleSyncAll}
         >
-          <CIcon content={cilReload} className="me-1 text-light" />
-          {t('servers.sync_all')}
+          <CIcon content={cilSync} className="me-1 text-light" />
+          {t('servers.sync_all.button')}
         </CButton>
       </Can>
     </>

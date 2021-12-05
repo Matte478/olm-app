@@ -7,6 +7,7 @@ import { Presets } from 'react-component-transition'
 import { TableColumnsNested, TableAction, TableColumn } from 'types'
 import { Can, Table } from 'components'
 import TableRowItem from './TableRowItem'
+import TableRowAction from './TableRowAction'
 
 interface Props {
   columns: TableColumn[]
@@ -27,7 +28,7 @@ const TableRow: React.FC<Props> = ({
 
   return (
     <>
-      <CTableRow style={{ backgroundColor: data.deleted_at ? "rgba(255,0,0,0.2)" : '' }}>
+      <CTableRow style={{ backgroundColor: data.deleted_at ? 'rgba(255,0,0,0.2)' : '' }}>
         {columns.map(({ column }: TableColumn, columnIndex: number) => (
           <CTableDataCell scope="row" key={columnIndex}>
             <TableRowItem item={data} keys={column} />
@@ -47,25 +48,9 @@ const TableRow: React.FC<Props> = ({
                   {columnsNested.name}
                 </CButton>
               )}
-              {actions?.map(
-                (
-                  { color, icon, permission, text, textColor, handleClick }: TableAction,
-                  index: number,
-                ) => (
-                  <Can permission={permission} key={index}>
-                    <CButton
-                      color={color}
-                      className={`ms-1 d-inline-flex justify-content-center align-items-center ${
-                        textColor && 'text-' + textColor
-                      }`}
-                      onClick={() => handleClick(data.id)}
-                    >
-                      {icon && icon}
-                      {text && <span className={icon && 'ms-1'}>{text}</span>}
-                    </CButton>
-                  </Can>
-                ),
-              )}
+              {actions?.map((action: TableAction, index: number) => (
+                <TableRowAction action={action} id={data.id} deletedAt={data.deleted_at} key={index} />
+              ))}
             </div>
           </CTableDataCell>
         )}

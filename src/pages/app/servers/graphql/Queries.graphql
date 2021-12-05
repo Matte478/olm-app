@@ -1,34 +1,5 @@
 query ServersAndDevices($trashedServers: Trashed, $trashedDevices: Trashed) {
   servers(trashed: $trashedServers) {
-    id
-    name
-    ip_address
-    port
-    websocket_port
-    available
-    production
-    enabled
-    created_at
-    updated_at
-    deleted_at
-    devices(trashed: $trashedDevices) {
-      id
-      name
-      created_at
-      updated_at
-      deleted_at
-      deviceType {
-        id
-        name
-        created_at
-        updated_at
-      }
-      software {
-        id
-        name
-        created_at
-        updated_at
-      }
-    }
+    ...ServerBasic
   }
 }

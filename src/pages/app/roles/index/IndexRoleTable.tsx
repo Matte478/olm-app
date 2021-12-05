@@ -11,7 +11,7 @@ import { ErrorNotifier, Table } from 'components'
 
 interface Props {
   roles: RoleBasicFragment[]
-  refetch: any
+  refetch: () => void
 }
 
 const IndexRoleTable: React.FC<Props> = ({ roles, refetch }: Props) => {

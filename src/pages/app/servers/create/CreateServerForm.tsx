@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toast'
 import { CForm, CFormFloating, CFormInput, CFormLabel, CFormSwitch } from '@coreui/react'
+
 import { ButtonSave, ErrorNotifier, SpinnerOverlay } from 'components'
 import { CreateServerInput, useCreateServerMutation } from '__generated__/graphql'
 

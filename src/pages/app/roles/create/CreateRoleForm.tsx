@@ -20,7 +20,7 @@ const CreateRoleForm = ({ handleCreateRole }: Props) => {
 
   const [createRoleMutation, { loading, error }] = useCreateRoleMutation()
 
-  const handleEdit = async (event: React.FormEvent) => {
+  const handleCreate = async (event: React.FormEvent) => {
     event.preventDefault()
 
     await createRoleMutation({
@@ -40,7 +40,7 @@ const CreateRoleForm = ({ handleCreateRole }: Props) => {
   }
 
   return (
-    <CForm onSubmit={handleEdit}>
+    <CForm onSubmit={handleCreate}>
       {loading ? <SpinnerOverlay transparent={true} /> : <></>}
       <ErrorNotifier error={error} />
       <CFormFloating className="mb-3">

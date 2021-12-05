@@ -1,23 +1,31 @@
-import { cilPencil, cilReload, cilTrash } from '@coreui/icons'
-import CIcon from '@coreui/icons-react'
-import { Table } from 'components'
 import React from 'react'
-import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
+import { useTranslation } from 'react-i18next'
+import { cilActionUndo, cilPencil, cilSync, cilTrash } from '@coreui/icons'
+import CIcon from '@coreui/icons-react'
 import { toast } from 'react-toast'
+
+import { ErrorNotifier, SpinnerOverlay, Table } from 'components'
 import { TableAction, TableColumn } from 'types'
-import { Server, useDeleteServerMutation } from '__generated__/graphql'
+import {
+  ServerBasicFragment,
+  Trashed,
+  useDeleteServerMutation,
+  useRestoreServerMutation,
+  useSyncServerMutation,
+} from '__generated__/graphql'
 
 interface Props {
-  servers: any
-  refetch: any
+  servers: ServerBasicFragment[]
+  refetch: () => void
 }
 
 const IndexServerTable: React.FC<Props> = ({ servers, refetch }: Props) => {
-  console.log(servers)
   const { t } = useTranslation()
   const navigate = useNavigate()
-  const [deleteServerMutation, { error }] = useDeleteServerMutation()
+  const [deleteServerMutation, deleteServer] = useDeleteServerMutation()
+  const [restoreServerMutation, restoreServer] = useRestoreServerMutation()
+  const [syncServerMutation, syncServer] = useSyncServerMutation()
 
   const handleDeleteServer = async (id: string) => {
     let response = window.confirm(t('servers.delete.confirm'))
@@ -31,6 +39,31 @@ const IndexServerTable: React.FC<Props> = ({ servers, refetch }: Props) => {
         })
         .catch(() => {})
     }
+  }
+
+  const handleRestoreServer = async (id: string) => {
+    let response = window.confirm(t('servers.restore.confirm'))
+    if (response) {
+      await restoreServerMutation({
+        variables: { id },
+      })
+        .then(() => {
+          refetch()
+          toast.success(t('servers.restore.success'))
+        })
+        .catch(() => {})
+    }
+  }
+
+  const handleSyncServer = async (id: string) => {
+    await syncServerMutation({
+      variables: { id, trashedDevices: Trashed.Without },
+    })
+      .then(() => {
+        refetch()
+        toast.success(t('servers.sync.success'))
+      })
+      .catch(() => {})
   }
 
   const columns: TableColumn[] = [
@@ -106,13 +139,15 @@ const IndexServerTable: React.FC<Props> = ({ servers, refetch }: Props) => {
       color: 'success',
       textColor: 'light',
       permission: 'server.sync',
-      icon: <CIcon content={cilReload} />,
-      handleClick: console.log,
+      onDeleted: false,
+      icon: <CIcon content={cilSync} />,
+      handleClick: handleSyncServer,
     },
     {
       color: 'primary',
-      icon: <CIcon content={cilPencil} />,
       permission: 'server.update',
+      onDeleted: false,
+      icon: <CIcon content={cilPencil} />,
       handleClick: (id: string) => {
         navigate(`/app/servers/${id}/edit`)
       },
@@ -121,13 +156,27 @@ const IndexServerTable: React.FC<Props> = ({ servers, refetch }: Props) => {
       color: 'danger',
       textColor: 'light',
       permission: 'server.delete',
+      onDeleted: false,
       icon: <CIcon content={cilTrash} />,
       handleClick: handleDeleteServer,
+    },
+    {
+      color: 'dark',
+      textColor: 'light',
+      permission: 'server.delete',
+      onNonDeleted: false,
+      text: t('servers.restore.button'),
+      icon: <CIcon content={cilActionUndo} />,
+      handleClick: handleRestoreServer,
     },
   ]
 
   return (
     <div>
+      {deleteServer.error && <ErrorNotifier error={deleteServer.error} />}
+      {restoreServer.error && <ErrorNotifier error={restoreServer.error} />}
+      {syncServer.error && <ErrorNotifier error={syncServer.error} />}
+      {(deleteServer.loading || syncServer.loading) && <SpinnerOverlay transparent={true} />}
       <Table columns={columns} columnsNested={columnsNested} data={servers} actions={actions} />
     </div>
   )

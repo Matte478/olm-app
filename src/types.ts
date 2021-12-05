@@ -61,6 +61,8 @@ export interface TableAction {
     | string
   icon?: CIcon
   permission?: string
+  onDeleted?: boolean
+  onNonDeleted?: boolean
 }
 
 export interface Event {

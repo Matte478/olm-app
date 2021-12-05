@@ -156,8 +156,6 @@
   "servers": {
     "with_deleted_servers": "Zobraziť zmazané servery",
     "with_deleted_devices": "Zobraziť zmazané zariadenia",
-    "sync": "Synchronizovať",
-    "sync_all": "Synchronizovať všetky",
     "columns": {
       "id": "ID",
       "name": "Názov",
@@ -189,6 +187,19 @@
     "delete": {
       "confirm": "Naozaj chcete vymazať daný server?",
       "success": "Server bol vymazaný!"
+    },
+    "restore": {
+      "button": "Obnoviť",
+      "confirm": "Naozaj chcete obnoviť daný server?",
+      "success": "Server bol obnovený!"
+    },
+    "sync": {
+      "button": "Synchronizovať",
+      "success": "Server bol synchronizovaný!"
+    },
+    "sync_all": {
+      "button": "Synchronizovať všetky",
+      "success": "Servery boli synchronizované!"
     }
   }
 }

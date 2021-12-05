@@ -1,89 +1,29 @@
-mutation createServer($createServerInput: CreateServerInput!) {
+mutation createServer($createServerInput: CreateServerInput!, $trashedDevices: Trashed = WITHOUT) {
   createServer(input: $createServerInput) {
-    id
-    name
-    ip_address
-    port
-    websocket_port
-    available
-    production
-    enabled
-    created_at
-    updated_at
-    deleted_at
-    devices {
-      id
-      name
-      deviceType {
-        id
-        name
-        created_at
-        updated_at
-      }
-      software {
-        id
-        name
-        created_at
-        updated_at
-      }
-    }
+    ...ServerExtended
   }
 }
 
 mutation deleteServer($id: ID!) {
   deleteServer(id: $id) {
     id
-    name
-    ip_address
-    port
-    websocket_port
-    available
-    production
-    enabled
-    created_at
-    updated_at
-    deleted_at
-    devices {
-      id
-      name
-      deviceType {
-        id
-        name
-        created_at
-        updated_at
-      }
-    }
+  }
+}
+
+mutation RestoreServer($id: ID!) {
+  restoreServer(id: $id) {
+    id
   }
 }
 
 mutation syncAllServers($trashedServers: Trashed, $trashedDevices: Trashed) {
   syncAllServers(trashed: $trashedServers) {
-    id
-    name
-    ip_address
-    port
-    websocket_port
-    available
-    production
-    enabled
-    created_at
-    updated_at
-    deleted_at
-    devices(trashed: $trashedDevices) {
-      id
-      name
-      deviceType {
-        id
-        name
-        created_at
-        updated_at
-      }
-      software {
-        id
-        name
-        created_at
-        updated_at
-      }
-    }
+    ...ServerBasic
+  }
+}
+
+mutation syncServer($id: ID!, $trashedDevices: Trashed) {
+  syncServer(id: $id) {
+    ...ServerBasic
   }
 }
