@@ -1,4 +1,4 @@
-mutation createRole($createRoleInput: CreateRoleInput!) {
+mutation CreateRole($createRoleInput: CreateRoleInput!) {
   createRole(input: $createRoleInput) {
     ...RoleExtended
   }

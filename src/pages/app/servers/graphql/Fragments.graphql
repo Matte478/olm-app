@@ -1,0 +1,39 @@
+fragment ServerBasic on Server {
+  id
+  name
+  ip_address
+  available
+  production
+  enabled
+  deleted_at
+
+  devices(trashed: $trashedDevices) {
+    ...DevideBasic
+  }
+}
+
+fragment ServerExtended on Server {
+  ...ServerBasic
+  port
+  websocket_port
+}
+
+fragment DevideBasic on Device {
+  id
+  name
+  deleted_at
+  deviceType {
+    ...DevideTypeBasic
+  }
+  software {
+    ...SoftwareBasic
+  }
+}
+
+fragment DevideTypeBasic on DeviceType {
+  name
+}
+
+fragment SoftwareBasic on Software {
+  name
+}

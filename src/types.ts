@@ -30,6 +30,12 @@ export interface TableColumn {
   style?: object
 }
 
+export interface TableColumnsNested {
+  key: string
+  name: string
+  columns: TableColumn[]
+}
+
 export interface TableAction {
   handleClick: (id: string) => void
   color:
@@ -55,6 +61,8 @@ export interface TableAction {
     | string
   icon?: CIcon
   permission?: string
+  onDeleted?: boolean
+  onNonDeleted?: boolean
 }
 
 export interface Event {

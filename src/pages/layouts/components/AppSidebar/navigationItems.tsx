@@ -2,6 +2,7 @@ import CIcon from '@coreui/icons-react'
 import {
   cilCalendar,
   cilCursor,
+  cilLan,
   cilLockLocked,
   cilPuzzle,
   cilSpeedometer,
@@ -29,6 +30,13 @@ const navigationItems = [
   {
     component: CNavTitle,
     name: 'sidebar.settings',
+  },
+  {
+    component: CNavItem,
+    name: 'sidebar.servers',
+    permission: 'server.show',
+    to: '/app/servers',
+    icon: <CIcon content={cilLan} customClasses="nav-icon" />,
   },
   {
     component: CNavItem,

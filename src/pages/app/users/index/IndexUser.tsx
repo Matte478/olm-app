@@ -30,7 +30,7 @@ const IndexUser: React.FC = () => {
     <Card
       icon={cilUser}
       title={t('users.index.title')}
-      aditional={<PerPageDropdown selected={perPage} handleChange={setPerPage} />}
+      actions={<PerPageDropdown selected={perPage} handleChange={setPerPage} />}
     >
       <IndexUserTable
         users={data!.users!.data}

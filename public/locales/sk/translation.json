@@ -59,12 +59,14 @@
     "reservations": "Rezervácie",
     "settings": "Nastavenia",
     "users": "Užívatelia",
-    "roles": "Role a práva"
+    "roles": "Role a práva",
+    "servers": "Servery"
   },
 
   "actions": {
     "create": "Vytvoriť",
     "edit": "Upraviť",
+    "show": "Detail",
     "save": "Uložiť",
     "delete": "Zmazať",
     "error": {
@@ -149,6 +151,57 @@
     "delete": {
       "confirm": "Naozaj chcete vymazať danú rezerváciu?",
       "success": "Rezervácia bola vymazaná!"
+    }
+  },
+
+  "servers": {
+    "with_deleted_servers": "Zobraziť zmazané servery",
+    "with_deleted_devices": "Zobraziť zmazané zariadenia",
+    "columns": {
+      "id": "ID",
+      "name": "Názov",
+      "ip_address": "IP adresa",
+      "port": "Port",
+      "websocket_port": "Websocket port",
+      "available": "Dostupný",
+      "production": "Produkčný",
+      "enabled": "Povolený",
+      "created_at": "Vytvorený",
+      "updated_at": "Upravený",
+      "deleted_at": "Zmazaný",
+      "devices": {
+        "title": "Zariadenia",
+        "id": "ID",
+        "name": "Názov",
+        "type": "Typ",
+        "software": "Softvér"
+      }
+    },
+    "index": {
+      "title": "Servery"
+    },
+    "create": {
+      "success": "Server bol vytvorený!"
+    },
+    "update": {
+      "success": "Server bol zmenený!"
+    },
+    "delete": {
+      "confirm": "Naozaj chcete vymazať daný server?",
+      "success": "Server bol vymazaný!"
+    },
+    "restore": {
+      "button": "Obnoviť",
+      "confirm": "Naozaj chcete obnoviť daný server?",
+      "success": "Server bol obnovený!"
+    },
+    "sync": {
+      "button": "Synchronizovať",
+      "success": "Server bol synchronizovaný!"
+    },
+    "sync_all": {
+      "button": "Synchronizovať všetky",
+      "success": "Servery boli synchronizované!"
     }
   }
 }

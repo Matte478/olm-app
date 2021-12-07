@@ -33,6 +33,12 @@ import EditRole from 'pages/app/roles/edit'
 // reservations
 import Reservation from 'pages/app/reservations'
 
+// servers
+import IndexServer from 'pages/app/servers/index'
+import CreateServer from 'pages/app/servers/create'
+import EditServer from 'pages/app/servers/edit'
+import ShowServer from 'pages/app/servers/show'
+
 const routes = (loggedIn: boolean) => [
   {
     path: '/',
@@ -125,6 +131,43 @@ const routes = (loggedIn: boolean) => [
       {
         path: '/reservations',
         element: <Reservation />,
+      },
+      {
+        path: '/servers',
+        children: [
+          {
+            path: '/',
+            element: (
+              <Can permission="server.show" notify={true}>
+                <IndexServer />
+              </Can>
+            ),
+          },
+          {
+            path: '/create',
+            element: (
+              <Can permission="server.create" notify={true}>
+                <CreateServer />
+              </Can>
+            ),
+          },
+          {
+            path: ':id/show',
+            element: (
+              <Can permission="server.show" notify={true}>
+                <ShowServer />
+              </Can>
+            ),
+          },
+          {
+            path: ':id/edit',
+            element: (
+              <Can permission="server.update" notify={true}>
+                <EditServer />
+              </Can>
+            ),
+          },
+        ],
       },
     ],
   },
