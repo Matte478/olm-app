@@ -21,7 +21,7 @@ const ShowServerActions: React.FC<Props> = ({
   return (
     <>
       {deletedAt ? (
-        <Can permission="server.delete">
+        <Can permission="server.restore">
           <ButtonRestore
             id={id}
             withTrashedDevices={withTrashedDevices ? Trashed.With : Trashed.Without}

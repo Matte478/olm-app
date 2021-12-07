@@ -173,7 +173,7 @@ const IndexServerTable: React.FC<Props> = ({ servers, refetch }: Props) => {
     {
       color: 'dark',
       textColor: 'light',
-      permission: 'server.delete',
+      permission: 'server.restore',
       onNonDeleted: false,
       text: t('servers.restore.button'),
       icon: <CIcon content={cilActionUndo} />,

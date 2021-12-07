@@ -32,16 +32,18 @@ const IndexServer: React.FC = () => {
       <Card
         icon={cilLan}
         title={t('servers.index.title')}
-        actions={[
-          <ButtonSyncAll
-            withTrashedServers={withTrashedServers ? Trashed.With : Trashed.Without}
-            withTrashedDevices={withTrashedDevices ? Trashed.With : Trashed.Without}
-            handleSync={setServers}
-          />,
-          <Can permission="server.create">
-            <ButtonAdd to="/app/servers/create" />
-          </Can>,
-        ]}
+        actions={
+          <>
+            <ButtonSyncAll
+              withTrashedServers={withTrashedServers ? Trashed.With : Trashed.Without}
+              withTrashedDevices={withTrashedDevices ? Trashed.With : Trashed.Without}
+              handleSync={setServers}
+            />
+            <Can permission="server.create">
+              <ButtonAdd to="/app/servers/create" />
+            </Can>
+          </>
+        }
       >
         <div className="d-flex">
           <CFormSwitch
