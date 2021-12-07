@@ -66,6 +66,7 @@
   "actions": {
     "create": "Create",
     "edit": "Edit",
+    "show": "Detail",
     "save": "Save",
     "delete": "Delete",
     "error": {
@@ -167,6 +168,7 @@
       "enabled": "Enabled",
       "created_at": "Created at",
       "updated_at": "Updated at",
+      "deleted_at": "Deleted at",
       "devices": {
         "title": "Devices",
         "id": "ID",

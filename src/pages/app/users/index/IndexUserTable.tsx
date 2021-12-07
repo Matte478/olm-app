@@ -11,7 +11,7 @@ import { ErrorNotifier, Pagination, Table } from 'components'
 
 interface Props {
   users: UserBasicFragment[]
-  refetch: any
+  refetch: () => void
   paginatorInfo: PaginatorInfo
   currentPage: number
   setCurrentPage: (page: number) => void

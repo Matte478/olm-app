@@ -1,10 +1,16 @@
-mutation createServer($createServerInput: CreateServerInput!, $trashedDevices: Trashed = WITHOUT) {
+mutation CreateServer($createServerInput: CreateServerInput!, $trashedDevices: Trashed = WITHOUT) {
   createServer(input: $createServerInput) {
     ...ServerExtended
   }
 }
 
-mutation deleteServer($id: ID!) {
+mutation UpdateServer($updateServerInput: UpdateServerInput!, $trashedDevices: Trashed = WITHOUT) {
+  updateServer(input: $updateServerInput) {
+    ...ServerExtended
+  }
+}
+
+mutation DeleteServer($id: ID!) {
   deleteServer(id: $id) {
     id
   }
@@ -16,14 +22,26 @@ mutation RestoreServer($id: ID!) {
   }
 }
 
-mutation syncAllServers($trashedServers: Trashed, $trashedDevices: Trashed) {
+mutation RestoreServerExtended($id: ID!, $trashedDevices: Trashed) {
+  restoreServer(id: $id) {
+    ...ServerExtended
+  }
+}
+
+mutation SyncAllServers($trashedServers: Trashed, $trashedDevices: Trashed) {
   syncAllServers(trashed: $trashedServers) {
     ...ServerBasic
   }
 }
 
-mutation syncServer($id: ID!, $trashedDevices: Trashed) {
+mutation SyncServer($id: ID!, $trashedDevices: Trashed) {
   syncServer(id: $id) {
     ...ServerBasic
+  }
+}
+
+mutation SyncServerExtended($id: ID!, $trashedDevices: Trashed) {
+  syncServer(id: $id) {
+    ...ServerExtended
   }
 }

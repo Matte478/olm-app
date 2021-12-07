@@ -66,6 +66,7 @@
   "actions": {
     "create": "Vytvoriť",
     "edit": "Upraviť",
+    "show": "Detail",
     "save": "Uložiť",
     "delete": "Zmazať",
     "error": {
@@ -167,6 +168,7 @@
       "enabled": "Povolený",
       "created_at": "Vytvorený",
       "updated_at": "Upravený",
+      "deleted_at": "Zmazaný",
       "devices": {
         "title": "Zariadenia",
         "id": "ID",

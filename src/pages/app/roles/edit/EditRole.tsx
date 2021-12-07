@@ -22,7 +22,7 @@ const EditRole: React.FC = () => {
   if (!data?.role) return <div>404</div>
 
   return (
-    <Card icon={cilLockLocked} title={t('actions.update')}>
+    <Card icon={cilLockLocked} title={t('actions.edit')}>
       <EditRoleForm role={data.role} />
     </Card>
   )

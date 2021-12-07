@@ -1,7 +1,7 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { cilActionUndo, cilPencil, cilSync, cilTrash } from '@coreui/icons'
+import { cilActionUndo, cilAlbum, cilPencil, cilSync, cilTrash } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 import { toast } from 'react-toast'
 
@@ -142,6 +142,16 @@ const IndexServerTable: React.FC<Props> = ({ servers, refetch }: Props) => {
       onDeleted: false,
       icon: <CIcon content={cilSync} />,
       handleClick: handleSyncServer,
+    },
+    {
+      color: 'warning',
+      // textColor: 'light',
+      permission: 'server.show',
+      onDeleted: true,
+      icon: <CIcon content={cilAlbum} />,
+      handleClick: (id: string) => {
+        navigate(`/app/servers/${id}/show`)
+      },
     },
     {
       color: 'primary',

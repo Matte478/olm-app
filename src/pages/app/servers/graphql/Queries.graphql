@@ -3,3 +3,9 @@ query ServersAndDevices($trashedServers: Trashed, $trashedDevices: Trashed) {
     ...ServerBasic
   }
 }
+
+query Server($id: ID!, $trashedServer: Trashed = WITH, $trashedDevices: Trashed = WITHOUT) {
+  server(id: $id, trashed: $trashedServer) {
+    ...ServerExtended
+  }
+}

@@ -5,7 +5,7 @@ import CIcon from '@coreui/icons-react'
 import { Presets } from 'react-component-transition'
 
 import { TableColumnsNested, TableAction, TableColumn } from 'types'
-import { Can, Table } from 'components'
+import { Table } from 'components'
 import TableRowItem from './TableRowItem'
 import TableRowAction from './TableRowAction'
 
@@ -64,7 +64,7 @@ const TableRow: React.FC<Props> = ({
           >
             <Presets.TransitionFade>
               {open && (
-                <div style={{ margin: '1rem 3rem' }}>
+                <div style={{ margin: '0 3rem', padding: '1rem 0' }}>
                   <h5>{columnsNested.name}</h5>
                   <Table data={data.devices} columns={columnsNested.columns}></Table>
                 </div>

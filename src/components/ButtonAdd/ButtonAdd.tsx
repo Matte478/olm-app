@@ -1,21 +1,17 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
-import CIcon from '@coreui/icons-react'
 import { cilPlus } from '@coreui/icons'
-import { CButton } from '@coreui/react'
+import { useTranslation } from 'react-i18next'
+import { ButtonIcon } from 'components'
 
 interface Props {
   to: string
+  className?: string
 }
 
-const ButtonAdd: React.FC<Props> = ({ to }: Props) => {
-  return (
-    <Link to={to}>
-      <CButton className="text-center">
-        <CIcon content={cilPlus} />
-      </CButton>
-    </Link>
-  )
+const ButtonAdd: React.FC<Props> = ({ to, className = '' }: Props) => {
+  const { t } = useTranslation()
+
+  return <ButtonIcon to={to} icon={cilPlus} text={t('actions.create')} className={className} />
 }
 
 export default ButtonAdd
