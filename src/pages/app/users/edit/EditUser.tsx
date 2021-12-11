@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 import { cilUser } from '@coreui/icons'
 
-import { useUserQuery } from '__generated__/graphql'
+import { Trashed, useUserQuery } from '__generated__/graphql'
 import { Card, ErrorNotifier, SpinnerOverlay, Can } from 'components'
 import EditUserForm from './EditUserForm'
 
@@ -13,6 +13,7 @@ const EditUser: React.FC = () => {
   const { data, loading, error } = useUserQuery({
     variables: {
       id,
+      trashed: Trashed.With,
     },
   })
 

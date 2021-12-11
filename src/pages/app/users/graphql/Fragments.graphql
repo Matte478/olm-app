@@ -9,6 +9,7 @@ fragment UserBasic on User {
   name
   email
   created_at
+  deleted_at
 }
 
 fragment UserExtended on User {

@@ -1,5 +1,5 @@
-query Users($first: Int!, $page: Int) {
-  users(first: $first, page: $page) {
+query Users($first: Int!, $page: Int, $trashed: Trashed) {
+  users(first: $first, page: $page, trashed: $trashed) {
     paginatorInfo {
       ...PaginatorInfo
     }
@@ -9,8 +9,8 @@ query Users($first: Int!, $page: Int) {
   }
 }
 
-query User($id: ID) {
-  user(id: $id) {
+query User($id: ID, $trashed: Trashed = WITH) {
+  user(id: $id, trashed: $trashed) {
     ...UserExtended
   }
 }

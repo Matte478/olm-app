@@ -10,6 +10,12 @@ mutation DeleteUser($id: ID!) {
   }
 }
 
+mutation RestoreUser($id: ID!) {
+  restoreUser(id: $id) {
+    id
+  }
+}
+
 mutation UpdatePassword($updatePasswordInput: UpdatePassword!) {
   updatePassword(input: $updatePasswordInput) {
     status

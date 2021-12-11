@@ -74,6 +74,13 @@
     }
   },
 
+  "trashed": {
+    "label": "Zobraziť:",
+    "without": "Len nevymazané",
+    "with": "Aj vymazané",
+    "only": "Len vymazané"
+  },
+
   "users": {
     "columns": {
       "id": "ID",
@@ -88,6 +95,11 @@
     "delete": {
       "confirm": "Naozaj chcete vymazať daného užívateľa?",
       "success": "Užívateľ bol vymazaný!"
+    },
+    "restore": {
+      "button": "Obnoviť",
+      "confirm": "Naozaj chcete obnoviť daného užívateľa?",
+      "success": "Užívateľ bol obnovený!"
     },
     "update": {
       "success": "Užívateľ bol upravený!"

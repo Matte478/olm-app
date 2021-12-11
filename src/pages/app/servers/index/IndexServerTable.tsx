@@ -186,7 +186,9 @@ const IndexServerTable: React.FC<Props> = ({ servers, refetch }: Props) => {
       {deleteServer.error && <ErrorNotifier error={deleteServer.error} />}
       {restoreServer.error && <ErrorNotifier error={restoreServer.error} />}
       {syncServer.error && <ErrorNotifier error={syncServer.error} />}
-      {(deleteServer.loading || syncServer.loading) && <SpinnerOverlay transparent={true} />}
+      {(deleteServer.loading || restoreServer.loading || syncServer.loading) && (
+        <SpinnerOverlay transparent={true} />
+      )}
       <Table columns={columns} columnsNested={columnsNested} data={servers} actions={actions} />
     </div>
   )
