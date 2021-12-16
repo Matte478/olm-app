@@ -20,7 +20,7 @@ ReactDOM.render(
       </AppStateProvider>
     </CookiesProvider>
   </React.Suspense>,
-//  </React.StrictMode>,
+  // </React.StrictMode>,
   document.getElementById('root'),
 )
 

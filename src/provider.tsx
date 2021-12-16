@@ -14,7 +14,7 @@ import { Cookies } from 'react-cookie'
 
 import { AuthenticatedUserFragment } from '__generated__/graphql'
 
-const apiUri = 'http://olm-api.test/graphql'
+const apiUri = 'https://olm-api.test/graphql'
 let authToken = ''
 let authTokenExp: Date | null = null
 
