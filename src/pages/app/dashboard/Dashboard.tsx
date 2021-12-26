@@ -1,4 +1,6 @@
-import React, { useEffect } from 'react'
+import React, { 
+  // useEffect 
+} from 'react'
 
 import { Card } from 'components'
 
@@ -18,7 +20,7 @@ import { Card } from 'components'
 // })
 
 const Dashboard: React.FC = () => {
-  let init = false
+  // let init = false
 
   // useEffect(() => {
   //   //@ts-ignore

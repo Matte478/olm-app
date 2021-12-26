@@ -1,4 +1,5 @@
 import CIcon from '@coreui/icons-react'
+import { ReservationBasicFragment } from '__generated__/graphql'
 
 export interface SidebarNavItemBadge {
   color:
@@ -77,4 +78,8 @@ export interface Reservation {
   title: string
   start: Date
   end: Date
+}
+
+export interface ReservationWithDeviceId extends ReservationBasicFragment {
+  device_id: string
 }

@@ -15,66 +15,64 @@ import { toast } from 'react-toast'
 import DatePicker from 'react-datepicker'
 
 import {
-  CreateReservationInput,
   DeviceWithReservationsFragment,
-  useCreateReservationMutation,
+  UpdateReservationInput,
+  useUpdateReservationMutation,
 } from '__generated__/graphql'
-import { ButtonSave, ErrorNotifier, SpinnerOverlay } from 'components'
+import { ReservationWithDeviceId } from 'types'
 import { formatDeviceName } from 'utils'
+import { ButtonSave, ErrorNotifier, SpinnerOverlay } from 'components'
 
 interface Props {
   devices: DeviceWithReservationsFragment[]
   selectedDevice: string
   visible: boolean
+  reservation: ReservationWithDeviceId
   handleClose: () => void
-  handleNewReservation: () => void
-  reservationStart?: Date
-  reservationEnd?: Date
+  handleEditReservation: () => void
 }
 
-const CreateReservationModal: React.FC<Props> = ({
+const EditReservationModal: React.FC<Props> = ({
   devices,
-  selectedDevice,
   visible,
+  reservation,
   handleClose,
-  handleNewReservation,
-  reservationStart,
-  reservationEnd,
+  handleEditReservation,
 }: Props) => {
   const { t } = useTranslation()
-  const [createReservationMutation, { loading, error, reset }] = useCreateReservationMutation()
+  const [updateReservationMutation, { loading, error, reset }] = useUpdateReservationMutation()
 
-  const [createReservationInput, setCreateReservationInput] = useState<CreateReservationInput>({
-    device_id: selectedDevice,
-    start: reservationStart || new Date(),
-    end: reservationStart || new Date(),
+  const [updateReservationInput, setUpdateReservationInput] = useState<UpdateReservationInput>({
+    id: reservation.id,
+    start: reservation.start,
+    end: reservation.end,
   })
 
   useEffect(() => {
-    setCreateReservationInput({
-      device_id: selectedDevice,
-      start: reservationStart || new Date(),
-      end: reservationStart || new Date(),
+    setUpdateReservationInput({
+      id: reservation.id,
+      start: reservation.start,
+      end: reservation.end,
     })
-  }, [selectedDevice, reservationStart, reservationEnd])
+  }, [reservation])
 
   const handleCreateReservation = async (event: React.FormEvent) => {
     event.preventDefault()
 
-    await createReservationMutation({
+    await updateReservationMutation({
       variables: {
-        createReservationInput: {
-          ...createReservationInput,
-          start: moment(createReservationInput.start).format('YYYY-MM-DD HH:mm:ss'),
-          end: moment(createReservationInput.end).format('YYYY-MM-DD HH:mm:ss'),
+        updateReservationInput: {
+          ...updateReservationInput,
+          start: moment(updateReservationInput.start).format('YYYY-MM-DD HH:mm:ss'),
+          end: moment(updateReservationInput.end).format('YYYY-MM-DD HH:mm:ss'),
         },
       },
     })
       .then((data) => {
-        if (data.data?.createReservation) {
-          toast.success(t('reservations.create.success'))
+        if (data.data?.updateReservation) {
+          toast.success(t('reservations.update.success'))
           handleClose()
-          handleNewReservation()
+          handleEditReservation()
         }
       })
       .catch((error) => {
@@ -95,7 +93,7 @@ const CreateReservationModal: React.FC<Props> = ({
         }}
       >
         <CModalHeader>
-          <CModalTitle>{t('reservations.create.title')}</CModalTitle>
+          <CModalTitle>{t('reservations.update.title')}</CModalTitle>
         </CModalHeader>
         <CForm onSubmit={handleCreateReservation}>
           <CModalBody>
@@ -103,7 +101,7 @@ const CreateReservationModal: React.FC<Props> = ({
             <CFormSelect
               className="mb-3 text-center"
               aria-label="device"
-              value={selectedDevice}
+              value={reservation.device_id}
               disabled
             >
               {devices.map((device) => (
@@ -115,26 +113,23 @@ const CreateReservationModal: React.FC<Props> = ({
             <CFormLabel>Time range </CFormLabel>&nbsp;&nbsp;
             <div className="d-flex flex-column flex-sm-row justify-content-between align-items-center">
               <DatePicker
-                selected={createReservationInput.start}
+                selected={updateReservationInput.start}
                 onChange={(date: Date) =>
-                  setCreateReservationInput({ ...createReservationInput, start: date })
+                  setUpdateReservationInput({ ...updateReservationInput, start: date })
                 }
                 timeInputLabel="Time:"
                 dateFormat="dd.MM.yyyy | HH:mm"
                 showTimeInput
-                className="width-auto"
-                // showTimeSelect
               />
               <span> - </span>
               <DatePicker
-                selected={createReservationInput.end}
+                selected={updateReservationInput.end}
                 onChange={(date: Date) =>
-                  setCreateReservationInput({ ...createReservationInput, end: date })
+                  setUpdateReservationInput({ ...updateReservationInput, end: date })
                 }
                 timeInputLabel="Time:"
                 dateFormat="dd.MM.yyyy | HH:mm"
                 showTimeInput
-                // showTimeSelect
               />
             </div>
           </CModalBody>
@@ -147,4 +142,4 @@ const CreateReservationModal: React.FC<Props> = ({
   )
 }
 
-export default CreateReservationModal
+export default EditReservationModal

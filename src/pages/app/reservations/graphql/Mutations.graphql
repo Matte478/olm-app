@@ -1,7 +1,11 @@
 mutation CreateReservation($createReservationInput: CreateReservationInput!) {
   createReservation(input: $createReservationInput) {
     id
-    start
-    end
+  }
+}
+
+mutation UpdateReservation($updateReservationInput: UpdateReservationInput!) {
+  updateReservation(input: $updateReservationInput) {
+    id
   }
 }

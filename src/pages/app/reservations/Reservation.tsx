@@ -4,7 +4,6 @@ import { cilCalendar } from '@coreui/icons'
 import { Card, ErrorNotifier, SpinnerOverlay } from 'components'
 import ReservationCalendar from './ReservationCalendar'
 
-import eventsData from './events'
 import { useDevicesQuery } from '__generated__/graphql'
 
 const Reservation: React.FC = () => {
@@ -15,9 +14,9 @@ const Reservation: React.FC = () => {
   if (error) return <ErrorNotifier error={error} />
 
   return (
-    <Card icon={cilCalendar} title={t('reservation.index.title')}>
+    <Card icon={cilCalendar} title={t('reservations.index.title')}>
       {data?.devices && (
-        <ReservationCalendar reservations={eventsData} devices={data.devices} refetch={refetch} />
+        <ReservationCalendar devices={data.devices} refetch={refetch} />
       )}
     </Card>
   )

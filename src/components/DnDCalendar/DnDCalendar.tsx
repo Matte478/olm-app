@@ -13,6 +13,8 @@ import { Cookies } from 'react-cookie'
 interface Props {
   events: Event[]
   handleCreateEvent: (event: any) => any
+  handleSelectEvent: (event: any) => any
+  onEventDrop?: (event: any) => any
   height?: string
 }
 
@@ -32,10 +34,10 @@ class DnDCalendar extends React.Component<Props> {
         resizable
         localizer={localizer}
         events={this.props.events}
-        onEventDrop={console.log}
+        onEventDrop={this.props.onEventDrop}
         onEventResize={console.log}
         onSelectSlot={this.props.handleCreateEvent}
-        onSelectEvent={console.log}
+        onSelectEvent={this.props.handleSelectEvent}
         // onDragStart={console.log}
         defaultView={Views.WEEK}
         style={{ height: this.props.height }}

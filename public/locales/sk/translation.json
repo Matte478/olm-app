@@ -151,14 +151,21 @@
   },
 
   "reservations": {
+    "columns": {
+      "select_device": "Vyberte zariadenie"
+    },
     "index": {
       "title": "Rezervácie"
     },
     "create": {
-      "success": "Rezervácia bola vytvorená!"
+      "title": "Vytvoriť rezerváciu",
+      "success": "Rezervácia bola vytvorená!",
+      "error": "Rezerváciu nebolo možné vytvoriť!"
     },
     "update": {
-      "success": "Rezervácia bola zmenená!"
+      "title": "Upraviť rezerváciu",
+      "success": "Rezervácia bola zmenená!",
+      "error": "Rezerváciu nebolo možné upraviť!"
     },
     "delete": {
       "confirm": "Naozaj chcete vymazať danú rezerváciu?",

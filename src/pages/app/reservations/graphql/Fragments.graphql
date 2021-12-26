@@ -1,0 +1,13 @@
+fragment DeviceWithReservations on Device {
+    ...DeviceBasic
+    reservations {
+      ...ReservationBasic
+    }
+}
+
+fragment ReservationBasic on Reservation {
+  id
+  title
+  start
+  end
+}

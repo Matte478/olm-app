@@ -8,7 +8,7 @@ fragment ServerBasic on Server {
   deleted_at
 
   devices(trashed: $trashedDevices) {
-    ...DevideBasic
+    ...DeviceBasic
   }
 }
 
@@ -18,19 +18,19 @@ fragment ServerExtended on Server {
   websocket_port
 }
 
-fragment DevideBasic on Device {
+fragment DeviceBasic on Device {
   id
   name
   deleted_at
   deviceType {
-    ...DevideTypeBasic
+    ...DeviceTypeBasic
   }
   software {
     ...SoftwareBasic
   }
 }
 
-fragment DevideTypeBasic on DeviceType {
+fragment DeviceTypeBasic on DeviceType {
   name
 }
 

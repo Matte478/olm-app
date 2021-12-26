@@ -1,21 +1,5 @@
 query Devices {
   devices {
-    id
-    name
-    created_at
-    updated_at
-    deleted_at
-    deviceType {
-      name
-    }
-    software {
-      name
-    }
-    reservations {
-      id
-      start
-      end
-      title
-    }
+    ...DeviceWithReservations
   }
 }
