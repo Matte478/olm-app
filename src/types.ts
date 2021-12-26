@@ -67,7 +67,7 @@ export interface TableAction {
 }
 
 export interface Event {
-  id: number
+  id: string
   title: string
   start: Date
   end: Date

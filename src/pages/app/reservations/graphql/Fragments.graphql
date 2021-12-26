@@ -1,8 +1,8 @@
 fragment DeviceWithReservations on Device {
-    ...DeviceBasic
-    reservations {
-      ...ReservationBasic
-    }
+  ...DeviceBasic
+  reservations {
+    ...ReservationBasic
+  }
 }
 
 fragment ReservationBasic on Reservation {
@@ -10,4 +10,7 @@ fragment ReservationBasic on Reservation {
   title
   start
   end
+  user {
+    id
+  }
 }

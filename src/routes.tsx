@@ -130,7 +130,11 @@ const routes = (loggedIn: boolean) => [
       },
       {
         path: '/reservations',
-        element: <Reservation />,
+        element: (
+          <Can permission="reservation.show" notify={true}>
+            <Reservation />
+          </Can>
+        ),
       },
       {
         path: '/servers',

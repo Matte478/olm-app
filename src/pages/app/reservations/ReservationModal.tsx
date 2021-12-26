@@ -22,16 +22,18 @@ import { ButtonSave, ErrorNotifier } from 'components'
 import { ApolloError } from '@apollo/client'
 
 interface Props {
+  title: string
   devices: DeviceWithReservationsFragment[]
   selectedDevice: string
   visible: boolean
   reservation: CreateReservationInput | UpdateReservationInput
-  handleSubmit: any
+  handleSubmit: (input: any) => Promise<void>
   handleClose: () => void
   error?: ApolloError
 }
 
 const ReservationModal: React.FC<Props> = ({
+  title,
   devices,
   visible,
   reservation,
@@ -70,7 +72,7 @@ const ReservationModal: React.FC<Props> = ({
     <>
       <CModal visible={visible} alignment="center" onDismiss={handleClose}>
         <CModalHeader>
-          <CModalTitle>{t('reservations.update.title')}</CModalTitle>
+          <CModalTitle>{title}</CModalTitle>
         </CModalHeader>
         <CForm onSubmit={handleCreateReservation}>
           <CModalBody>
@@ -87,12 +89,12 @@ const ReservationModal: React.FC<Props> = ({
                 </option>
               ))}
             </CFormSelect>
-            <CFormLabel>Time range </CFormLabel>&nbsp;&nbsp;
+            <CFormLabel>{t('reservations.columns.time_range')}</CFormLabel>&nbsp;&nbsp;
             <div className="d-flex flex-column flex-sm-row justify-content-between align-items-center">
               <DatePicker
                 selected={reservationInput.start}
                 onChange={(date: Date) => setReservationInput({ ...reservationInput, start: date })}
-                timeInputLabel="Time:"
+                timeInputLabel={`${t('reservations.columns.time')}:`}
                 dateFormat="dd.MM.yyyy | HH:mm"
                 showTimeInput
               />
@@ -100,7 +102,7 @@ const ReservationModal: React.FC<Props> = ({
               <DatePicker
                 selected={reservationInput.end}
                 onChange={(date: Date) => setReservationInput({ ...reservationInput, end: date })}
-                timeInputLabel="Time:"
+                timeInputLabel={`${t('reservations.columns.time')}:`}
                 dateFormat="dd.MM.yyyy | HH:mm"
                 showTimeInput
               />

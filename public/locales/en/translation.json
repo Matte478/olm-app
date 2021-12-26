@@ -152,7 +152,9 @@
 
   "reservations": {
     "columns": {
-      "select_device": "Select a device"
+      "select_device": "Select a device",
+      "time_range": "Time",
+      "time": "Time"
     },
     "index": {
       "title": "Reservations"

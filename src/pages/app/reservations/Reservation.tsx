@@ -15,9 +15,7 @@ const Reservation: React.FC = () => {
 
   return (
     <Card icon={cilCalendar} title={t('reservations.index.title')}>
-      {data?.devices && (
-        <ReservationCalendar devices={data.devices} refetch={refetch} />
-      )}
+      {data?.devices && <ReservationCalendar devices={data.devices} refetch={refetch} />}
     </Card>
   )
 }

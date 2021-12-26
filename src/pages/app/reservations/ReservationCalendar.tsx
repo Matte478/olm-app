@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { CFormSelect } from '@coreui/react'
 import { Presets } from 'react-component-transition'
 import { useTranslation } from 'react-i18next'
@@ -8,22 +8,25 @@ import moment from 'moment'
 import {
   CreateReservationInput,
   DeviceWithReservationsFragment,
+  ReservationBasicFragment,
   UpdateReservationInput,
   useCreateReservationMutation,
   useUpdateReservationMutation,
 } from '__generated__/graphql'
 import { formatDeviceName } from 'utils'
 import { DnDCalendar, SpinnerOverlay } from 'components'
-import ReservationModal from './ReservationModal'
 import { ReservationWithDeviceId } from 'types'
+import { AppStateContext } from 'provider'
+import ReservationModal from './ReservationModal'
+import { stringOrDate } from 'react-big-calendar'
 
 interface Props {
   devices: DeviceWithReservationsFragment[]
   refetch: () => void
 }
 
-const formatReservations = (reservations: any, deviceId: string) =>
-  reservations.map((reservation: any) => {
+const formatReservations = (reservations: ReservationBasicFragment[], deviceId: string) =>
+  reservations.map((reservation) => {
     return {
       ...reservation,
       start: new Date(reservation.start),
@@ -33,10 +36,24 @@ const formatReservations = (reservations: any, deviceId: string) =>
   })
 
 const ReservationCalendar: React.FC<Props> = ({ devices, refetch }: Props) => {
+  const { appState } = useContext(AppStateContext)
   const { t } = useTranslation()
+
   const [selectedDevice, setSelectedDevice] = useState<string>()
   const [visibleCreateModal, setVisibleCreateModal] = useState(false)
   const [visibleEditModal, setVisibleEditModal] = useState(false)
+
+  const [reservations, setReservations] = useState<ReservationWithDeviceId[]>()
+
+  useEffect(() => {
+    if (!selectedDevice) return
+    setReservations(
+      formatReservations(
+        devices.find((device) => selectedDevice === device.id)?.reservations ?? [],
+        selectedDevice,
+      ),
+    )
+  }, [devices, selectedDevice])
 
   const [newReservationTime, setNewReservationTime] = useState<{
     start: Date
@@ -47,7 +64,7 @@ const ReservationCalendar: React.FC<Props> = ({ devices, refetch }: Props) => {
   const [createReservationMutation, createReservation] = useCreateReservationMutation()
   const [updateReservationMutation, updateReservation] = useUpdateReservationMutation()
 
-  const handleCreateSubmit = (createReservationInput: CreateReservationInput) => {
+  const handleCreateReservation = (createReservationInput: CreateReservationInput) => {
     return createReservationMutation({
       variables: {
         createReservationInput: {
@@ -65,11 +82,12 @@ const ReservationCalendar: React.FC<Props> = ({ devices, refetch }: Props) => {
       })
       .catch(() => {
         toast.error(t('reservations.create.error'))
-        throw new Error()
+        refetch()
+        // throw new Error()
       })
   }
 
-  const handleUpdateSubmit = (updateReservationInput: UpdateReservationInput) => {
+  const handleUpdateReservation = (updateReservationInput: UpdateReservationInput) => {
     return updateReservationMutation({
       variables: {
         updateReservationInput: {
@@ -87,8 +105,37 @@ const ReservationCalendar: React.FC<Props> = ({ devices, refetch }: Props) => {
       })
       .catch(() => {
         toast.error(t('reservations.update.error'))
-        throw new Error()
+        refetch()
+        // throw new Error()
       })
+  }
+
+  const handleInteractiveUpdate = (data: {
+    start: stringOrDate
+    end: stringOrDate
+    event: Object
+  }) => {
+    if (!reservations) return
+
+    setReservations(
+      reservations.map((reservation) => {
+        return reservation.id === (data.event as ReservationWithDeviceId).id
+          ? { ...reservation, start: data.start, end: data.end }
+          : reservation
+      }),
+    )
+
+    handleUpdateReservation({
+      id: (data.event as ReservationWithDeviceId).id,
+      start: data.start,
+      end: data.end,
+    })
+  }
+
+  const eventPropGetter = (event: ReservationWithDeviceId) => {
+    return {
+      className: event?.user.id === appState.authUser?.id ? 'my-event' : 'general-event',
+    }
   }
 
   return (
@@ -99,6 +146,7 @@ const ReservationCalendar: React.FC<Props> = ({ devices, refetch }: Props) => {
 
       {selectedDevice && (
         <ReservationModal
+          title={t('reservations.create.title')}
           devices={devices}
           selectedDevice={selectedDevice}
           visible={visibleCreateModal}
@@ -106,7 +154,7 @@ const ReservationCalendar: React.FC<Props> = ({ devices, refetch }: Props) => {
             createReservation.reset()
             setVisibleCreateModal(false)
           }}
-          handleSubmit={handleCreateSubmit}
+          handleSubmit={handleCreateReservation}
           reservation={{
             device_id: selectedDevice,
             start: newReservationTime?.start || new Date(),
@@ -118,6 +166,7 @@ const ReservationCalendar: React.FC<Props> = ({ devices, refetch }: Props) => {
 
       {editReservation && (
         <ReservationModal
+          title={t('reservations.update.title')}
           devices={devices}
           selectedDevice={editReservation.device_id}
           visible={visibleEditModal}
@@ -125,7 +174,7 @@ const ReservationCalendar: React.FC<Props> = ({ devices, refetch }: Props) => {
             setVisibleEditModal(false)
             updateReservation.reset()
           }}
-          handleSubmit={handleUpdateSubmit}
+          handleSubmit={handleUpdateReservation}
           reservation={{
             id: editReservation.id,
             start: editReservation.start,
@@ -153,22 +202,21 @@ const ReservationCalendar: React.FC<Props> = ({ devices, refetch }: Props) => {
         ))}
       </CFormSelect>
       <Presets.TransitionFade>
-        {selectedDevice && (
+        {reservations && (
           <DnDCalendar
             height="calc(100vh - 240px)"
-            events={formatReservations(
-              devices.find((device) => selectedDevice === device.id)?.reservations,
-              selectedDevice,
-            )}
-            handleCreateEvent={({ start, end }) => {
-              setNewReservationTime({ start, end })
+            events={reservations}
+            handleSelectSlot={({ start, end }) => {
+              setNewReservationTime({ start: new Date(start), end: new Date(end) })
               setVisibleCreateModal(true)
             }}
             handleSelectEvent={(reservation) => {
-              setEditReservation(reservation)
-              console.log(reservation)
+              setEditReservation(reservation as ReservationWithDeviceId)
               setVisibleEditModal(true)
             }}
+            handleEventDrop={handleInteractiveUpdate}
+            handleEventResize={handleInteractiveUpdate}
+            eventPropGetter={(event) => eventPropGetter(event as ReservationWithDeviceId)}
           />
         )}
       </Presets.TransitionFade>

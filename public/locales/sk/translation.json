@@ -152,7 +152,9 @@
 
   "reservations": {
     "columns": {
-      "select_device": "Vyberte zariadenie"
+      "select_device": "Vyberte zariadenie",
+      "time_range": "Čas",
+      "time": "Čas"
     },
     "index": {
       "title": "Rezervácie"
