@@ -1,9 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { CFormSelect } from '@coreui/react'
+import { CButton, CFormSelect } from '@coreui/react'
 import { Presets } from 'react-component-transition'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toast'
 import moment from 'moment'
+import { stringOrDate } from 'react-big-calendar'
+import { cilTrash } from '@coreui/icons'
+import CIcon from '@coreui/icons-react'
 
 import {
   CreateReservationInput,
@@ -11,6 +14,7 @@ import {
   ReservationBasicFragment,
   UpdateReservationInput,
   useCreateReservationMutation,
+  useDeleteReservationMutation,
   useUpdateReservationMutation,
 } from '__generated__/graphql'
 import { formatDeviceName } from 'utils'
@@ -18,7 +22,7 @@ import { DnDCalendar, SpinnerOverlay } from 'components'
 import { ReservationWithDeviceId } from 'types'
 import { AppStateContext } from 'provider'
 import ReservationModal from './ReservationModal'
-import { stringOrDate } from 'react-big-calendar'
+import { can } from 'utils/permissions'
 
 interface Props {
   devices: DeviceWithReservationsFragment[]
@@ -45,6 +49,18 @@ const ReservationCalendar: React.FC<Props> = ({ devices, refetch }: Props) => {
 
   const [reservations, setReservations] = useState<ReservationWithDeviceId[]>()
 
+  const hasCreatePermission = () => can('reservation.create', appState.authUser)
+
+  const hasUpdatePermission = (reservation: ReservationWithDeviceId) =>
+    moment(reservation.start).isAfter() &&
+    (can('reservation.update_all', appState.authUser) ||
+      can('reservation.update_own', appState.authUser, (user) => user.id === reservation.user.id))
+
+  const hasDeletePermission = (reservation: ReservationWithDeviceId) =>
+    moment(reservation.start).isAfter() &&
+    (can('reservation.delete_all', appState.authUser) ||
+      can('reservation.delete_own', appState.authUser, (user) => user.id === reservation.user.id))
+
   useEffect(() => {
     if (!selectedDevice) return
     setReservations(
@@ -63,6 +79,7 @@ const ReservationCalendar: React.FC<Props> = ({ devices, refetch }: Props) => {
 
   const [createReservationMutation, createReservation] = useCreateReservationMutation()
   const [updateReservationMutation, updateReservation] = useUpdateReservationMutation()
+  const [deleteReservationMutation, deleteReservation] = useDeleteReservationMutation()
 
   const handleCreateReservation = (createReservationInput: CreateReservationInput) => {
     return createReservationMutation({
@@ -76,13 +93,15 @@ const ReservationCalendar: React.FC<Props> = ({ devices, refetch }: Props) => {
     })
       .then((data) => {
         if (data.data?.createReservation) {
-          toast.success(t('reservations.create.success'))
           refetch()
+          toast.success(t('reservations.create.success'))
+          createReservation.reset()
+          setVisibleCreateModal(false)
         }
       })
       .catch(() => {
-        toast.error(t('reservations.create.error'))
         refetch()
+        toast.error(t('reservations.create.error'))
         // throw new Error()
       })
   }
@@ -99,15 +118,32 @@ const ReservationCalendar: React.FC<Props> = ({ devices, refetch }: Props) => {
     })
       .then((data) => {
         if (data.data?.updateReservation) {
-          toast.success(t('reservations.update.success'))
           refetch()
+          toast.success(t('reservations.update.success'))
+          setVisibleEditModal(false)
+          updateReservation.reset()
         }
       })
       .catch(() => {
-        toast.error(t('reservations.update.error'))
         refetch()
+        toast.error(t('reservations.update.error'))
         // throw new Error()
       })
+  }
+
+  const handleDeleteReservation = async (id: string) => {
+    let response = window.confirm(t('reservations.delete.confirm'))
+    if (response) {
+      await deleteReservationMutation({
+        variables: { id },
+      })
+        .then(() => {
+          refetch()
+          setVisibleEditModal(false)
+          toast.success(t('reservations.delete.success'))
+        })
+        .catch(() => {})
+    }
   }
 
   const handleInteractiveUpdate = (data: {
@@ -116,14 +152,16 @@ const ReservationCalendar: React.FC<Props> = ({ devices, refetch }: Props) => {
     event: Object
   }) => {
     if (!reservations) return
+    if (!hasUpdatePermission(data.event as ReservationWithDeviceId)) return
 
-    setReservations(
-      reservations.map((reservation) => {
-        return reservation.id === (data.event as ReservationWithDeviceId).id
-          ? { ...reservation, start: data.start, end: data.end }
-          : reservation
-      }),
-    )
+    // TODO
+    // setReservations(
+    //   reservations.map((reservation) => {
+    //     return reservation.id === (data.event as ReservationWithDeviceId).id
+    //       ? { ...reservation, start: data.start, end: data.end }
+    //       : reservation
+    //   }),
+    // )
 
     handleUpdateReservation({
       id: (data.event as ReservationWithDeviceId).id,
@@ -140,7 +178,7 @@ const ReservationCalendar: React.FC<Props> = ({ devices, refetch }: Props) => {
 
   return (
     <>
-      {(createReservation.loading || updateReservation.loading) && (
+      {(createReservation.loading || updateReservation.loading || deleteReservation.loading) && (
         <SpinnerOverlay transparent={true} />
       )}
 
@@ -150,11 +188,11 @@ const ReservationCalendar: React.FC<Props> = ({ devices, refetch }: Props) => {
           devices={devices}
           selectedDevice={selectedDevice}
           visible={visibleCreateModal}
+          handleSubmit={handleCreateReservation}
           handleClose={() => {
             createReservation.reset()
             setVisibleCreateModal(false)
           }}
-          handleSubmit={handleCreateReservation}
           reservation={{
             device_id: selectedDevice,
             start: newReservationTime?.start || new Date(),
@@ -170,17 +208,31 @@ const ReservationCalendar: React.FC<Props> = ({ devices, refetch }: Props) => {
           devices={devices}
           selectedDevice={editReservation.device_id}
           visible={visibleEditModal}
-          handleClose={() => {
-            setVisibleEditModal(false)
-            updateReservation.reset()
-          }}
           handleSubmit={handleUpdateReservation}
+          handleClose={() => {
+            updateReservation.reset()
+            setVisibleEditModal(false)
+          }}
           reservation={{
             id: editReservation.id,
             start: editReservation.start,
             end: editReservation.end,
           }}
           error={updateReservation.error}
+          additional={
+            hasDeletePermission(editReservation) ? (
+              <CButton
+                className="d-inline-flex justify-content-center align-items-center text-light"
+                color="danger"
+                onClick={() => handleDeleteReservation(editReservation.id)}
+              >
+                <CIcon className="me-1" content={cilTrash} />
+                {t('actions.delete')}
+              </CButton>
+            ) : (
+              <></>
+            )
+          }
         />
       )}
 
@@ -207,15 +259,21 @@ const ReservationCalendar: React.FC<Props> = ({ devices, refetch }: Props) => {
             height="calc(100vh - 240px)"
             events={reservations}
             handleSelectSlot={({ start, end }) => {
+              if (!hasCreatePermission()) return
+
               setNewReservationTime({ start: new Date(start), end: new Date(end) })
               setVisibleCreateModal(true)
             }}
-            handleSelectEvent={(reservation) => {
-              setEditReservation(reservation as ReservationWithDeviceId)
+            handleSelectEvent={(event) => {
+              const reservation = event as ReservationWithDeviceId
+              if (!hasUpdatePermission(reservation)) return
+
+              setEditReservation(reservation)
               setVisibleEditModal(true)
             }}
             handleEventDrop={handleInteractiveUpdate}
             handleEventResize={handleInteractiveUpdate}
+            draggableAccessor={(event) => hasUpdatePermission(event as ReservationWithDeviceId)}
             eventPropGetter={(event) => eventPropGetter(event as ReservationWithDeviceId)}
           />
         )}

@@ -30,6 +30,7 @@ interface Props {
   handleSubmit: (input: any) => Promise<void>
   handleClose: () => void
   error?: ApolloError
+  additional?: JSX.Element
 }
 
 const ReservationModal: React.FC<Props> = ({
@@ -41,6 +42,7 @@ const ReservationModal: React.FC<Props> = ({
   handleSubmit,
   handleClose,
   error,
+  additional,
 }: Props) => {
   const { t } = useTranslation()
 
@@ -64,7 +66,7 @@ const ReservationModal: React.FC<Props> = ({
     event.preventDefault()
 
     await handleSubmit(reservationInput)
-      .then(handleClose)
+      .then(() => {})
       .catch(() => {})
   }
 
@@ -109,6 +111,7 @@ const ReservationModal: React.FC<Props> = ({
             </div>
           </CModalBody>
           <CModalFooter>
+            {additional && additional}
             <ButtonSave />
           </CModalFooter>
         </CForm>

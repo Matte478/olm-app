@@ -29,6 +29,7 @@ interface Props {
     isAllDay: boolean
   }) => void
   eventPropGetter?: (event: Object) => { className?: string; style?: Object }
+  draggableAccessor?: (event: Object) => boolean
   height?: string
 }
 
@@ -55,13 +56,14 @@ const dateCellWrapper = ({ value, children }: any) => {
   })
 }
 
-const DnDCalendar = ({
+const DnDCalendar: React.FC<Props> = ({
   events,
   handleSelectSlot,
   handleSelectEvent,
   handleEventDrop,
   handleEventResize,
   eventPropGetter,
+  draggableAccessor,
   height,
 }: Props) => {
   return (
@@ -75,11 +77,14 @@ const DnDCalendar = ({
       onSelectEvent={handleSelectEvent}
       onEventDrop={handleEventDrop}
       onEventResize={handleEventResize}
+      draggableAccessor={draggableAccessor}
       defaultView={Views.WEEK}
-      style={{ height: height }}
       allDayAccessor={() => false}
       eventPropGetter={eventPropGetter}
       dayLayoutAlgorithm="overlap"
+      style={{ height: height }}
+      step={15}
+      timeslots={4}
       components={{
         dateCellWrapper,
         timeSlotWrapper,

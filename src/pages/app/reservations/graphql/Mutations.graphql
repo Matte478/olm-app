@@ -9,3 +9,9 @@ mutation UpdateReservation($updateReservationInput: UpdateReservationInput!) {
     id
   }
 }
+
+mutation DeleteReservation($id: ID!) {
+  deleteReservation(id: $id) {
+    id
+  }
+}
