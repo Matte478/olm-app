@@ -3,3 +3,12 @@ query Devices {
     ...DeviceWithReservations
   }
 }
+
+query ServersWithDevices($production: Boolean) {
+  servers(production: $production) {
+    production
+    devices {
+      ...DeviceWithReservations
+    }
+  }
+}

@@ -1,4 +1,4 @@
-import React, { createContext, useState, ReactNode } from 'react'
+import { createContext, useState, ReactNode } from 'react'
 import {
   ApolloProvider,
   ApolloClient,
@@ -6,6 +6,7 @@ import {
   HttpLink,
   ApolloLink,
   DefaultOptions,
+  Observable,
 } from '@apollo/client'
 import { onError } from '@apollo/link-error'
 import { TokenRefreshLink } from 'apollo-link-token-refresh'
@@ -113,11 +114,41 @@ function AppStateProvider({ children }: { children: ReactNode }) {
     }
   })
 
-  const errorLink = onError(({ graphQLErrors, networkError }) => {
-    if (graphQLErrors)
-      graphQLErrors.forEach(({ message, locations, path }) =>
-        console.log(`[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`),
-      )
+  const errorLink = onError(({ graphQLErrors, networkError, operation, forward }) => {
+    if (graphQLErrors && graphQLErrors[0].message === 'Unauthenticated.') {
+      const cookies = new Cookies()
+      const refreshToken = cookies.get('refresh_token')
+      if (refreshToken) {
+        return new Observable((observer) => {
+          fetchAccessToken()
+            .then(({ accessToken }: { accessToken: { token: string; exp: number } }) => {
+              if (!accessToken.token) return
+
+              appSetAuthToken(accessToken.token, accessToken.exp)
+
+              const oldHeaders = operation.getContext().headers
+              operation.setContext({
+                headers: {
+                  ...oldHeaders,
+                  authorization: `Bearer ${accessToken.token}`,
+                },
+              })
+            })
+            .then(() => {
+              const subscriber = {
+                next: observer.next.bind(observer),
+                error: observer.error.bind(observer),
+                complete: observer.complete.bind(observer),
+              }
+
+              forward(operation).subscribe(subscriber)
+            })
+            .catch((error) => {
+              observer.error(error)
+            })
+        })
+      }
+    }
 
     if (networkError) console.log(`[Network error]: ${networkError}`)
   })

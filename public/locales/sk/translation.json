@@ -157,7 +157,8 @@
       "time": "Čas"
     },
     "index": {
-      "title": "Rezervácie"
+      "title": "Rezervácie",
+      "not_production": "nie je produkčný"
     },
     "create": {
       "title": "Vytvoriť rezerváciu",

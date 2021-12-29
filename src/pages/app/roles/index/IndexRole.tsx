@@ -23,7 +23,7 @@ const IndexRole: React.FC = () => {
         </Can>
       }
     >
-      <IndexRoleTable roles={data!.roles} refetch={refetch} />
+      {data?.roles && <IndexRoleTable roles={data.roles} refetch={refetch} />}
     </Card>
   )
 }

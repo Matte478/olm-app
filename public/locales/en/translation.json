@@ -157,7 +157,8 @@
       "time": "Time"
     },
     "index": {
-      "title": "Reservations"
+      "title": "Reservations",
+      "not_production": "is not production"
     },
     "create": {
       "title": "Create reservation",

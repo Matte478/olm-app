@@ -10,7 +10,6 @@ import CIcon from '@coreui/icons-react'
 
 import {
   CreateReservationInput,
-  DeviceWithReservationsFragment,
   ReservationBasicFragment,
   UpdateReservationInput,
   useCreateReservationMutation,
@@ -19,13 +18,13 @@ import {
 } from '__generated__/graphql'
 import { formatDeviceName } from 'utils'
 import { DnDCalendar, SpinnerOverlay } from 'components'
-import { ReservationWithDeviceId } from 'types'
+import { DeviceWithReservationsExtended, ReservationWithDeviceId } from 'types'
 import { AppStateContext } from 'provider'
 import ReservationModal from './ReservationModal'
 import { can } from 'utils/permissions'
 
 interface Props {
-  devices: DeviceWithReservationsFragment[]
+  devices: DeviceWithReservationsExtended[]
   refetch: () => void
 }
 
@@ -49,7 +48,8 @@ const ReservationCalendar: React.FC<Props> = ({ devices, refetch }: Props) => {
 
   const [reservations, setReservations] = useState<ReservationWithDeviceId[]>()
 
-  const hasCreatePermission = () => can('reservation.create', appState.authUser)
+  const hasCreatePermission = () =>
+    can(['reservation.create_production', 'reservation.create_all'], appState.authUser)
 
   const hasUpdatePermission = (reservation: ReservationWithDeviceId) =>
     moment(reservation.start).isAfter() &&
@@ -95,8 +95,9 @@ const ReservationCalendar: React.FC<Props> = ({ devices, refetch }: Props) => {
         if (data.data?.createReservation) {
           refetch()
           toast.success(t('reservations.create.success'))
-          createReservation.reset()
           setVisibleCreateModal(false)
+          // TODO: https://github.com/apollographql/apollo-client/pull/9210
+          // createReservation.reset()
         }
       })
       .catch(() => {
@@ -121,13 +122,13 @@ const ReservationCalendar: React.FC<Props> = ({ devices, refetch }: Props) => {
           refetch()
           toast.success(t('reservations.update.success'))
           setVisibleEditModal(false)
-          updateReservation.reset()
+          // updateReservation.reset()
         }
+        console.log('prista maria bohava', data)
       })
       .catch(() => {
         refetch()
         toast.error(t('reservations.update.error'))
-        // throw new Error()
       })
   }
 
@@ -190,7 +191,7 @@ const ReservationCalendar: React.FC<Props> = ({ devices, refetch }: Props) => {
           visible={visibleCreateModal}
           handleSubmit={handleCreateReservation}
           handleClose={() => {
-            createReservation.reset()
+            // createReservation.reset()
             setVisibleCreateModal(false)
           }}
           reservation={{
@@ -210,7 +211,7 @@ const ReservationCalendar: React.FC<Props> = ({ devices, refetch }: Props) => {
           visible={visibleEditModal}
           handleSubmit={handleUpdateReservation}
           handleClose={() => {
-            updateReservation.reset()
+            // updateReservation.reset()
             setVisibleEditModal(false)
           }}
           reservation={{
@@ -248,7 +249,10 @@ const ReservationCalendar: React.FC<Props> = ({ devices, refetch }: Props) => {
           {t('reservations.columns.select_device')}
         </option>
         {devices.map((device) => (
-          <option value={device.id} key={device.id} className="text-center">
+          <option value={device.id} key={device.id}>
+            {!device.production
+              ? `[ ${t('reservations.index.not_production').toUpperCase()} ] `
+              : ''}
             {formatDeviceName(device)}
           </option>
         ))}
