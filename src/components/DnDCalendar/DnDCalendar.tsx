@@ -1,7 +1,7 @@
-import React from 'react'
-import { Calendar, Views, momentLocalizer, SlotInfo, stringOrDate } from 'react-big-calendar'
+import React, { useEffect, useState } from 'react'
+import { Calendar, Views, momentLocalizer, SlotInfo, stringOrDate, View } from 'react-big-calendar'
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop'
-import moment from 'moment'
+import moment, { Moment } from 'moment'
 import 'moment/locale/sk'
 import { Cookies } from 'react-cookie'
 
@@ -28,13 +28,26 @@ interface Props {
     end: stringOrDate
     isAllDay: boolean
   }) => void
+  handleChangeTimeRange: (start: Moment, end: Moment, view: View) => void
   eventPropGetter?: (event: Object) => { className?: string; style?: Object }
   draggableAccessor?: (event: Object) => boolean
   height?: string
 }
 
 const cookies = new Cookies()
-moment.locale(cookies.get('i18next') || 'en')
+const locale = cookies.get('i18next') || 'en'
+
+if (locale === 'en') {
+  moment.updateLocale('en', {
+    week: {
+      dow: 1,
+      // doy: 1,
+    },
+  })
+} else {
+  moment.locale(locale)
+}
+
 const localizer = momentLocalizer(moment)
 
 // @ts-ignore
@@ -56,16 +69,50 @@ const dateCellWrapper = ({ value, children }: any) => {
   })
 }
 
+let initialized = false
 const DnDCalendar: React.FC<Props> = ({
   events,
   handleSelectSlot,
   handleSelectEvent,
   handleEventDrop,
   handleEventResize,
+  handleChangeTimeRange,
   eventPropGetter,
   draggableAccessor,
   height,
 }: Props) => {
+  const [view, setView] = useState<View>(Views.WEEK)
+  const [currentDate, setCurrentDate] = useState(moment())
+
+  useEffect(() => {
+    if (!initialized) {
+      initialized = true
+      return
+    }
+
+    let start, end
+
+    switch (view) {
+      case Views.DAY:
+        start = moment(currentDate).startOf('day')
+        end = moment(currentDate).endOf('day')
+        break
+      case Views.WEEK:
+        start = moment(currentDate).startOf('isoWeek')
+        end = moment(currentDate).endOf('isoWeek')
+        break
+      case Views.MONTH:
+        start = moment(currentDate).startOf('month').subtract(7, 'days')
+        end = moment(currentDate).endOf('month').add(7, 'days')
+        break
+      case Views.AGENDA:
+        start = moment(currentDate).startOf('day')
+        end = moment(currentDate).endOf('day').add(1, 'month')
+    }
+
+    if (start && end) handleChangeTimeRange(start, end, view)
+  }, [view, currentDate])
+
   return (
     <DragAndDropCalendar
       popup
@@ -81,6 +128,8 @@ const DnDCalendar: React.FC<Props> = ({
       defaultView={Views.WEEK}
       allDayAccessor={() => false}
       eventPropGetter={eventPropGetter}
+      onNavigate={(date) => setCurrentDate(moment(date))}
+      onView={(view) => setView(view)}
       dayLayoutAlgorithm="overlap"
       style={{ height: height }}
       step={15}

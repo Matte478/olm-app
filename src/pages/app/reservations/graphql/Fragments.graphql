@@ -1,6 +1,6 @@
 fragment DeviceWithReservations on Device {
   ...DeviceBasic
-  reservations {
+  reservations(start: $reservationStart) {
     ...ReservationBasic
   }
 }

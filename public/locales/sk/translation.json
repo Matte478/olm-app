@@ -151,6 +151,7 @@
   },
 
   "reservations": {
+    "maintenance": "Údržba",
     "columns": {
       "select_device": "Vyberte zariadenie",
       "time_range": "Čas",

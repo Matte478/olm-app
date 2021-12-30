@@ -3,10 +3,11 @@ import { CButton, CFormSelect } from '@coreui/react'
 import { Presets } from 'react-component-transition'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toast'
-import moment from 'moment'
-import { stringOrDate } from 'react-big-calendar'
+import moment, { Moment } from 'moment'
+import { stringOrDate, View, Views } from 'react-big-calendar'
 import { cilTrash } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
+import { RRule } from 'rrule'
 
 import {
   CreateReservationInput,
@@ -18,14 +19,18 @@ import {
 } from '__generated__/graphql'
 import { formatDeviceName } from 'utils'
 import { DnDCalendar, SpinnerOverlay } from 'components'
-import { DeviceWithReservationsExtended, ReservationWithDeviceId } from 'types'
+import {
+  DeviceWithReservationsExtended,
+  PlaceholderReservation,
+  ReservationWithDeviceId,
+} from 'types'
 import { AppStateContext } from 'provider'
 import ReservationModal from './ReservationModal'
 import { can } from 'utils/permissions'
 
 interface Props {
   devices: DeviceWithReservationsExtended[]
-  refetch: () => void
+  refetch: (variables?: Object) => Promise<any>
 }
 
 const formatReservations = (reservations: ReservationBasicFragment[], deviceId: string) =>
@@ -38,6 +43,19 @@ const formatReservations = (reservations: ReservationBasicFragment[], deviceId: 
     }
   })
 
+const isPlaceholder = (data: object) =>
+  'title' in data && 'start' in data && 'end' in data && !('user' in data)
+
+let dateRange: {
+  from: Moment
+  to: Moment
+  view?: View
+} = {
+  from: moment().startOf('week'),
+  to: moment().endOf('week'),
+  view: Views.WEEK,
+}
+
 const ReservationCalendar: React.FC<Props> = ({ devices, refetch }: Props) => {
   const { appState } = useContext(AppStateContext)
   const { t } = useTranslation()
@@ -46,7 +64,8 @@ const ReservationCalendar: React.FC<Props> = ({ devices, refetch }: Props) => {
   const [visibleCreateModal, setVisibleCreateModal] = useState(false)
   const [visibleEditModal, setVisibleEditModal] = useState(false)
 
-  const [reservations, setReservations] = useState<ReservationWithDeviceId[]>()
+  const [reservations, setReservations] =
+    useState<(ReservationWithDeviceId | PlaceholderReservation)[]>()
 
   const hasCreatePermission = () =>
     can(['reservation.create_production', 'reservation.create_all'], appState.authUser)
@@ -63,12 +82,17 @@ const ReservationCalendar: React.FC<Props> = ({ devices, refetch }: Props) => {
 
   useEffect(() => {
     if (!selectedDevice) return
-    setReservations(
-      formatReservations(
-        devices.find((device) => selectedDevice === device.id)?.reservations ?? [],
-        selectedDevice,
-      ),
+
+    let reservations: (ReservationBasicFragment | PlaceholderReservation)[] = formatReservations(
+      devices.find((device) => selectedDevice === device.id)?.reservations ?? [],
+      selectedDevice,
     )
+
+    if (dateRange.view !== Views.MONTH) {
+      reservations = [...reservations, ...getPlaceholders()]
+    }
+
+    setReservations(reservations)
   }, [devices, selectedDevice])
 
   const [newReservationTime, setNewReservationTime] = useState<{
@@ -80,6 +104,22 @@ const ReservationCalendar: React.FC<Props> = ({ devices, refetch }: Props) => {
   const [createReservationMutation, createReservation] = useCreateReservationMutation()
   const [updateReservationMutation, updateReservation] = useUpdateReservationMutation()
   const [deleteReservationMutation, deleteReservation] = useDeleteReservationMutation()
+
+  const getPlaceholders = () => {
+    const rule = new RRule({
+      freq: RRule.DAILY,
+      dtstart: dateRange.from.toDate(),
+      until: dateRange.to.toDate(),
+    })
+  
+    return rule.all().map((date) => {
+      return {
+        title: t('reservations.maintenance'),
+        start: moment(date).startOf('day').hours(4).toDate(),
+        end: moment(date).startOf('day').hours(4).minutes(15).toDate(),
+      }
+    })
+  }
 
   const handleCreateReservation = (createReservationInput: CreateReservationInput) => {
     return createReservationMutation({
@@ -103,7 +143,6 @@ const ReservationCalendar: React.FC<Props> = ({ devices, refetch }: Props) => {
       .catch(() => {
         refetch()
         toast.error(t('reservations.create.error'))
-        // throw new Error()
       })
   }
 
@@ -124,7 +163,6 @@ const ReservationCalendar: React.FC<Props> = ({ devices, refetch }: Props) => {
           setVisibleEditModal(false)
           // updateReservation.reset()
         }
-        console.log('prista maria bohava', data)
       })
       .catch(() => {
         refetch()
@@ -171,9 +209,13 @@ const ReservationCalendar: React.FC<Props> = ({ devices, refetch }: Props) => {
     })
   }
 
-  const eventPropGetter = (event: ReservationWithDeviceId) => {
+  const eventPropGetter = (event: Object) => {
     return {
-      className: event?.user.id === appState.authUser?.id ? 'my-event' : 'general-event',
+      className: isPlaceholder(event)
+        ? 'placeholder-event'
+        : (event as ReservationWithDeviceId)?.user.id === appState.authUser?.id
+        ? 'my-event'
+        : 'general-event',
     }
   }
 
@@ -269,16 +311,35 @@ const ReservationCalendar: React.FC<Props> = ({ devices, refetch }: Props) => {
               setVisibleCreateModal(true)
             }}
             handleSelectEvent={(event) => {
+              if (isPlaceholder(event)) return
+
               const reservation = event as ReservationWithDeviceId
               if (!hasUpdatePermission(reservation)) return
 
               setEditReservation(reservation)
               setVisibleEditModal(true)
             }}
-            handleEventDrop={handleInteractiveUpdate}
-            handleEventResize={handleInteractiveUpdate}
-            draggableAccessor={(event) => hasUpdatePermission(event as ReservationWithDeviceId)}
-            eventPropGetter={(event) => eventPropGetter(event as ReservationWithDeviceId)}
+            handleEventDrop={(data) => {
+              if (isPlaceholder(data)) return
+              handleInteractiveUpdate(data)
+            }}
+            handleEventResize={(data) => {
+              if (isPlaceholder(data)) return
+              handleInteractiveUpdate(data)
+            }}
+            handleChangeTimeRange={(start, end, view) => {
+              dateRange = { from: start, to: end, view }
+              refetch({
+                reservationStart: {
+                  from: start.format('YYYY-MM-DD HH:mm:ss'),
+                  to: end.format('YYYY-MM-DD HH:mm:ss'),
+                },
+              })
+            }}
+            draggableAccessor={(event) =>
+              isPlaceholder(event) ? false : hasUpdatePermission(event as ReservationWithDeviceId)
+            }
+            eventPropGetter={eventPropGetter}
           />
         )}
       </Presets.TransitionFade>

@@ -151,6 +151,7 @@
   },
 
   "reservations": {
+    "maintenance": "Maintenance",
     "columns": {
       "select_device": "Select a device",
       "time_range": "Time",

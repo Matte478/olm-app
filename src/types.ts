@@ -67,7 +67,7 @@ export interface TableAction {
 }
 
 export interface Event {
-  id: string
+  // id: string
   title: string
   start: Date
   end: Date
@@ -86,4 +86,10 @@ export interface ReservationWithDeviceId extends ReservationBasicFragment {
 
 export interface DeviceWithReservationsExtended extends DeviceWithReservationsFragment {
   production: boolean
+}
+
+export interface PlaceholderReservation {
+  title: string
+  start: Date
+  end: Date
 }

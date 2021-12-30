@@ -1,10 +1,10 @@
-query Devices {
+query Devices($reservationStart: DateTimeRange) {
   devices {
     ...DeviceWithReservations
   }
 }
 
-query ServersWithDevices($production: Boolean) {
+query ServersWithDevices($production: Boolean, $reservationStart: DateTimeRange) {
   servers(production: $production) {
     production
     devices {

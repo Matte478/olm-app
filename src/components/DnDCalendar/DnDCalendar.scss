@@ -3,7 +3,7 @@
   background-color: var(--cui-light);
 }
 
-.rbc-day-slot .rbc-event,
+.rbc-event,
 .rbc-day-slot .rbc-background-event {
   &.my-event {
     background-color: var(--cui-green);
@@ -12,6 +12,10 @@
   &.general-event {
     background-color: var(--cui-primary);
     border-color: darken(#321fdb, 5%);
+  }
+  &.placeholder-event {
+    background-color: var(--cui-danger);
+    border-color: darken(#e55353, 5%);
   }
 }
 
