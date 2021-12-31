@@ -151,14 +151,25 @@
   },
 
   "reservations": {
+    "maintenance": "Údržba",
+    "columns": {
+      "select_device": "Vyberte zariadenie",
+      "time_range": "Čas",
+      "time": "Čas"
+    },
     "index": {
-      "title": "Rezervácie"
+      "title": "Rezervácie",
+      "not_production": "nie je produkčný"
     },
     "create": {
-      "success": "Rezervácia bola vytvorená!"
+      "title": "Vytvoriť rezerváciu",
+      "success": "Rezervácia bola vytvorená!",
+      "error": "Rezerváciu nebolo možné vytvoriť!"
     },
     "update": {
-      "success": "Rezervácia bola zmenená!"
+      "title": "Upraviť rezerváciu",
+      "success": "Rezervácia bola zmenená!",
+      "error": "Rezerváciu nebolo možné upraviť!"
     },
     "delete": {
       "confirm": "Naozaj chcete vymazať danú rezerváciu?",

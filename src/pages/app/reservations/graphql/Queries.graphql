@@ -1,0 +1,14 @@
+query Devices($reservationStart: DateTimeRange) {
+  devices {
+    ...DeviceWithReservations
+  }
+}
+
+query ServersWithDevices($production: Boolean, $enabled: Boolean = true, $reservationStart: DateTimeRange) {
+  servers(production: $production, enabled: $enabled) {
+    production
+    devices {
+      ...DeviceWithReservations
+    }
+  }
+}

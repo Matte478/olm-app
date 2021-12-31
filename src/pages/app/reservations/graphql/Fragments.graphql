@@ -1,0 +1,16 @@
+fragment DeviceWithReservations on Device {
+  ...DeviceBasic
+  reservations(start: $reservationStart) {
+    ...ReservationBasic
+  }
+}
+
+fragment ReservationBasic on Reservation {
+  id
+  title
+  start
+  end
+  user {
+    id
+  }
+}

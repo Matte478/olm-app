@@ -7,8 +7,14 @@
 // // Import Chart.js custom tooltips styles
 // @import "@coreui/chartjs/scss/coreui-chartjs";
 
+@import "~react-datepicker/src/stylesheets/datepicker";
+
 @import "utils";
 
 @import "layout";
 
 @import "app-toast";
+
+.react-datepicker-wrapper {
+    width: auto;
+}

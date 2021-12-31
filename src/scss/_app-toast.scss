@@ -1,11 +1,12 @@
 .app-toast {
   position: relative;
-  z-index: 1031;
+  z-index: 1080;
 
   --toast-default: #8b1dd0;
   // --toast-success: #d5f1de;
   --toast-success: var(--cui-success);
-  --toast-error: #c52965;
+  // --toast-error: #c52965;
+  --toast-error: var(--cui-danger);
   --toast-info: #004eff;
   --toast-warning: #d0761d;
   --toast-black: #221d26;

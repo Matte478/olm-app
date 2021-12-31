@@ -3,11 +3,11 @@ import { cilDevices } from '@coreui/icons'
 import { CFormSwitch } from '@coreui/react'
 import { useTranslation } from 'react-i18next'
 
-import { DevideBasicFragment } from '__generated__/graphql'
+import { DeviceBasicFragment } from '__generated__/graphql'
 import { Card, Table } from 'components'
 
 interface Props {
-  devices: DevideBasicFragment[]
+  devices: DeviceBasicFragment[]
   withTrashedDevices: boolean
   setWithTrashedDevices: (withTrashed: boolean) => void
 }

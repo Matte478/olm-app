@@ -1,107 +1,146 @@
-import React from 'react'
-import { Calendar, Views, momentLocalizer } from 'react-big-calendar'
+import React, { useEffect, useState } from 'react'
+import { Calendar, Views, momentLocalizer, SlotInfo, stringOrDate, View } from 'react-big-calendar'
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop'
-import moment from 'moment'
+import moment, { Moment } from 'moment'
 import 'moment/locale/sk'
-import 'react-big-calendar/lib/css/react-big-calendar.css'
-import 'react-big-calendar/lib/addons/dragAndDrop/styles.scss'
-import { Event } from 'types'
 import { Cookies } from 'react-cookie'
 
-interface DnD {
-  events: Event[]
-}
+import 'react-big-calendar/lib/css/react-big-calendar.css'
+import 'react-big-calendar/lib/addons/dragAndDrop/styles.scss'
+
+import { Event } from 'types'
+
+import './DnDCalendar.scss'
 
 interface Props {
   events: Event[]
-  handleCreateEvent: (event: any) => Promise<boolean>
+  handleSelectSlot: (slotInfo: SlotInfo) => void
+  handleSelectEvent: (event: Object) => void
+  handleEventDrop?: (data: {
+    start: stringOrDate
+    end: stringOrDate
+    event: Object
+    isAllDay: boolean
+  }) => void
+  handleEventResize?: (data: {
+    event: Object
+    start: stringOrDate
+    end: stringOrDate
+    isAllDay: boolean
+  }) => void
+  handleChangeTimeRange: (start: Moment, end: Moment, view: View) => void
+  eventPropGetter?: (event: Object) => { className?: string; style?: Object }
+  draggableAccessor?: (event: Object) => boolean
+  height?: string
 }
 
 const cookies = new Cookies()
-moment.locale(cookies.get('i18next') || 'en')
+const locale = cookies.get('i18next') || 'en'
+
+if (locale === 'en') {
+  moment.updateLocale('en', {
+    week: {
+      dow: 1,
+      // doy: 1,
+    },
+  })
+} else {
+  moment.locale(locale)
+}
+
 const localizer = momentLocalizer(moment)
 
 // @ts-ignore
 const DragAndDropCalendar = withDragAndDrop(Calendar)
 
-class DnDCalendar extends React.Component<Props, DnD> {
-  constructor(props: any) {
-    super(props)
-    this.state = {
-      events: this.props.events,
+const timeSlotWrapper = ({ value, children }: any) => {
+  const current = moment().toDate()
+  const className = value < current ? 'timeslot-past' : ''
+  return React.cloneElement(React.Children.only(children), {
+    className: `${children.props.className} ${className}`,
+  })
+}
+
+const dateCellWrapper = ({ value, children }: any) => {
+  const current = moment().toDate()
+  const className = value < current ? 'timeslot-past' : ''
+  return React.cloneElement(React.Children.only(children), {
+    className: `${children.props.className} ${className}`,
+  })
+}
+
+let initialized = false
+const DnDCalendar: React.FC<Props> = ({
+  events,
+  handleSelectSlot,
+  handleSelectEvent,
+  handleEventDrop,
+  handleEventResize,
+  handleChangeTimeRange,
+  eventPropGetter,
+  draggableAccessor,
+  height,
+}: Props) => {
+  const [view, setView] = useState<View>(Views.WEEK)
+  const [currentDate, setCurrentDate] = useState(moment())
+
+  useEffect(() => {
+    if (!initialized) {
+      initialized = true
+      return
     }
 
-    this.moveEvent = this.moveEvent.bind(this)
-  }
+    let start, end
 
-  handleSelect = ({ start, end }: any) => {
-    const title = window.prompt('New Event name')
-    if (!title) return
-
-    const { events } = this.state
-
-    const id = events.length !== 0 ? Math.max(...events.map((event) => event.id)) + 1 : 0
-    const newEvent = { id, title, start, end }
-
-    this.props.handleCreateEvent(newEvent).then((success) => {
-      if (success) {
-        this.setState({
-          events: [...events, newEvent],
-        })
-      }
-    })
-  }
-
-  moveEvent({ event, start, end, isAllDay: droppedOnAllDaySlot }: any) {
-    const { events } = this.state
-
-    const idx = events.indexOf(event)
-
-    let allDay = event.allDay
-    if (!event.allDay && droppedOnAllDaySlot) {
-      allDay = true
-    } else if (event.allDay && !droppedOnAllDaySlot) {
-      allDay = false
+    switch (view) {
+      case Views.DAY:
+        start = moment(currentDate).startOf('day')
+        end = moment(currentDate).endOf('day')
+        break
+      case Views.WEEK:
+        start = moment(currentDate).startOf('isoWeek')
+        end = moment(currentDate).endOf('isoWeek')
+        break
+      case Views.MONTH:
+        start = moment(currentDate).startOf('month').subtract(7, 'days')
+        end = moment(currentDate).endOf('month').add(7, 'days')
+        break
+      case Views.AGENDA:
+        start = moment(currentDate).startOf('day')
+        end = moment(currentDate).endOf('day').add(1, 'month')
+        break
     }
 
-    const updatedEvent = { ...event, start, end, allDay }
+    if (start && end) handleChangeTimeRange(start, end, view)
+  }, [view, currentDate])
 
-    const nextEvents = [...events]
-    nextEvents.splice(idx, 1, updatedEvent)
-
-    this.setState({
-      events: nextEvents,
-    })
-  }
-
-  resizeEvent = ({ event, start, end }: any) => {
-    const { events } = this.state
-
-    const nextEvents = events.map((existingEvent) => {
-      return existingEvent.id === event.id ? { ...existingEvent, start, end } : existingEvent
-    })
-
-    this.setState({
-      events: nextEvents,
-    })
-  }
-
-  render() {
-    return (
-      <DragAndDropCalendar
-        selectable
-        localizer={localizer}
-        events={this.state.events}
-        onEventDrop={this.moveEvent}
-        resizable
-        onEventResize={this.resizeEvent}
-        onSelectSlot={this.handleSelect}
-        onDragStart={console.log}
-        defaultView={Views.MONTH}
-        style={{ height: 500 }}
-      />
-    )
-  }
+  return (
+    <DragAndDropCalendar
+      popup
+      selectable
+      resizable
+      localizer={localizer}
+      events={events}
+      onSelectSlot={handleSelectSlot}
+      onSelectEvent={handleSelectEvent}
+      onEventDrop={handleEventDrop}
+      onEventResize={handleEventResize}
+      draggableAccessor={draggableAccessor}
+      defaultView={Views.WEEK}
+      allDayAccessor={() => false}
+      eventPropGetter={eventPropGetter}
+      onNavigate={(date) => setCurrentDate(moment(date))}
+      onView={(view) => setView(view)}
+      dayLayoutAlgorithm="overlap"
+      style={{ height: height }}
+      step={15}
+      timeslots={4}
+      components={{
+        dateCellWrapper,
+        timeSlotWrapper,
+      }}
+    />
+  )
 }
 
 export default DnDCalendar

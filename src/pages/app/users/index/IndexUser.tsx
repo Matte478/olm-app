@@ -5,14 +5,12 @@ import { cilUser } from '@coreui/icons'
 import { PaginatorInfo, Trashed, UserBasicFragment, useUsersQuery } from '__generated__/graphql'
 import { Card, ErrorNotifier, PerPageDropdown, SpinnerOverlay, TrashedDropdown } from 'components'
 import IndexUserTable from './IndexUserTable'
-import { CFormSwitch } from '@coreui/react'
 
 const IndexUser: React.FC = () => {
   const { t } = useTranslation()
   const [currentPage, setCurrentPage] = useState(1)
   const [perPage, setPerPage] = useState(10)
   const [users, setUsers] = useState<UserBasicFragment[]>()
-  // const [withTrashedUsers, setWithTrashedUsers] = useState(false)
   const [withTrashedUsers, setWithTrashedUsers] = useState(Trashed.Without)
   const [paginatorInfo, setPaginatorInfo] = useState<PaginatorInfo>()
 

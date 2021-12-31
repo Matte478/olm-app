@@ -1,0 +1,24 @@
+.timeslot-past,
+.rbc-off-range-bg {
+  background-color: var(--cui-light);
+}
+
+.rbc-event,
+.rbc-day-slot .rbc-background-event {
+  &.my-event {
+    background-color: var(--cui-green);
+    border-color: darken(#198754, 5%);
+  }
+  &.general-event {
+    background-color: var(--cui-primary);
+    border-color: darken(#321fdb, 5%);
+  }
+  &.placeholder-event {
+    background-color: var(--cui-danger);
+    border-color: darken(#e55353, 5%);
+  }
+}
+
+.rbc-current-time-indicator {
+  background-color: var(--cui-red);
+}
