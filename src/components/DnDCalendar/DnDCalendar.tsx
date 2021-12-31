@@ -108,6 +108,7 @@ const DnDCalendar: React.FC<Props> = ({
       case Views.AGENDA:
         start = moment(currentDate).startOf('day')
         end = moment(currentDate).endOf('day').add(1, 'month')
+        break
     }
 
     if (start && end) handleChangeTimeRange(start, end, view)
