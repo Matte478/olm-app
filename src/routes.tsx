@@ -39,6 +39,11 @@ import CreateServer from 'pages/app/servers/create'
 import EditServer from 'pages/app/servers/edit'
 import ShowServer from 'pages/app/servers/show'
 
+// schemas
+import IndexSchema from 'pages/app/schemas/index'
+import CreateSchema from 'pages/app/schemas/create'
+import EditSchema from 'pages/app/schemas/edit'
+
 const routes = (loggedIn: boolean) => [
   {
     path: '/',
@@ -168,6 +173,35 @@ const routes = (loggedIn: boolean) => [
             element: (
               <Can permission="server.update" notify={true}>
                 <EditServer />
+              </Can>
+            ),
+          },
+        ],
+      },
+      {
+        path: '/schemas',
+        children: [
+          {
+            path: '/',
+            element: (
+              <Can permission="schema.show" notify={true}>
+                <IndexSchema />
+              </Can>
+            ),
+          },
+          {
+            path: '/create',
+            element: (
+              <Can permission="schema.create" notify={true}>
+                <CreateSchema />
+              </Can>
+            ),
+          },
+          {
+            path: ':id/edit',
+            element: (
+              <Can permission="schema.update" notify={true}>
+                <EditSchema />
               </Can>
             ),
           },

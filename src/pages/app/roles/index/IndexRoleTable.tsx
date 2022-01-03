@@ -19,8 +19,8 @@ const IndexRoleTable: React.FC<Props> = ({ roles, refetch }: Props) => {
   const navigate = useNavigate()
   const [deleteRoleMutation, { error }] = useDeleteRoleMutation()
 
-  const handleDeleteUser = async (id: string) => {
-    let response = window.confirm(t('users.delete.confirm'))
+  const handleDeleteRole = async (id: string) => {
+    let response = window.confirm(t('roles.delete.confirm'))
     if (response) {
       await deleteRoleMutation({
         variables: { id },
@@ -59,7 +59,7 @@ const IndexRoleTable: React.FC<Props> = ({ roles, refetch }: Props) => {
       textColor: 'light',
       permission: 'role.delete',
       icon: <CIcon content={cilTrash} />,
-      handleClick: handleDeleteUser,
+      handleClick: handleDeleteRole,
     },
   ]
 

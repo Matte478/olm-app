@@ -1,0 +1,18 @@
+mutation CreateSchema($createSchemaInput: CreateSchemaInput!) {
+  createSchema(input: $createSchemaInput) {
+    ...SchemaExtended
+  }
+}
+
+mutation UpdateSchema($updateSchemaInput: UpdateSchemaInput!) {
+  updateSchema(input: $updateSchemaInput) {
+    ...SchemaExtended
+  }
+}
+
+
+mutation DeleteSchema($id: ID!) {
+  deleteSchema(id: $id) {
+    id
+  }
+}

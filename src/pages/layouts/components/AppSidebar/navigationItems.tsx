@@ -1,5 +1,6 @@
 import CIcon from '@coreui/icons-react'
 import {
+  cilCalculator,
   cilCalendar,
   cilCursor,
   cilLan,
@@ -37,6 +38,13 @@ const navigationItems = [
     permission: 'server.show',
     to: '/app/servers',
     icon: <CIcon content={cilLan} customClasses="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'sidebar.schemas',
+    permission: 'schema.show',
+    to: '/app/schemas',
+    icon: <CIcon content={cilCalculator} customClasses="nav-icon" />,
   },
   {
     component: CNavItem,

@@ -60,7 +60,8 @@
     "settings": "Settings",
     "users": "Users",
     "roles": "Roles and permissions",
-    "servers": "Servers"
+    "servers": "Servers",
+    "schemas": "Schemas"
   },
 
   "actions": {
@@ -225,6 +226,36 @@
     "sync_all": {
       "button": "Sync all",
       "success": "Servers has been synchronized!"
+    }
+  },
+
+  "schemas": {
+    "arguments": "Arguments",
+    "options": "Options",
+    "add_argument": "Add argument",
+    "add_option": "Add option",
+    "columns": {
+      "id": "ID",
+      "name": "Name",
+      "device_type": "Device type",
+      "software": "Software",
+      "note": "Note",
+      "schema": "Schema",
+      "preview": "Preview",
+      "argument": {
+        "name": "Name",
+        "label": "Label",
+        "default_value": "Default value",
+        "row": "Row",
+        "order": "Order",
+        "option": {
+          "name": "Name",
+          "value": "Value"
+        }
+      }
+    },
+    "index": {
+      "title": "Schemas"
     }
   }
 }

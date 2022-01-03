@@ -1,0 +1,35 @@
+fragment SchemaBasic on Schema {
+  id
+  name
+  deviceType {
+    name
+  }
+  software {
+    name
+  }
+}
+
+fragment SchemaExtended on Schema {
+  id
+  name
+  note
+  deviceType {
+    id
+    name
+  }
+  software {
+    id
+    name
+  }
+  arguments {
+      name
+      label
+      default_value
+      row
+      order
+      options {
+        name
+        value
+      }
+    }
+}

@@ -60,7 +60,8 @@
     "settings": "Nastavenia",
     "users": "Užívatelia",
     "roles": "Role a práva",
-    "servers": "Servery"
+    "servers": "Servery",
+    "schemas": "Schémy"
   },
 
   "actions": {
@@ -225,6 +226,46 @@
     "sync_all": {
       "button": "Synchronizovať všetky",
       "success": "Servery boli synchronizované!"
+    }
+  },
+
+  "schemas": {
+    "arguments": "Argumenty",
+    "options": "Možnosti",
+    "add_argument": "Pridať argument",
+    "add_option": "Pridať možnosť",
+    "columns": {
+      "id": "ID",
+      "name": "Názov",
+      "device_type": "Typ zariadenia",
+      "software": "Softvér",
+      "note": "Poznámka",
+      "schema": "Schéma",
+      "preview": "Náhľad",
+      "argument": {
+        "name": "Názov",
+        "label": "Label",
+        "default_value": "Predvolená hodnota",
+        "option": {
+          "name": "Názov",
+          "value": "Hodnota"
+        }
+      }
+    },
+    "index": {
+      "title": "Schémy"
+    },
+    "create": {
+      "success": "Schéma bola vytvorená!",
+      "error": "Schému nebolo možné vytvoriť!"
+    },
+    "update": {
+      "success": "Schéma bola zmenená!",
+      "error": "Schému nebolo možné upraviť!"
+    },
+    "delete": {
+      "confirm": "Naozaj chcete vymazať danú schému?",
+      "success": "Schéma bola vymazaná!"
     }
   }
 }

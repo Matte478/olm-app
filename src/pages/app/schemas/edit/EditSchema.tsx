@@ -3,15 +3,16 @@ import { cilLockLocked } from '@coreui/icons'
 import { useTranslation } from 'react-i18next'
 import { useParams } from 'react-router-dom'
 
-import { useRoleQuery } from '__generated__/graphql'
+import { useSchemaQuery } from '__generated__/graphql'
 import { Card, ErrorNotifier, SpinnerOverlay } from 'components'
-import EditRoleForm from './EditRoleForm'
+import EditSchemaForm from './EditSchemaForm'
 
-const EditRole: React.FC = () => {
+
+const EditSchema: React.FC = () => {
   const { t } = useTranslation()
   const { id } = useParams()
 
-  const { data, loading, error } = useRoleQuery({
+  const { data, loading, error } = useSchemaQuery({
     variables: {
       id,
     },
@@ -19,13 +20,13 @@ const EditRole: React.FC = () => {
 
   if (loading) return <SpinnerOverlay transparent={true} />
   if (error) return <ErrorNotifier error={error} />
-  if (!data?.role) return <div>404</div>
+  if (!data?.schema) return <div>404</div>
 
   return (
     <Card icon={cilLockLocked} title={t('actions.edit')}>
-      <EditRoleForm role={data.role} />
+      <EditSchemaForm schema={data.schema} />
     </Card>
   )
 }
 
-export default EditRole
+export default EditSchema
