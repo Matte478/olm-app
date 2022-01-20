@@ -1,21 +1,25 @@
-import { cilPencil, cilTrash } from '@coreui/icons'
+import React, { useState } from 'react'
+import { cilCloudDownload, cilImage, cilPencil, cilTrash } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
-import { ErrorNotifier, Table } from 'components'
-import React from 'react'
+import { CImage, CModal, CModalHeader, CModalTitle } from '@coreui/react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toast'
+
+import { ErrorNotifier, Table } from 'components'
 import { TableAction, TableColumn } from 'types'
-import { useDeleteSchemaMutation } from '__generated__/graphql'
+import { SchemaBasicFragment, useDeleteSchemaMutation } from '__generated__/graphql'
 
 interface Props {
-  schemas: any
+  schemas: SchemaBasicFragment[]
   refetch: () => void
 }
 
 const IndexSchemaTable: React.FC<Props> = ({ schemas, refetch }: Props) => {
   const { t } = useTranslation()
   const navigate = useNavigate()
+  const [visiblePreview, setVisiblePreview] = useState(false)
+  const [previewUrl, setPreviewUrl] = useState<string | null>()
 
   const [deleteSchemaMutation, { error }] = useDeleteSchemaMutation()
 
@@ -29,8 +33,52 @@ const IndexSchemaTable: React.FC<Props> = ({ schemas, refetch }: Props) => {
           refetch()
           toast.success(t('schemas.delete.success'))
         })
-        .catch(() => {})
+        .catch(() => {
+          toast.error(t('schemas.delete.error'))
+        })
     }
+  }
+
+  const handleDownloadSchema = (id: string) => {
+    schemas.forEach((schema) => {
+      if (schema.id === id) {
+        if (!schema.schema) {
+          toast.error(t('schemas.download.error'))
+          return
+        }
+        console.log(schema.schema)
+        fetch(schema.schema)
+          .then((response) => {
+            response.blob().then((blob) => {
+              const fileExt = schema.schema?.split('.').pop();
+              const url = window.URL.createObjectURL(blob)
+              let a = document.createElement('a')
+              a.href = url
+              a.download = `${schema.name}.${fileExt}`
+              a.click()
+              toast.success(t('schemas.download.success'))
+            })
+          })
+          .catch((error) => {
+            toast.error(t('schemas.download.error'))
+            console.log(error, error.error)
+          })
+      }
+    })
+  }
+
+  const handleOpenPreviewModal = (id: string) => {
+    schemas.forEach((schema) => {
+      if (schema.id === id) {
+        if (!schema.preview) {
+          toast.error(t('schemas.preview.error'))
+          return
+        }
+        setPreviewUrl(schema.preview)
+        setVisiblePreview(true)
+        console.log(schema.preview)
+      }
+    })
   }
 
   const columns: TableColumn[] = [
@@ -55,6 +103,20 @@ const IndexSchemaTable: React.FC<Props> = ({ schemas, refetch }: Props) => {
 
   const actions: TableAction[] = [
     {
+      color: 'warning',
+      textColor: 'light',
+      permission: 'schema.show',
+      icon: <CIcon content={cilImage} />,
+      handleClick: handleOpenPreviewModal,
+    },
+    {
+      color: 'success',
+      textColor: 'light',
+      permission: 'schema.show',
+      icon: <CIcon content={cilCloudDownload} />,
+      handleClick: handleDownloadSchema,
+    },
+    {
       color: 'primary',
       icon: <CIcon content={cilPencil} />,
       permission: 'schema.update',
@@ -73,7 +135,25 @@ const IndexSchemaTable: React.FC<Props> = ({ schemas, refetch }: Props) => {
 
   if (error) return <ErrorNotifier error={error} />
 
-  return <Table columns={columns} data={schemas} actions={actions} />
+  return (
+    <>
+      <CModal
+        visible={visiblePreview}
+        alignment="center"
+        size="xl"
+        onDismiss={() => {
+          setVisiblePreview(false)
+          setPreviewUrl(null)
+        }}
+      >
+        <CModalHeader>
+          <CModalTitle>{t('schemas.preview.title')}</CModalTitle>
+        </CModalHeader>
+        {previewUrl && <CImage className="m-2" fluid src={previewUrl} />}
+      </CModal>
+      <Table columns={columns} data={schemas} actions={actions} />
+    </>
+  )
 }
 
 export default IndexSchemaTable

@@ -12,6 +12,7 @@ import { onError } from '@apollo/link-error'
 import { TokenRefreshLink } from 'apollo-link-token-refresh'
 import { setContext } from '@apollo/client/link/context'
 import { Cookies } from 'react-cookie'
+import { createUploadLink } from 'apollo-upload-client'
 
 import { AuthenticatedUserFragment } from '__generated__/graphql'
 
@@ -114,6 +115,10 @@ function AppStateProvider({ children }: { children: ReactNode }) {
     }
   })
 
+  const uploadLink = createUploadLink({
+    uri: apiUri,
+  })
+
   const errorLink = onError(({ graphQLErrors, networkError, operation, forward }) => {
     if (graphQLErrors && graphQLErrors[0].message === 'Unauthenticated.') {
       const cookies = new Cookies()
@@ -182,10 +187,11 @@ function AppStateProvider({ children }: { children: ReactNode }) {
       }),
       errorLink,
       authLink,
-      new HttpLink({
-        uri: apiUri,
-        credentials: 'include',
-      }),
+      uploadLink,
+      // new HttpLink({
+      //   uri: apiUri,
+      //   credentials: 'include',
+      // }),
     ]),
     cache,
     defaultOptions,

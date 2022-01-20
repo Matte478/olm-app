@@ -34,6 +34,7 @@ const CreateSchemaForm = (props: Props) => {
     software_id: deviceTypesAndSoftware.data?.software[0].id || '-1',
     note: undefined,
     arguments: [],
+    schema: null
   })
 
   const [createSchemaMutation, { loading, error }] = useCreateSchemaMutation()
@@ -129,13 +130,27 @@ const CreateSchemaForm = (props: Props) => {
         <CCol md={6}>
           <div className="mb-3">
             <CFormLabel>{t('schemas.columns.schema')}</CFormLabel>
-            <CFormInput type="file" id="schema" />
+            <CFormInput
+              type="file"
+              id="schema"
+              onChange={({ target: { validity, files } }) => {
+                if (validity.valid)
+                  setCreateSchemaInput({ ...createSchemaInput, schema: files ? files[0] : null })
+              }}
+            />
           </div>
         </CCol>
         <CCol md={6}>
           <div className="mb-3">
             <CFormLabel>{t('schemas.columns.preview')}</CFormLabel>
-            <CFormInput type="file" id="preview" />
+            <CFormInput
+              type="file"
+              id="preview"
+              onChange={({ target: { validity, files } }) => {
+                if (validity.valid)
+                  setCreateSchemaInput({ ...createSchemaInput, preview: files ? files[0] : null })
+              }}
+            />
           </div>
         </CCol>
       </CRow>

@@ -256,6 +256,26 @@
     },
     "index": {
       "title": "Schemas"
+    },
+    "preview": {
+      "title": "Schema preview",
+      "error": "Schema has no preview."
+    },
+    "create": {
+      "success": "Schama has been created!",
+      "error": "Schema could not be created!"
+    },
+    "update": {
+      "success": "Schama has been updated!",
+      "error": "Schema could not be updated!"
+    },
+    "delete": {
+      "confirm": "Are you sure you want to delete this schema?",
+      "success": "Schema could not be deleted!"
+    },
+    "download": {
+      "success": "Schema has been downloaded!",
+      "error": "Schema could not be downloaded!"
     }
   }
 }

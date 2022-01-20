@@ -1,6 +1,8 @@
 fragment SchemaBasic on Schema {
   id
   name
+  schema
+  preview
   deviceType {
     name
   }
@@ -13,6 +15,8 @@ fragment SchemaExtended on Schema {
   id
   name
   note
+  schema
+  preview
   deviceType {
     id
     name

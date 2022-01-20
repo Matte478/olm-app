@@ -1,9 +1,9 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import { cilCalculator } from '@coreui/icons'
 
 import { ButtonAdd, Can, Card, ErrorNotifier, SpinnerOverlay } from 'components'
 import { useSchemasQuery } from '__generated__/graphql'
-import { cilCalculator } from '@coreui/icons'
 import IndexSchemaTable from './IndexSchemaTable'
 
 const IndexSchema: React.FC = () => {

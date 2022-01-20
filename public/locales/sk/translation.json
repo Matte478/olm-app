@@ -255,6 +255,10 @@
     "index": {
       "title": "Schémy"
     },
+    "preview": {
+      "title": "Náhľad schémy",
+      "error": "Schéma nemá preview."
+    },
     "create": {
       "success": "Schéma bola vytvorená!",
       "error": "Schému nebolo možné vytvoriť!"
@@ -266,6 +270,10 @@
     "delete": {
       "confirm": "Naozaj chcete vymazať danú schému?",
       "success": "Schéma bola vymazaná!"
+    },
+    "download": {
+      "success": "Schéma bola stiahnutá!",
+      "error": "Schému nebolo možné stiahnúť!"
     }
   }
 }

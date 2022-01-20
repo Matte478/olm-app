@@ -153,14 +153,40 @@ const EditSchemaForm = ({ schema }: Props) => {
         <CCol md={6}>
           <div className="mb-3">
             <CFormLabel>{t('schemas.columns.schema')}</CFormLabel>
-            <CFormInput type="file" id="schema" />
+            <CFormInput
+              type="file"
+              id="schema"
+              onChange={({ target: { validity, files } }) => {
+                if (validity.valid)
+                  setUpdateSchemaInput({ ...updateSchemaInput, schema: files ? files[0] : null })
+              }}
+            />
           </div>
+          {/* {schema.schema && (
+            <div className="mb-3">
+              <a href={schema.schema} download={'test.jpg'}>
+                uploadnuta schema
+              </a>
+            </div>
+          )} */}
         </CCol>
         <CCol md={6}>
           <div className="mb-3">
             <CFormLabel>{t('schemas.columns.preview')}</CFormLabel>
-            <CFormInput type="file" id="preview" />
+            <CFormInput
+              type="file"
+              id="preview"
+              onChange={({ target: { validity, files } }) => {
+                if (validity.valid)
+                  setUpdateSchemaInput({ ...updateSchemaInput, preview: files ? files[0] : null })
+              }}
+            />
           </div>
+          {/* {schema.preview && (
+            <div className="mb-3">
+              <img src={schema.preview} />
+            </div>
+          )} */}
         </CCol>
       </CRow>
 

@@ -4,6 +4,7 @@ import { CButton, CCol, CFormFloating, CFormInput, CFormLabel, CRow } from '@cor
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { ArgumentInput, OptionInput } from '__generated__/graphql'
+import SchemaFormOptions from './SchemaFormOptions'
 
 interface Props {
   argument: ArgumentInput
@@ -101,11 +102,12 @@ const SchemaFormArgumentsRow: React.FC<Props> = ({
               type="number"
               id="default_value"
               step="any"
-              value={argumentInput?.default_value || ''}
+              value={argumentInput?.default_value !== null ? argumentInput?.default_value : ''}
               onChange={(event) => {
+                const val = parseFloat(event.target.value)
                 setArgumentInput({
                   ...argumentInput,
-                  default_value: parseFloat(event.target.value) || undefined,
+                  default_value: isNaN(val) ? null : val,
                 })
               }}
             />
@@ -147,7 +149,6 @@ const SchemaFormArgumentsRow: React.FC<Props> = ({
             onClick={handleDelete}
           >
             <CIcon className="me-1" content={cilTrash} />
-            {/* delete argument */}
           </CButton>
         </CCol>
       </CRow>
@@ -160,49 +161,14 @@ const SchemaFormArgumentsRow: React.FC<Props> = ({
           ) : (
             <></>
           )}
-          {argument?.options && <h6>{t('schemas.options')}</h6> &&
+          {argument?.options &&
             argument.options.map((option, index) => (
-              <CRow key={index} className="mb-3">
-                <CCol xs={{ span: 4, offset: 2 }}>
-                  <CFormFloating>
-                    <CFormInput
-                      type="text"
-                      id={`option_name_${index}`}
-                      value={option.name}
-                      onChange={(event) => {
-                        handleChangeOption({ ...option, name: event.target.value }, index)
-                      }}
-                    />
-                    <CFormLabel>{t('schemas.columns.argument.option.name')}</CFormLabel>
-                  </CFormFloating>
-                </CCol>
-                <CCol xs={4}>
-                  <CFormFloating>
-                    <CFormInput
-                      type="number"
-                      step="any"
-                      id={`option_value_${index}`}
-                      value={option.value}
-                      onChange={(event) => {
-                        handleChangeOption(
-                          { ...option, value: parseFloat(event.target.value) || 0 },
-                          index,
-                        )
-                      }}
-                    />
-                    <CFormLabel>{t('schemas.columns.argument.option.value')}</CFormLabel>
-                  </CFormFloating>
-                </CCol>
-                <CCol xs={2} className="d-flex justify-content-start align-items-center">
-                  <CButton
-                    className="d-inline-flex justify-content-center align-items-center text-light"
-                    color="danger"
-                    onClick={() => handleDeleteOption(index)}
-                  >
-                    <CIcon className="me-1" content={cilTrash} />
-                  </CButton>
-                </CCol>
-              </CRow>
+              <SchemaFormOptions
+                option={option}
+                handleChange={(option) => handleChangeOption(option, index)}
+                handleDelete={() => handleDeleteOption(index)}
+                key={index}
+              />
             ))}
           <div className="text-center">
             <CButton
