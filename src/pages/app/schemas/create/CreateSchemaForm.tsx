@@ -21,9 +21,7 @@ import {
 } from '__generated__/graphql'
 import { SchemaFormArguments } from '../components'
 
-interface Props {}
-
-const CreateSchemaForm = (props: Props) => {
+const CreateSchemaForm: React.FC = () => {
   const { t } = useTranslation()
 
   const deviceTypesAndSoftware = useDeviceTypesAndSoftwareQuery()

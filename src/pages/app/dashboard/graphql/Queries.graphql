@@ -1,0 +1,17 @@
+query ReservationsCurrent {
+  reservationsCurrent {
+    ...ReservationsCurrent
+  }
+}
+
+query Experiments($serverId: ID, $deviceId: ID) {
+  experiments(server_id: $serverId, device_id: $deviceId) {
+    ...ExperimentBasic
+  }
+}
+
+query ExperimentSchemas($deviceTypeId: ID!, $softwareId: ID!) {
+  schemas(device_type_id: $deviceTypeId, software_id: $softwareId) {
+    ...ExperimentSchema
+  }
+}

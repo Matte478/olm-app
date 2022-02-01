@@ -46,7 +46,6 @@ const IndexSchemaTable: React.FC<Props> = ({ schemas, refetch }: Props) => {
           toast.error(t('schemas.download.error'))
           return
         }
-        console.log(schema.schema)
         fetch(schema.schema)
           .then((response) => {
             response.blob().then((blob) => {
@@ -76,7 +75,6 @@ const IndexSchemaTable: React.FC<Props> = ({ schemas, refetch }: Props) => {
         }
         setPreviewUrl(schema.preview)
         setVisiblePreview(true)
-        console.log(schema.preview)
       }
     })
   }

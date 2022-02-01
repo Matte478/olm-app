@@ -10,62 +10,6 @@ query Schema($id: ID!) {
   }
 }
 
-# query Schemas {
-#   schemas {
-#     id
-#     name
-#     note
-#     deviceType {
-#       id
-#       name
-#     }
-#     software {
-#       id
-#       name
-#     }
-#     arguments {
-#       id
-#       name
-#       label
-#       default_value
-#       row
-#       order
-#       options {
-#         id
-#         name
-#         value
-#       }
-#     }
-#   }
-# }
-
-# query Schema($id: ID!) {
-#   schema(id: $id) {
-#     id
-#     name
-#     note
-#     deviceType {
-#       id
-#       name
-#     }
-#     software {
-#       id
-#       name
-#     }
-#     arguments {
-#       name
-#       label
-#       default_value
-#       row
-#       order
-#       options {
-#         name
-#         value
-#       }
-#     }
-#   }
-# }
-
 query DeviceTypesAndSoftware {
   deviceTypes {
     id

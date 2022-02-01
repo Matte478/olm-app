@@ -3,7 +3,6 @@ import {
   ApolloProvider,
   ApolloClient,
   InMemoryCache,
-  HttpLink,
   ApolloLink,
   DefaultOptions,
   Observable,
@@ -188,10 +187,6 @@ function AppStateProvider({ children }: { children: ReactNode }) {
       errorLink,
       authLink,
       uploadLink,
-      // new HttpLink({
-      //   uri: apiUri,
-      //   credentials: 'include',
-      // }),
     ]),
     cache,
     defaultOptions,

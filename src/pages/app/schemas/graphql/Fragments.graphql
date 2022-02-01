@@ -26,14 +26,18 @@ fragment SchemaExtended on Schema {
     name
   }
   arguments {
-      name
-      label
-      default_value
-      row
-      order
-      options {
-        name
-        value
-      }
-    }
+    ...ArgumentBasic
+  }
+}
+
+fragment ArgumentBasic on Argument {
+  name
+  label
+  default_value
+  row
+  order
+  options {
+    name
+    value
+  }
 }

@@ -31,9 +31,11 @@ fragment DeviceBasic on Device {
 }
 
 fragment DeviceTypeBasic on DeviceType {
+  id
   name
 }
 
 fragment SoftwareBasic on Software {
+  id
   name
 }

@@ -275,5 +275,11 @@
       "success": "Schéma bola stiahnutá!",
       "error": "Schému nebolo možné stiahnúť!"
     }
+  },
+  "experiments": {
+    "columns": {
+      "experiment": "Experiment",
+      "schema": "Schéma"
+    }
   }
 }

@@ -1,0 +1,43 @@
+fragment ReservationsCurrent on Reservation {
+  start
+  end
+  device {
+    ...DeviceWithServer
+  }
+}
+
+fragment DeviceWithServer on Device {
+  ...DeviceBasic
+  server {
+    id
+    name
+  }
+}
+
+fragment ExperimentSchema on Schema {
+  id
+  name
+  note
+  schema
+  preview
+  deviceType {
+    id
+    name
+  }
+  software {
+    id
+    name
+  }
+  arguments {
+    ...ArgumentBasic
+  }
+}
+
+fragment ExperimentBasic on Experiment {
+  id
+  software {
+    ...SoftwareBasic
+  }
+  has_schema
+  commands
+}

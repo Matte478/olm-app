@@ -277,5 +277,11 @@
       "success": "Schema has been downloaded!",
       "error": "Schema could not be downloaded!"
     }
+  },
+  "experiments": {
+    "columns": {
+      "experiment": "Experiment",
+      "schema": "Schema"
+    }
   }
 }
