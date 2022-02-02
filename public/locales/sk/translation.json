@@ -277,9 +277,11 @@
     }
   },
   "experiments": {
+    "no_experiments": "Zariadenie nemá žiadne experimenty",
     "columns": {
       "experiment": "Experiment",
-      "schema": "Schéma"
+      "schema": "Schéma",
+      "command": "Príkaz"
     }
   }
 }

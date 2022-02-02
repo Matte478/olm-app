@@ -279,9 +279,11 @@
     }
   },
   "experiments": {
+    "no_experiments": "The device has no experiments",
     "columns": {
       "experiment": "Experiment",
-      "schema": "Schema"
+      "schema": "Schema",
+      "command": "Command"
     }
   }
 }

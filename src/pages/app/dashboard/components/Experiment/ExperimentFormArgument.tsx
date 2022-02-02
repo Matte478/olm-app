@@ -1,30 +1,41 @@
 import { CFormFloating, CFormInput, CFormLabel, CFormSelect } from '@coreui/react'
 import React, { useEffect, useState } from 'react'
-import { ArgumentBasicFragment } from '__generated__/graphql'
+import {
+  ArgumentBasicFragment,
+  ExperimentArgument,
+  UserExperimentArgInput,
+} from '__generated__/graphql'
 
 type Props = {
-  argument: ArgumentBasicFragment
-  handleChange: (value: string) => void
+  argument: ArgumentBasicFragment | ExperimentArgument
+  handleChange: (value: UserExperimentArgInput) => void
+  val?: string
   className?: string
+  style?: object
 }
 
 const ExperimentFormArgument: React.FC<Props> = ({
   argument,
   handleChange,
+  val,
   className = '',
+  style = {},
 }: Props) => {
-  const [value, setValue] = useState<string>(argument?.default_value?.toString() || '')
+  const [value, setValue] = useState<string>(val || argument?.default_value?.toString() || '')
 
   useEffect(() => {
-    handleChange(value)
-  }, [value])
+    handleChange({
+      name: argument.name,
+      value: value,
+    })
+  }, [value, argument.name, handleChange])
 
   useEffect(() => {
-    setValue(argument?.default_value?.toString() || '')
-  }, [argument])
+    setValue(val !== undefined ? val : argument?.default_value?.toString() || '')
+  }, [argument, val])
 
-  return argument.options.length ? (
-    <div className={className}>
+  return argument.options && argument.options.length ? (
+    <div className={className} style={style}>
       <CFormLabel className="d-block">{argument.label}</CFormLabel>
       <CFormSelect
         aria-label="schema"
@@ -40,7 +51,7 @@ const ExperimentFormArgument: React.FC<Props> = ({
       </CFormSelect>
     </div>
   ) : (
-    <CFormFloating className={className}>
+    <CFormFloating className={className} style={style}>
       <CFormInput
         type="text"
         id={argument.name}

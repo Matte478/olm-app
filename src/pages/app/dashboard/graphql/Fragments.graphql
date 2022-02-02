@@ -38,6 +38,18 @@ fragment ExperimentBasic on Experiment {
   software {
     ...SoftwareBasic
   }
+  experiment_commands {
+    name
+    arguments {
+      name
+      label
+      default_value
+      options {
+        name
+        value
+      }
+    }
+  }
   has_schema
   commands
 }

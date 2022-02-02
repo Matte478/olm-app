@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import {
   CButton,
   CCol,
@@ -18,9 +18,12 @@ import {
   ArgumentBasicFragment,
   CreateUserExperimentInput,
   DeviceWithServerFragment,
+  ExperimentArgument,
   ExperimentBasicFragment,
   ExperimentSchemaFragment,
   useExperimentSchemasQuery,
+  UserExperimentArgInput,
+  UserExperimentArgsInput,
 } from '__generated__/graphql'
 import ExperimentFormArgument from './ExperimentFormArgument'
 import CIcon from '@coreui/icons-react'
@@ -37,7 +40,7 @@ interface ArugmentsRow {
 
 const formatSchemasArgument = (args: ArgumentBasicFragment[]) => {
   let formatted: ArugmentsRow = {}
-  args.map((arg) => {
+  args.forEach((arg) => {
     if (!(arg.row in formatted)) formatted[arg.row] = []
 
     formatted[arg.row] = [...formatted[arg.row], arg]
@@ -60,10 +63,22 @@ const ExperimentForm: React.FC<Props> = ({ device, experiments }: Props) => {
     experiments[0],
   )
   const [selectedSchema, setSelectedSchema] = useState<ExperimentSchemaFragment | undefined>()
+  const [selectedCommand, setSelectedCommand] = useState<string | undefined>(
+    experiments[0].commands[0] || undefined,
+  )
 
   // const [experimentInput, setExperimentInput] = useState<CreateUserExperimentInput>({
-  //   //
+  //   experiment_id: selectedExperiment?.id || '-1',
+  //   input: [],
+  //   sampling_rate: 0,
+  //   simulation_time: 0,
+  //   schema_id: selectedSchema?.id || undefined
   // })
+
+  const [experimentInput, setExperimentInput] = useState<UserExperimentArgsInput>({
+    script_name: selectedCommand || '',
+    input: [],
+  })
 
   const { data, loading, error } = useExperimentSchemasQuery({
     notifyOnNetworkStatusChange: true,
@@ -77,9 +92,41 @@ const ExperimentForm: React.FC<Props> = ({ device, experiments }: Props) => {
     setSelectedSchema(data?.schemas.length ? data.schemas[0] : undefined)
   }, [data])
 
+  useEffect(() => {
+    setExperimentInput({
+      ...experimentInput,
+      input: [
+        ...(selectedExperiment?.experiment_commands
+          .find((command) => command?.name === selectedCommand)
+          ?.arguments.map((arg) => {
+            return {
+              name: arg?.name as string,
+              value: arg?.default_value || '',
+            }
+          }) || []),
+        ...(selectedSchema?.arguments.map((arg) => {
+          return {
+            name: arg?.name as string,
+            value: arg?.default_value?.toString() || '',
+          }
+        }) || []),
+      ],
+    })
+  }, [selectedExperiment, selectedSchema])
+
   const handleCreate = () => {
     console.log('handle')
   }
+
+  const upsertArgument = useCallback((argument: UserExperimentArgInput) => {
+    setExperimentInput((experimentInput) => {
+      const i = experimentInput.input.findIndex((arg) => arg.name === argument.name)
+      if (i > -1) experimentInput.input[i] = argument
+      else experimentInput.input = [...experimentInput.input, argument]
+
+      return { ...experimentInput, input: experimentInput.input }
+    })
+  }, [])
 
   const getArguments = (args: ArgumentBasicFragment[]) => {
     const formatted = formatSchemasArgument(args)
@@ -92,20 +139,23 @@ const ExperimentForm: React.FC<Props> = ({ device, experiments }: Props) => {
       val.forEach((argument: ArgumentBasicFragment, colIndex: number) => {
         cols = [
           ...cols,
-          <ExperimentFormArgument
-            argument={argument}
-            key={colIndex}
-            handleChange={(value) => console.log(value)}
-            className="mb-3 mx-1 flex-1"
-          />,
+          <CCol key={colIndex}>
+            <ExperimentFormArgument
+              argument={argument}
+              val={experimentInput.input.find((arg) => arg.name === argument.name)?.value}
+              handleChange={upsertArgument}
+              className="mb-3"
+              style={{ minWidth: '150px', maxWidth: '100%' }}
+            />
+          </CCol>,
         ]
       })
 
       rows = [
         ...rows,
-        <div className="d-flex align-items-end" key={rowIndex}>
+        <CRow className="align-items-end" key={rowIndex}>
           {cols}
-        </div>,
+        </CRow>,
       ]
     })
 
@@ -141,12 +191,14 @@ const ExperimentForm: React.FC<Props> = ({ device, experiments }: Props) => {
               className="mb-3"
               value={selectedExperiment?.id}
               onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
-                setSelectedExperiment(
-                  experiments?.find((experiment: any) => experiment.id === event.target.value),
+                const experiment = experiments?.find(
+                  (experiment) => experiment.id === event.target.value,
                 )
+                setSelectedExperiment(experiment)
+                setSelectedCommand(experiment?.commands[0] || undefined)
               }}
             >
-              {experiments.map((experiment: any) => (
+              {experiments.map((experiment) => (
                 <option
                   value={experiment.id}
                   key={experiment.id}
@@ -185,7 +237,43 @@ const ExperimentForm: React.FC<Props> = ({ device, experiments }: Props) => {
             )}
           </CCol>
 
-          <CCol sm={9}>{selectedSchema?.arguments && getArguments(selectedSchema?.arguments)}</CCol>
+          <CCol sm={9}>
+            <CFormLabel className="d-block">{t('experiments.columns.command')}</CFormLabel>
+            <CFormSelect
+              aria-label="experiment"
+              id="experiment"
+              className="mb-3"
+              value={selectedCommand || undefined}
+              onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
+                setSelectedCommand(event.target.value)
+              }}
+            >
+              {selectedExperiment?.commands.map((command) => (
+                <option value={command as string} key={command}>
+                  {command}
+                </option>
+              ))}
+            </CFormSelect>
+            <CRow>
+              {selectedCommand &&
+                selectedExperiment?.experiment_commands &&
+                selectedExperiment?.experiment_commands
+                  .find((command) => command?.name === selectedCommand)
+                  ?.arguments.map((argument, index) => (
+                    <CCol sm={6} md={6} key={index}>
+                      <ExperimentFormArgument
+                        argument={argument as ExperimentArgument}
+                        val={
+                          experimentInput.input.find((arg) => arg.name === argument?.name)?.value
+                        }
+                        handleChange={upsertArgument}
+                        className="mb-3 flex-1"
+                      />
+                    </CCol>
+                  ))}
+            </CRow>
+            {selectedSchema?.arguments && getArguments(selectedSchema?.arguments)}
+          </CCol>
         </CRow>
         <div className="text-right">{/* <ButtonSave /> */}</div>
       </CForm>
