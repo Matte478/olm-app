@@ -1,10 +1,12 @@
 import React from 'react'
+import { useTranslation } from 'react-i18next'
 
 import { Card, ErrorNotifier, SpinnerOverlay } from 'components'
 import { useReservationsCurrentQuery } from '__generated__/graphql'
 import { Experiment, NoReservation } from './components'
 
 const Dashboard: React.FC = () => {
+  const { t } = useTranslation()
   const { data, loading, error } = useReservationsCurrentQuery({
     notifyOnNetworkStatusChange: true,
   })
@@ -22,7 +24,7 @@ const Dashboard: React.FC = () => {
     )
 
   return (
-    <Card title="Dashboard">
+    <Card title={t('experiments.title')}>
       <Experiment device={reservation.device} />
     </Card>
   )

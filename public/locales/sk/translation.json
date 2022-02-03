@@ -277,11 +277,17 @@
     }
   },
   "experiments": {
+    "title": "Experiment v reálnom čase",
     "no_experiments": "Zariadenie nemá žiadne experimenty",
+    "no_reservation": "Nemáte žiadnu rezerváciu",
+    "create_reservation": "Vytvoriť rezerváciu",
     "columns": {
       "experiment": "Experiment",
       "schema": "Schéma",
       "command": "Príkaz"
+    },
+    "actions": {
+      "run": "Spustiť príkaz experimentu"
     }
   }
 }

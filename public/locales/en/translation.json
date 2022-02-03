@@ -279,11 +279,17 @@
     }
   },
   "experiments": {
+    "title": "Real-time experiment",
     "no_experiments": "The device has no experiments",
+    "no_reservation": "You have no reservation",
+    "create_reservation": "Make a reservation",
     "columns": {
       "experiment": "Experiment",
       "schema": "Schema",
       "command": "Command"
+    },
+    "actions": {
+      "run": "Run experiment command"
     }
   }
 }

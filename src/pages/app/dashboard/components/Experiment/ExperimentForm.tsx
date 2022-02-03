@@ -11,12 +11,14 @@ import {
   CModalTitle,
   CRow,
 } from '@coreui/react'
+import CIcon from '@coreui/icons-react'
+import { cilImage } from '@coreui/icons'
 import { useTranslation } from 'react-i18next'
 
 import { ErrorNotifier, SpinnerOverlay } from 'components'
 import {
   ArgumentBasicFragment,
-  CreateUserExperimentInput,
+  // CreateUserExperimentInput,
   DeviceWithServerFragment,
   ExperimentArgument,
   ExperimentBasicFragment,
@@ -26,8 +28,7 @@ import {
   UserExperimentArgsInput,
 } from '__generated__/graphql'
 import ExperimentFormArgument from './ExperimentFormArgument'
-import CIcon from '@coreui/icons-react'
-import { cilImage } from '@coreui/icons'
+import ExperimentGraph from './ExperimentGraph'
 
 type Props = {
   device: DeviceWithServerFragment
@@ -93,26 +94,39 @@ const ExperimentForm: React.FC<Props> = ({ device, experiments }: Props) => {
   }, [data])
 
   useEffect(() => {
+    replaceExperimentInput()
+  }, [selectedExperiment, selectedSchema])
+
+  const replaceExperimentInput = () => {
     setExperimentInput({
       ...experimentInput,
-      input: [
-        ...(selectedExperiment?.experiment_commands
-          .find((command) => command?.name === selectedCommand)
-          ?.arguments.map((arg) => {
-            return {
-              name: arg?.name as string,
-              value: arg?.default_value || '',
-            }
-          }) || []),
-        ...(selectedSchema?.arguments.map((arg) => {
+      input: [...getExperimentInput(), ...getSchemaInput()],
+    })
+  }
+
+  const getExperimentInput = () => {
+    return (
+      selectedExperiment?.experiment_commands
+        .find((command) => command?.name === selectedCommand)
+        ?.arguments.map((arg) => {
           return {
             name: arg?.name as string,
-            value: arg?.default_value?.toString() || '',
+            value: arg?.default_value || '',
           }
-        }) || []),
-      ],
-    })
-  }, [selectedExperiment, selectedSchema])
+        }) || []
+    )
+  }
+
+  const getSchemaInput = () => {
+    return (
+      selectedSchema?.arguments.map((arg) => {
+        return {
+          name: arg?.name as string,
+          value: arg?.default_value?.toString() || '',
+        }
+      }) || []
+    )
+  }
 
   const handleCreate = () => {
     console.log('handle')
@@ -166,6 +180,12 @@ const ExperimentForm: React.FC<Props> = ({ device, experiments }: Props) => {
 
   return (
     <>
+      <CRow>
+        <CCol md={6}>
+          <ExperimentGraph />
+        </CCol>
+        <hr className='my-4' />
+      </CRow>
       <CModal
         visible={visiblePreview}
         alignment="center"
@@ -196,6 +216,10 @@ const ExperimentForm: React.FC<Props> = ({ device, experiments }: Props) => {
                 )
                 setSelectedExperiment(experiment)
                 setSelectedCommand(experiment?.commands[0] || undefined)
+                setExperimentInput({
+                  ...experimentInput,
+                  script_name: experiment?.commands[0] || '',
+                })
               }}
             >
               {experiments.map((experiment) => (
@@ -246,6 +270,7 @@ const ExperimentForm: React.FC<Props> = ({ device, experiments }: Props) => {
               value={selectedCommand || undefined}
               onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
                 setSelectedCommand(event.target.value)
+                setExperimentInput({ ...experimentInput, script_name: event.target.value })
               }}
             >
               {selectedExperiment?.commands.map((command) => (
@@ -275,7 +300,15 @@ const ExperimentForm: React.FC<Props> = ({ device, experiments }: Props) => {
             {selectedSchema?.arguments && getArguments(selectedSchema?.arguments)}
           </CCol>
         </CRow>
-        <div className="text-right">{/* <ButtonSave /> */}</div>
+        <div className="text-right">
+          <CButton
+            type="submit"
+            className="d-inline-flex justify-content-center align-items-center"
+            color="primary"
+          >
+            {t('experiments.actions.run')}
+          </CButton>
+        </div>
       </CForm>
     </>
   )

@@ -8,14 +8,16 @@ const NoReservation: React.FC = () => {
   const { t } = useTranslation()
 
   return (
-    <>
-      <h6>You have no reservation</h6>
-      {/* TODO: permissions */}
-      <Can permission="server.create">
-        {/* <ButtonAdd to="/app/servers/create" /> */}
-        <ButtonIcon to="/app/reservations" icon={cilCalendar} text={t('actions.create')} />
+    <div className="text-center">
+      <h5 className="mb-3">{t('experiments.no_reservation')}</h5>
+      <Can permission={['reservation.create_production', 'reservation.create_all']}>
+        <ButtonIcon
+          to="/app/reservations"
+          icon={cilCalendar}
+          text={t('experiments.create_reservation')}
+        />
       </Can>
-    </>
+    </div>
   )
 }
 
