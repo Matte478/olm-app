@@ -33,16 +33,17 @@ const IndexServer: React.FC = () => {
         icon={cilLan}
         title={t('servers.index.title')}
         actions={
-          <>
+          <div className="ms-3">
             <ButtonSyncAll
               withTrashedServers={withTrashedServers ? Trashed.With : Trashed.Without}
               withTrashedDevices={withTrashedDevices ? Trashed.With : Trashed.Without}
               handleSync={setServers}
+              refetch={refetch}
             />
             <Can permission="server.create">
               <ButtonAdd to="/app/servers/create" />
             </Can>
-          </>
+          </div>
         }
       >
         <div className="d-flex">

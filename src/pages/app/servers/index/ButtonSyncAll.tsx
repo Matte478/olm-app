@@ -7,17 +7,20 @@ import { toast } from 'react-toast'
 
 import { Can, ErrorNotifier, SpinnerOverlay } from 'components'
 import { ServerBasicFragment, Trashed, useSyncAllServersMutation } from '__generated__/graphql'
+import { ApolloError } from '@apollo/client'
 
 interface Props {
   withTrashedServers?: Trashed
   withTrashedDevices?: Trashed
   handleSync: (servers: ServerBasicFragment[]) => void
+  refetch: () => void
 }
 
 const ButtonSyncAll: React.FC<Props> = ({
   withTrashedServers,
   withTrashedDevices,
   handleSync,
+  refetch,
 }: Props) => {
   const { t } = useTranslation()
 
@@ -38,13 +41,23 @@ const ButtonSyncAll: React.FC<Props> = ({
           handleSync(data.data?.syncAllServers)
         }
       })
-      .catch(() => {})
+      .catch(() => {
+        console.log('sdfjoisd')
+        refetch()
+      })
   }
 
-  if (error) return <ErrorNotifier error={error} />
+  const getError = (error: ApolloError) => {
+    const { message } = error
+
+    if (message) return message.split(' | ')
+
+    return error
+  }
 
   return (
     <>
+      {error && <ErrorNotifier error={getError(error)} />}
       {loading && <SpinnerOverlay transparent={true} />}
       <Can permission="server.sync">
         <CButton

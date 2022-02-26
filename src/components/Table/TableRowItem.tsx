@@ -20,6 +20,8 @@ const TableRowItem: React.FC<Props> = ({ item, keys }: Props) => {
     }
   })
 
+  console.log(data)
+
   return Array.isArray(data) ? (
     <>
       {data.map((badge: string, index: number) => (

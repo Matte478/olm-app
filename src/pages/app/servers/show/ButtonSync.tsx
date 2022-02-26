@@ -35,10 +35,9 @@ const ButtonSync: React.FC<Props> = ({ id, handleSync, withTrashedDevices }: Pro
       .catch(() => {})
   }
 
-  if (error) return <ErrorNotifier error={error} />
-
   return (
     <>
+      {error && <ErrorNotifier error={error} />}
       {loading && <SpinnerOverlay transparent={true} />}
       <Can permission="server.sync">
         <CButton
