@@ -15,7 +15,7 @@ import { createUploadLink } from 'apollo-upload-client'
 
 import { AuthenticatedUserFragment } from '__generated__/graphql'
 
-const apiUri = 'https://olm-api.test/graphql'
+const apiUri = process.env.REACT_APP_API_ENDPOINT || 'https://olm-api.test/graphql'
 let authToken = ''
 let authTokenExp: Date | null = null
 
