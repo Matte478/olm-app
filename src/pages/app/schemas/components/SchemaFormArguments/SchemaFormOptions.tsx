@@ -35,12 +35,12 @@ const SchemaFormOptions: React.FC<Props> = ({ option, handleChange, handleDelete
         <CFormFloating>
           <CFormInput
             type="text"
-            step="any"
+            pattern="[a-zA-Z]"
             required
-            value={value !== null ? value : ''}
+            value={value}
             onChange={(event) => {
-              const val = parseFloat(event.target.value.replace(/\.+$/, ''))
-              setValue(event.target.value || '')
+              const val = event.target.value.replace(/[^0-9\,\]\[\s]/g, '')
+              setValue(val)
               handleChange({ ...option, value: val })
             }}
           />

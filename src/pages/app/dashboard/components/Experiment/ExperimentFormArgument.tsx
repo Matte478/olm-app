@@ -56,7 +56,9 @@ const ExperimentFormArgument: React.FC<Props> = ({
         type="text"
         id={argument.name}
         value={value}
-        onChange={(event: React.ChangeEvent<HTMLInputElement>) => setValue(event.target.value)}
+        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+          setValue(event.target.value.replace(/[^0-9\,\]\[\s]/g, ''))
+        }}
       />
       <CFormLabel>{argument.label}</CFormLabel>
     </CFormFloating>

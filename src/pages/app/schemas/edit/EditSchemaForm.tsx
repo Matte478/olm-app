@@ -8,10 +8,6 @@ import {
   CFormLabel,
   CFormSelect,
   CFormTextarea,
-  CImage,
-  CModal,
-  CModalHeader,
-  CModalTitle,
   CRow,
 } from '@coreui/react'
 import { useTranslation } from 'react-i18next'
@@ -50,7 +46,7 @@ const formatSchemaInput = (schema: SchemaExtendedFragment) => {
         options: argument.options?.map((option) => {
           return {
             name: option?.name || '',
-            value: option?.value || 0,
+            value: option?.value || '0',
           }
         }),
       }

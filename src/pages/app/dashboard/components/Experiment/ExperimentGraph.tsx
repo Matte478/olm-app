@@ -1,9 +1,41 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { CChart } from '@coreui/react-chartjs'
+import Echo from 'laravel-echo'
 
 type Props = {}
 
+//@ts-ignore
+window.Pusher = require('pusher-js')
+
+//@ts-ignore
+// window.Echo = new Echo({
+//   broadcaster: 'pusher',
+//   key: process.env.REACT_APP_PUSHER_ENV_KEY,
+//   cluster: process.env.REACT_APP_PUSHER_ENV_CLUSTER,
+//   // wsHost: process.env.REACT_APP_PUSHER_HOST,
+//   wsHost: '147.175.105.186',
+//   wsPort: 6001,
+//   forceTLS: false,
+//   disableStats: true,
+// })
+
 const ExperimentGraph: React.FC<Props> = ({}: Props) => {
+  let init = false
+
+  // useEffect(() => {
+  //   //@ts-ignore
+  //   if (!window.Echo) return
+  //   //@ts-ignore
+  //   window.Echo.channel('channel').listen('DataBroadcaster', (e: any) => {
+  //     console.log(e)
+  //     if (e.hello) {
+  //       console.log(e.hello)
+  //     } else {
+  //       // probably end of stream
+  //     }
+  //   })
+  // }, [init])
+  
   const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July']
   const datasets = [
     {
