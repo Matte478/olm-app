@@ -20,6 +20,7 @@ const EditServerForm: React.FC<Props> = ({ server }: Props) => {
     id: server.id,
     name: server.name,
     ip_address: server.ip_address,
+    domain: server.domain,
     port: server.port,
     websocket_port: server.websocket_port,
     production: server.production,
@@ -65,6 +66,17 @@ const EditServerForm: React.FC<Props> = ({ server }: Props) => {
           value={updateServerInput.ip_address}
           onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
             setUpdateServerInput({ ...updateServerInput, ip_address: event.target.value })
+          }
+        />
+        <CFormLabel>{t('servers.columns.domain')}</CFormLabel>
+      </CFormFloating>
+      <CFormFloating className="mb-3">
+        <CFormInput
+          type="text"
+          id="ip_address"
+          value={updateServerInput.domain}
+          onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+            setUpdateServerInput({ ...updateServerInput, domain: event.target.value })
           }
         />
         <CFormLabel>{t('servers.columns.ip_address')}</CFormLabel>

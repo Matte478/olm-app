@@ -14,6 +14,7 @@ import {
 import CIcon from '@coreui/icons-react'
 import { cilImage } from '@coreui/icons'
 import { useTranslation } from 'react-i18next'
+import { toast } from 'react-toast'
 
 import { ErrorNotifier, SpinnerOverlay } from 'components'
 import {
@@ -24,8 +25,10 @@ import {
   ExperimentBasicFragment,
   ExperimentSchemaFragment,
   useExperimentSchemasQuery,
+  useRunUserExperimentMutation,
   UserExperimentArgInput,
   UserExperimentArgsInput,
+  UserExperimentBasicFragment,
 } from '__generated__/graphql'
 import ExperimentFormArgument from './ExperimentFormArgument'
 import ExperimentGraph from './ExperimentGraph'
@@ -59,6 +62,9 @@ const formatSchemasArgument = (args: ArgumentBasicFragment[]) => {
 
 const ExperimentForm: React.FC<Props> = ({ device, experiments }: Props) => {
   const { t } = useTranslation()
+
+  const [userExperiment, setUserExperiment] = useState<UserExperimentBasicFragment>()
+
   const [visiblePreview, setVisiblePreview] = useState(false)
   const [selectedExperiment, setSelectedExperiment] = useState<ExperimentBasicFragment | undefined>(
     experiments[0],
@@ -88,6 +94,8 @@ const ExperimentForm: React.FC<Props> = ({ device, experiments }: Props) => {
       softwareId: selectedExperiment?.software.id as string,
     },
   })
+
+  const [runUserExperimentMutation, runUserExperimentVariables] = useRunUserExperimentMutation()
 
   useEffect(() => {
     setSelectedSchema(data?.schemas.length ? data.schemas[0] : undefined)
@@ -128,8 +136,38 @@ const ExperimentForm: React.FC<Props> = ({ device, experiments }: Props) => {
     )
   }
 
-  const handleCreate = () => {
-    console.log('handle')
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault()
+
+    console.log('handle', experimentInput, selectedSchema, selectedExperiment)
+
+    if (
+      !experimentInput ||
+      !selectedExperiment ||
+      (selectedExperiment?.has_schema && !selectedExperiment)
+    )
+      return
+
+    await runUserExperimentMutation({
+      variables: {
+        runUserExperimentInput: {
+          experiment_id: selectedExperiment.id,
+          // sampling_rate: 200,
+          // simulation_time: 500,
+          schema_id: selectedSchema?.id,
+          software_id: selectedExperiment.software.id,
+          input: [experimentInput],
+        },
+      },
+    })
+      .then((data) => {
+        if (data.data?.runUserExperiment) {
+          toast.success(t('experiments.run.success'))
+          // data.data.runUserExperiment.
+          setUserExperiment(data.data.runUserExperiment)
+        }
+      })
+      .catch(() => {})
   }
 
   const upsertArgument = useCallback((argument: UserExperimentArgInput) => {
@@ -180,12 +218,12 @@ const ExperimentForm: React.FC<Props> = ({ device, experiments }: Props) => {
 
   return (
     <>
-      <CRow>
-        <CCol md={6}>
-          <ExperimentGraph />
-        </CCol>
-        <hr className='my-4' />
-      </CRow>
+      {userExperiment && (
+        <CRow>
+          <CCol md={12}>{<ExperimentGraph userExperiment={userExperiment} />}</CCol>
+          <hr className="my-4" />
+        </CRow>
+      )}
       <CModal
         visible={visiblePreview}
         alignment="center"
@@ -199,8 +237,11 @@ const ExperimentForm: React.FC<Props> = ({ device, experiments }: Props) => {
         </CModalHeader>
         {selectedSchema?.preview && <CImage className="m-2" fluid src={selectedSchema.preview} />}
       </CModal>
-      <CForm onSubmit={handleCreate}>
-        {loading && <SpinnerOverlay transparent={true} />}
+      <CForm onSubmit={handleSubmit}>
+        {runUserExperimentVariables.error && (
+          <ErrorNotifier error={runUserExperimentVariables.error} />
+        )}
+        {(loading || runUserExperimentVariables.loading) && <SpinnerOverlay transparent={true} />}
         {error && <ErrorNotifier error={error} />}
         <CRow>
           <CCol sm={3}>

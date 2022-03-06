@@ -53,3 +53,18 @@ fragment ExperimentBasic on Experiment {
   has_schema
   commands
 }
+
+fragment UserExperimentBasic on UserExperiment {
+  id
+  experiment {
+    server {
+      ip_address
+      websocket_port
+    }
+  }
+  sampling_rate
+  simulation_time
+  filled
+  created_at
+  updated_at
+}
