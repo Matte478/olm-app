@@ -2,7 +2,11 @@ import React from 'react'
 import { useTranslation } from 'react-i18next'
 
 import { ErrorNotifier, SpinnerOverlay } from 'components'
-import { DeviceWithServerFragment, useExperimentsQuery } from '__generated__/graphql'
+import {
+  DeviceWithServerFragment,
+  useExperimentsQuery,
+  useUserExperimentCurrentQuery,
+} from '__generated__/graphql'
 import ExperimentForm from './ExperimentForm'
 
 type Props = {
@@ -11,8 +15,8 @@ type Props = {
 
 const Experiment: React.FC<Props> = ({ device }: Props) => {
   const { t } = useTranslation()
-  
-  const { data, loading, error } = useExperimentsQuery({
+
+  const experimentsResponse = useExperimentsQuery({
     notifyOnNetworkStatusChange: true,
     variables: {
       serverId: device.server.id,
@@ -20,11 +24,24 @@ const Experiment: React.FC<Props> = ({ device }: Props) => {
     },
   })
 
-  if (loading) return <SpinnerOverlay transparent={true} />
-  if (error) return <ErrorNotifier error={error} />
-  if (!data?.experiments || !data?.experiments.length) return <ErrorNotifier error={t('experiments.no_experiments')} />
+  const userExperimentResponse = useUserExperimentCurrentQuery({
+    notifyOnNetworkStatusChange: true,
+  })
 
-  return <ExperimentForm device={device} experiments={data.experiments} />
+  if (experimentsResponse.loading || userExperimentResponse.loading)
+    return <SpinnerOverlay transparent={true} />
+  if (experimentsResponse.error) return <ErrorNotifier error={experimentsResponse.error} />
+  if (userExperimentResponse.error) return <ErrorNotifier error={userExperimentResponse.error} />
+  if (!experimentsResponse.data?.experiments || !experimentsResponse.data?.experiments.length)
+    return <ErrorNotifier error={t('experiments.no_experiments')} />
+
+  return (
+    <ExperimentForm
+      device={device}
+      experiments={experimentsResponse.data.experiments}
+      userExperimentCurrent={userExperimentResponse.data?.userExperimentCurrent || undefined}
+    />
+  )
 }
 
 export default Experiment

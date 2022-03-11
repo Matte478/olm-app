@@ -16,10 +16,9 @@ import { cilImage } from '@coreui/icons'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toast'
 
-import { ErrorNotifier, SpinnerOverlay } from 'components'
+import { ErrorNotifier, ModalPreview, SpinnerOverlay } from 'components'
 import {
   ArgumentBasicFragment,
-  // CreateUserExperimentInput,
   DeviceWithServerFragment,
   ExperimentArgument,
   ExperimentBasicFragment,
@@ -36,6 +35,7 @@ import ExperimentGraph from './ExperimentGraph'
 type Props = {
   device: DeviceWithServerFragment
   experiments: ExperimentBasicFragment[]
+  userExperimentCurrent?: UserExperimentBasicFragment
 }
 
 interface ArugmentsRow {
@@ -60,7 +60,7 @@ const formatSchemasArgument = (args: ArgumentBasicFragment[]) => {
   return formatted
 }
 
-const ExperimentForm: React.FC<Props> = ({ device, experiments }: Props) => {
+const ExperimentForm: React.FC<Props> = ({ device, experiments, userExperimentCurrent }: Props) => {
   const { t } = useTranslation()
 
   const [userExperiment, setUserExperiment] = useState<UserExperimentBasicFragment>()
@@ -74,14 +74,6 @@ const ExperimentForm: React.FC<Props> = ({ device, experiments }: Props) => {
     experiments[0].commands[0] || undefined,
   )
 
-  // const [experimentInput, setExperimentInput] = useState<CreateUserExperimentInput>({
-  //   experiment_id: selectedExperiment?.id || '-1',
-  //   input: [],
-  //   sampling_rate: 0,
-  //   simulation_time: 0,
-  //   schema_id: selectedSchema?.id || undefined
-  // })
-
   const [experimentInput, setExperimentInput] = useState<UserExperimentArgsInput>({
     script_name: selectedCommand || '',
     input: [],
@@ -91,15 +83,41 @@ const ExperimentForm: React.FC<Props> = ({ device, experiments }: Props) => {
     notifyOnNetworkStatusChange: true,
     variables: {
       deviceTypeId: device.deviceType.id,
-      softwareId: selectedExperiment?.software.id as string,
+      softwareId:
+        userExperimentCurrent?.experiment.software.id ||
+        (selectedExperiment?.software.id as string),
     },
   })
 
   const [runUserExperimentMutation, runUserExperimentVariables] = useRunUserExperimentMutation()
 
   useEffect(() => {
-    setSelectedSchema(data?.schemas.length ? data.schemas[0] : undefined)
-  }, [data])
+    // setSelectedSchema(data?.schemas.length ? data.schemas[0] : undefined)
+    setSelectedSchema(
+      userExperimentCurrent
+        ? userExperimentCurrent.schema || undefined
+        : data?.schemas.length
+        ? data.schemas[0]
+        : undefined,
+    )
+  }, [data, userExperimentCurrent])
+
+  useEffect(() => {
+    if (userExperimentCurrent) {
+      setUserExperiment(userExperimentCurrent)
+
+      const experiment = experiments?.find(
+        (experiment) => experiment.id === userExperimentCurrent.experiment.id,
+      )
+      setSelectedExperiment(experiment)
+      setSelectedCommand(experiment?.commands[0] || undefined)
+      setExperimentInput({
+        ...experimentInput,
+        script_name: experiment?.commands[0] || '',
+      })
+      setSelectedSchema(userExperimentCurrent.schema || undefined)
+    }
+  }, [userExperimentCurrent])
 
   useEffect(() => {
     replaceExperimentInput()
@@ -152,9 +170,7 @@ const ExperimentForm: React.FC<Props> = ({ device, experiments }: Props) => {
       variables: {
         runUserExperimentInput: {
           experiment_id: selectedExperiment.id,
-          user_experiment_id: '5', // TODO
-          // sampling_rate: 200,
-          // simulation_time: 500,
+          user_experiment_id: userExperiment?.id,
           schema_id: selectedSchema?.id,
           software_id: selectedExperiment.software.id,
           input: [experimentInput],
@@ -164,8 +180,34 @@ const ExperimentForm: React.FC<Props> = ({ device, experiments }: Props) => {
       .then((data) => {
         if (data.data?.runUserExperiment) {
           toast.success(t('experiments.run.success'))
-          // data.data.runUserExperiment.
           setUserExperiment(data.data.runUserExperiment)
+        }
+      })
+      .catch(() => {})
+  }
+
+  const stopExperiment = async () => {
+    if (!userExperiment) return
+
+    await runUserExperimentMutation({
+      variables: {
+        runUserExperimentInput: {
+          experiment_id: userExperiment.experiment.id,
+          user_experiment_id: userExperiment.id,
+          software_id: userExperiment.experiment.software.id,
+          input: [
+            {
+              script_name: 'stop',
+              input: [],
+            },
+          ],
+        },
+      },
+    })
+      .then((data) => {
+        if (data.data?.runUserExperiment) {
+          toast.success(t('experiments.stop.success'))
+          setUserExperiment(undefined)
         }
       })
       .catch(() => {})
@@ -215,6 +257,19 @@ const ExperimentForm: React.FC<Props> = ({ device, experiments }: Props) => {
     return rows
   }
 
+  const getCommands = () => {
+    if (!userExperiment && selectedExperiment?.commands.includes('start')) return ['start']
+
+    if (userExperiment)
+      return (
+        selectedExperiment?.commands.filter(
+          (command) => command !== 'start' && command !== 'stop',
+        ) || []
+      )
+
+    return selectedExperiment?.commands || []
+  }
+
   const schemas = data?.schemas
 
   return (
@@ -225,19 +280,13 @@ const ExperimentForm: React.FC<Props> = ({ device, experiments }: Props) => {
           <hr className="my-4" />
         </CRow>
       )}
-      <CModal
-        visible={visiblePreview}
-        alignment="center"
-        size="xl"
-        onDismiss={() => {
-          setVisiblePreview(false)
-        }}
-      >
-        <CModalHeader>
-          <CModalTitle>{t('schemas.preview.title')}</CModalTitle>
-        </CModalHeader>
-        {selectedSchema?.preview && <CImage className="m-2" fluid src={selectedSchema.preview} />}
-      </CModal>
+      {selectedSchema?.preview && (
+        <ModalPreview
+          active={visiblePreview}
+          src={selectedSchema.preview}
+          handleDismiss={() => setVisiblePreview(false)}
+        />
+      )}
       <CForm onSubmit={handleSubmit}>
         {runUserExperimentVariables.error && (
           <ErrorNotifier error={runUserExperimentVariables.error} />
@@ -251,6 +300,7 @@ const ExperimentForm: React.FC<Props> = ({ device, experiments }: Props) => {
               aria-label="experiment"
               id="experiment"
               className="mb-3"
+              disabled={!!userExperiment}
               value={selectedExperiment?.id}
               onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
                 const experiment = experiments?.find(
@@ -279,6 +329,7 @@ const ExperimentForm: React.FC<Props> = ({ device, experiments }: Props) => {
                   <CFormSelect
                     aria-label="schema"
                     id="schema"
+                    disabled={!!userExperiment}
                     value={selectedSchema?.id}
                     onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
                       setSelectedSchema(schemas?.find((schema) => schema.id === event.target.value))
@@ -294,7 +345,11 @@ const ExperimentForm: React.FC<Props> = ({ device, experiments }: Props) => {
                   <CButton
                     color="warning"
                     className="ms-2 d-inline-flex justify-content-center align-items-center"
-                    onClick={() => setVisiblePreview(true)}
+                    onClick={() => {
+                      selectedSchema?.preview
+                        ? setVisiblePreview(true)
+                        : toast.error(t('schemas.preview.error'))
+                    }}
                   >
                     <CIcon content={cilImage} />
                   </CButton>
@@ -315,7 +370,7 @@ const ExperimentForm: React.FC<Props> = ({ device, experiments }: Props) => {
                 setExperimentInput({ ...experimentInput, script_name: event.target.value })
               }}
             >
-              {selectedExperiment?.commands.map((command) => (
+              {getCommands().map((command) => (
                 <option value={command as string} key={command}>
                   {command}
                 </option>
@@ -343,6 +398,16 @@ const ExperimentForm: React.FC<Props> = ({ device, experiments }: Props) => {
           </CCol>
         </CRow>
         <div className="text-right">
+          {userExperiment && selectedExperiment?.commands.includes('stop') && (
+            <CButton
+              type="button"
+              className="d-inline-flex justify-content-center align-items-center text-light me-2"
+              color="danger"
+              onClick={stopExperiment}
+            >
+              {t('experiments.actions.stop')}
+            </CButton>
+          )}
           <CButton
             type="submit"
             className="d-inline-flex justify-content-center align-items-center"

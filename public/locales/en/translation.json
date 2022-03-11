@@ -290,7 +290,8 @@
       "command": "Command"
     },
     "actions": {
-      "run": "Run experiment command"
+      "run": "Run experiment command",
+      "stop": "Stop experiment"
     }
   }
 }

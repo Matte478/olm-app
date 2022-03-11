@@ -6,19 +6,20 @@ type Props = {
   active: boolean
   src: string | null
   handleDismiss: () => void
+  title?: string
 }
 
-const SchemaPreviewModal: React.FC<Props> = ({ active = false, src, handleDismiss }: Props) => {
+const ModalPreview: React.FC<Props> = ({ active = false, src, handleDismiss, title }: Props) => {
   const { t } = useTranslation()
 
   return (
     <CModal visible={active} alignment="center" size="xl" onDismiss={handleDismiss}>
       <CModalHeader>
-        <CModalTitle>{t('schemas.preview.title')}</CModalTitle>
+        <CModalTitle>{title || t('schemas.preview.title')}</CModalTitle>
       </CModalHeader>
       {src && <CImage className="m-2" fluid src={src} />}
     </CModal>
   )
 }
 
-export default SchemaPreviewModal
+export default ModalPreview

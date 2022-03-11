@@ -5,10 +5,9 @@ import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toast'
 
-import { ErrorNotifier, Table } from 'components'
+import { ErrorNotifier, ModalPreview, Table } from 'components'
 import { TableAction, TableColumn } from 'types'
 import { SchemaBasicFragment, useDeleteSchemaMutation } from '__generated__/graphql'
-import { SchemaPreviewModal } from '../components'
 
 interface Props {
   schemas: SchemaBasicFragment[]
@@ -135,7 +134,7 @@ const IndexSchemaTable: React.FC<Props> = ({ schemas, refetch }: Props) => {
 
   return (
     <>
-      <SchemaPreviewModal
+      <ModalPreview
         active={visiblePreview}
         src={previewUrl}
         handleDismiss={() => {

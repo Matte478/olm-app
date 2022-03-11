@@ -57,11 +57,18 @@ fragment ExperimentBasic on Experiment {
 fragment UserExperimentBasic on UserExperiment {
   id
   experiment {
+    id
     server {
       ip_address
       api_domain
       websocket_port
     }
+    software {
+      id
+    }
+  }
+  schema {
+    ...ExperimentSchema
   }
   sampling_rate
   simulation_time

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Echo from 'laravel-echo'
 import PlotlyChart from 'react-plotly.js'
 
@@ -11,14 +11,14 @@ type Props = {
 //@ts-ignore
 window.Pusher = require('pusher-js')
 
-const ExperimentGraph: React.FC<Props> = ({userExperiment}: Props) => {
+const ExperimentGraph: React.FC<Props> = ({ userExperiment }: Props) => {
+  const [graphData, setGraphData] = useState<Plotly.Data[]>()
 
   useEffect(() => {
     const echo = new Echo({
       broadcaster: 'pusher',
       key: process.env.REACT_APP_PUSHER_ENV_KEY,
       cluster: process.env.REACT_APP_PUSHER_ENV_CLUSTER,
-      // wsHost: userExperiment.experiment.server.ip_address,
       wsHost: userExperiment.experiment.server.api_domain,
       wssPort: userExperiment.experiment.server.websocket_port,
       forceTLS: true,
@@ -29,6 +29,7 @@ const ExperimentGraph: React.FC<Props> = ({userExperiment}: Props) => {
       console.log(e)
       if (e.hello) {
         console.log(e.hello)
+        updateGraphData(e.hello)
       } else {
         // probably end of stream
       }
@@ -36,31 +37,35 @@ const ExperimentGraph: React.FC<Props> = ({userExperiment}: Props) => {
 
     return () => {
       console.log('disable')
-     
+
       echo.channel('channel').stopListening('DataBroadcaster')
       echo.leaveChannel('channel')
     }
   }, [])
 
+  const updateGraphData = (data: any[]) => {
+    // const simTime = 10
+
+    setGraphData(
+      data.map((d) => {
+        return {
+          name: d['name'],
+          x: d['data'].keys(),
+          y: d['data'],
+          type: 'scatter',
+        }
+      }),
+    )
+  }
+
   return (
     <PlotlyChart
-      data={[
+      data={graphData || []}
+      layout={
         {
-          x: [1, 2, 3],
-          y: [2, 6, 3],
-          type: 'scatter',
-          mode: 'lines+markers',
-          marker: { color: 'blue' },
-        },
-        {
-          x: [1, 2, 3],
-          y: [1, 3, 9],
-          type: 'scatter',
-          mode: 'lines+markers',
-          marker: { color: 'red' },
-        },
-      ]}
-      layout={{ title: 'A Fancy Plot' }}
+          // title: 'A Fancy Plot'
+        }
+      }
     />
   )
 }

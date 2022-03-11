@@ -15,3 +15,9 @@ query ExperimentSchemas($deviceTypeId: ID!, $softwareId: ID!) {
     ...ExperimentSchema
   }
 }
+
+query UserExperimentCurrent {
+  userExperimentCurrent {
+    ...UserExperimentBasic
+  }
+}

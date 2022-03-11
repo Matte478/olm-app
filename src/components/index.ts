@@ -12,6 +12,7 @@ import ButtonEdit from './ButtonEdit/ButtonEdit'
 import Can from './Can/Can'
 import DnDCalendar from './DnDCalendar/DnDCalendar'
 import TrashedDropdown from './TrashedDropdown/TrashedDropdown'
+import ModalPreview from './ModalPreview/ModalPreview'
 
 export {
   Card,
@@ -28,4 +29,5 @@ export {
   Can,
   DnDCalendar,
   TrashedDropdown,
+  ModalPreview,
 }

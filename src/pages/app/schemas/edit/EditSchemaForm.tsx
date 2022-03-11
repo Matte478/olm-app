@@ -22,8 +22,8 @@ import {
   useDeviceTypesAndSoftwareQuery,
   useUpdateSchemaMutation,
 } from '__generated__/graphql'
-import { ButtonSave, ErrorNotifier, SpinnerOverlay } from 'components'
-import { SchemaFormArguments, SchemaPreviewModal } from '../components'
+import { ButtonSave, ErrorNotifier, ModalPreview, SpinnerOverlay } from 'components'
+import { SchemaFormArguments } from '../components'
 
 interface Props {
   schema: SchemaExtendedFragment
@@ -109,7 +109,7 @@ const EditSchemaForm = ({ schema }: Props) => {
   return (
     <>
       {schema.preview && (
-        <SchemaPreviewModal
+        <ModalPreview
           active={visiblePreview}
           src={schema.preview}
           handleDismiss={() => {

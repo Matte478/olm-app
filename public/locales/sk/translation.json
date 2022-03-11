@@ -288,7 +288,8 @@
       "command": "Príkaz"
     },
     "actions": {
-      "run": "Spustiť príkaz experimentu"
+      "run": "Spustiť príkaz experimentu",
+      "stop": "Zastaviť experiment"
     }
   }
 }
