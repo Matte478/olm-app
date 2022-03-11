@@ -185,7 +185,7 @@
       "id": "ID",
       "name": "Name",
       "ip_address": "IP address",
-      "domain": "Domain",
+      "api_domain": "API Domain",
       "port": "Port",
       "websocket_port": "Websocket port",
       "available": "Available",

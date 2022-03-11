@@ -152,6 +152,7 @@ const ExperimentForm: React.FC<Props> = ({ device, experiments }: Props) => {
       variables: {
         runUserExperimentInput: {
           experiment_id: selectedExperiment.id,
+          user_experiment_id: '5', // TODO
           // sampling_rate: 200,
           // simulation_time: 500,
           schema_id: selectedSchema?.id,

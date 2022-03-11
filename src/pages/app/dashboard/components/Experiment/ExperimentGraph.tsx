@@ -18,10 +18,10 @@ const ExperimentGraph: React.FC<Props> = ({userExperiment}: Props) => {
       broadcaster: 'pusher',
       key: process.env.REACT_APP_PUSHER_ENV_KEY,
       cluster: process.env.REACT_APP_PUSHER_ENV_CLUSTER,
-      // wsHost: process.env.REACT_APP_PUSHER_HOST,
-      wsHost: userExperiment.experiment.server.ip_address,
-      wsPort: userExperiment.experiment.server.websocket_port,
-      forceTLS: false,
+      // wsHost: userExperiment.experiment.server.ip_address,
+      wsHost: userExperiment.experiment.server.api_domain,
+      wssPort: userExperiment.experiment.server.websocket_port,
+      forceTLS: true,
       disableStats: true,
     })
 

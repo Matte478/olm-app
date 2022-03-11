@@ -59,6 +59,7 @@ fragment UserExperimentBasic on UserExperiment {
   experiment {
     server {
       ip_address
+      api_domain
       websocket_port
     }
   }

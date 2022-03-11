@@ -81,8 +81,8 @@ const IndexServerTable: React.FC<Props> = ({ servers, refetch }: Props) => {
       name: t('servers.columns.ip_address'),
     },
     {
-      column: 'domain',
-      name: t('servers.columns.domain'),
+      column: 'api_domain',
+      name: t('servers.columns.api_domain'),
     },
     // {
     //   column: 'port',

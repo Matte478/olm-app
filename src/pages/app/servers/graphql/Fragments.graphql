@@ -2,7 +2,7 @@ fragment ServerBasic on Server {
   id
   name
   ip_address
-  domain
+  api_domain
   available
   production
   enabled
