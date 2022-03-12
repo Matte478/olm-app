@@ -3,6 +3,9 @@ import Echo from 'laravel-echo'
 import PlotlyChart from 'react-plotly.js'
 
 import { UserExperimentBasicFragment } from '__generated__/graphql'
+import { CCol, CRow } from '@coreui/react'
+import ExperimentAnimation from './ExperimentAnimation'
+import Plotly from 'plotly.js'
 
 type Props = {
   userExperiment: UserExperimentBasicFragment
@@ -13,6 +16,11 @@ window.Pusher = require('pusher-js')
 
 const ExperimentGraph: React.FC<Props> = ({ userExperiment }: Props) => {
   const [graphData, setGraphData] = useState<Plotly.Data[]>()
+
+  // useEffect(() => {
+  //   console.log('resize')
+  //   Plotly.Plots.resize('plotlyChart')
+  // }, [])
 
   useEffect(() => {
     const echo = new Echo({
@@ -59,14 +67,26 @@ const ExperimentGraph: React.FC<Props> = ({ userExperiment }: Props) => {
   }
 
   return (
-    <PlotlyChart
-      data={graphData || []}
-      layout={
-        {
-          // title: 'A Fancy Plot'
-        }
-      }
-    />
+    <CRow>
+      <CCol md={6}>
+        <PlotlyChart
+          data={graphData || []}
+          // divId="plotlyChart"
+          layout={{
+            // autosize: true,
+            title: 'A Fancy Plot',
+          }}
+          useResizeHandler={true}
+          config={{
+            // responsive: true,
+          }}
+          style={{ width: '100%' }}
+        />
+      </CCol>
+      <CCol md={6}>
+        <ExperimentAnimation />
+      </CCol>
+    </CRow>
   )
 }
 
