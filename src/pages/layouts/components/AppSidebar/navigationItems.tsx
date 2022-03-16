@@ -3,9 +3,11 @@ import {
   cilCalculator,
   cilCalendar,
   cilCursor,
+  cilFile,
   cilLan,
   cilLockLocked,
   cilPuzzle,
+  cilReportSlash,
   cilSpeedometer,
   cilUser,
 } from '@coreui/icons'
@@ -27,6 +29,12 @@ const navigationItems = [
     name: 'sidebar.reservations',
     to: '/app/reservations',
     icon: <CIcon content={cilCalendar} customClasses="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'sidebar.user_experiments',
+    to: '/app/user-experiments',
+    icon: <CIcon content={cilFile} customClasses="nav-icon" />,
   },
   {
     component: CNavTitle,

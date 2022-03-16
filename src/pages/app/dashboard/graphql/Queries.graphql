@@ -18,6 +18,6 @@ query ExperimentSchemas($deviceTypeId: ID!, $softwareId: ID!) {
 
 query UserExperimentCurrent {
   userExperimentCurrent {
-    ...UserExperimentBasic
+    ...UserExperimentDashboard
   }
 }

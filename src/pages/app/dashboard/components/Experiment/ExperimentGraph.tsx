@@ -2,13 +2,13 @@ import React, { useEffect, useState } from 'react'
 import Echo from 'laravel-echo'
 import PlotlyChart from 'react-plotly.js'
 
-import { UserExperimentBasicFragment } from '__generated__/graphql'
+import { UserExperimentDashboardFragment } from '__generated__/graphql'
 import { CCol, CRow } from '@coreui/react'
 import ExperimentAnimation from './ExperimentAnimation'
 import Plotly from 'plotly.js'
 
 type Props = {
-  userExperiment: UserExperimentBasicFragment
+  userExperiment: UserExperimentDashboardFragment
 }
 
 //@ts-ignore

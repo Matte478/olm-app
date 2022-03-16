@@ -61,7 +61,8 @@
     "users": "Users",
     "roles": "Roles and permissions",
     "servers": "Servers",
-    "schemas": "Schemas"
+    "schemas": "Schemas",
+    "user_experiments": "User experiments"
   },
 
   "actions": {
@@ -293,5 +294,8 @@
       "run": "Run experiment command",
       "stop": "Stop experiment"
     }
+  },
+  "user_experiments": {
+    "title": "User experiments"
   }
 }

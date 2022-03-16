@@ -58,10 +58,11 @@
     "dashboard": "Dashboard",
     "reservations": "Rezervácie",
     "settings": "Nastavenia",
-    "users": "Užívatelia",
+    "users": "Používatelia",
     "roles": "Role a práva",
     "servers": "Servery",
-    "schemas": "Schémy"
+    "schemas": "Schémy",
+    "user_experiments": "Experimenty používateľov"
   },
 
   "actions": {
@@ -91,19 +92,19 @@
       "created-at": "Registrovaný"
     },
     "index": {
-      "title": "Užívatelia"
+      "title": "Používatelia"
     },
     "delete": {
-      "confirm": "Naozaj chcete vymazať daného užívateľa?",
-      "success": "Užívateľ bol vymazaný!"
+      "confirm": "Naozaj chcete vymazať daného používateľa?",
+      "success": "Používateľ bol vymazaný!"
     },
     "restore": {
       "button": "Obnoviť",
-      "confirm": "Naozaj chcete obnoviť daného užívateľa?",
-      "success": "Užívateľ bol obnovený!"
+      "confirm": "Naozaj chcete obnoviť daného používateľa?",
+      "success": "Používateľ bol obnovený!"
     },
     "update": {
-      "success": "Užívateľ bol upravený!"
+      "success": "Používateľ bol upravený!"
     }
   },
 
@@ -290,6 +291,30 @@
     "actions": {
       "run": "Spustiť príkaz experimentu",
       "stop": "Zastaviť experiment"
+    }
+  },
+  "user_experiments": {
+    "columns": {
+      "id": "ID",
+      "filled": "Vyplnené",
+      "user": "Autor",
+      "device": "Zariadenie",
+      "device_type": "Typ Zariadenia",
+      "software": "Softvér",
+      "simulation_time": "Čas simulácie",
+      "created-at": "Registrovaný"
+    },
+    "index": {
+      "title": "Experimenty používateľov"
+    },
+    "delete": {
+      "confirm": "Naozaj chcete vymazať daný report experimentu?",
+      "success": "Report experimentu bol vymazaný!"
+    },
+    "restore": {
+      "button": "Obnoviť",
+      "confirm": "Naozaj chcete obnoviť daný report experimentu?",
+      "success": "Report experimentu bol obnovený!"
     }
   }
 }

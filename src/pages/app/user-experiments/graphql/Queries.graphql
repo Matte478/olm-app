@@ -1,0 +1,15 @@
+query UserExperiments($first: Int!, $page: Int, $trashed: Trashed) {
+  userExperiments(
+    first: $first
+    page: $page
+    trashed: $trashed
+    orderBy: { column: CREATED_AT, order: DESC }
+  ) {
+    paginatorInfo {
+      ...PaginatorInfo
+    }
+    data {
+      ...UserExperimentBasic
+    }
+  }
+}

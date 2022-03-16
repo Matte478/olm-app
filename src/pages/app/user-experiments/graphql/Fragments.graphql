@@ -1,0 +1,26 @@
+fragment UserExperimentBasic on UserExperiment {
+  id
+  filled
+  simulation_time
+  result
+  user {
+    name
+  }
+  experiment {
+    deviceType {
+      name
+    }
+    device {
+      name
+    }
+    software {
+      name
+    }
+  }
+  created_at
+  deleted_at
+}
+
+fragment UserExperimentExtended on UserExperiment {
+  ...UserExperimentBasic
+}

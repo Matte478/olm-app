@@ -1,4 +1,3 @@
-import React from 'react'
 import { Navigate } from 'react-router-dom'
 
 // layout
@@ -43,6 +42,9 @@ import ShowServer from 'pages/app/servers/show'
 import IndexSchema from 'pages/app/schemas/index'
 import CreateSchema from 'pages/app/schemas/create'
 import EditSchema from 'pages/app/schemas/edit'
+
+// user experiments
+import IndexUserExperiment from 'pages/app/user-experiments/index'
 
 const routes = (loggedIn: boolean) => [
   {
@@ -203,6 +205,19 @@ const routes = (loggedIn: boolean) => [
               <Can permission="schema.update" notify={true}>
                 <EditSchema />
               </Can>
+            ),
+          },
+        ],
+      },
+      {
+        path: '/user-experiments',
+        children: [
+          {
+            path: '/',
+            element: (
+              // <Can permission="user_experiment.show" notify={true}>
+              <IndexUserExperiment />
+              // </Can>
             ),
           },
         ],

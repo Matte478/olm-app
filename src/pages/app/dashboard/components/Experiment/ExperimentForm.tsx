@@ -27,7 +27,7 @@ import {
   useRunUserExperimentMutation,
   UserExperimentArgInput,
   UserExperimentArgsInput,
-  UserExperimentBasicFragment,
+  UserExperimentDashboardFragment,
 } from '__generated__/graphql'
 import ExperimentFormArgument from './ExperimentFormArgument'
 import ExperimentGraph from './ExperimentGraph'
@@ -35,7 +35,7 @@ import ExperimentGraph from './ExperimentGraph'
 type Props = {
   device: DeviceWithServerFragment
   experiments: ExperimentBasicFragment[]
-  userExperimentCurrent?: UserExperimentBasicFragment
+  userExperimentCurrent?: UserExperimentDashboardFragment
 }
 
 interface ArugmentsRow {
@@ -63,7 +63,7 @@ const formatSchemasArgument = (args: ArgumentBasicFragment[]) => {
 const ExperimentForm: React.FC<Props> = ({ device, experiments, userExperimentCurrent }: Props) => {
   const { t } = useTranslation()
 
-  const [userExperiment, setUserExperiment] = useState<UserExperimentBasicFragment>()
+  const [userExperiment, setUserExperiment] = useState<UserExperimentDashboardFragment>()
 
   const [visiblePreview, setVisiblePreview] = useState(false)
   const [selectedExperiment, setSelectedExperiment] = useState<ExperimentBasicFragment | undefined>(

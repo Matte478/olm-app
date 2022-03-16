@@ -54,7 +54,7 @@ fragment ExperimentBasic on Experiment {
   commands
 }
 
-fragment UserExperimentBasic on UserExperiment {
+fragment UserExperimentDashboard on UserExperiment {
   id
   experiment {
     id
