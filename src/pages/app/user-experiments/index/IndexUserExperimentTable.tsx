@@ -1,7 +1,7 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
-import { cilActionUndo, cilAlbum, cilCloudDownload, cilPencil, cilTrash } from '@coreui/icons'
+import { cilActionUndo, cilAlbum, cilCloudDownload, cilTrash } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 import { toast } from 'react-toast'
 
@@ -9,9 +9,7 @@ import { TableAction, TableColumn } from 'types'
 import {
   PaginatorInfo,
   useDeleteUserExperimentMutation,
-  useDeleteUserMutation,
   useRestoreUserExperimentMutation,
-  useRestoreUserMutation,
   UserExperimentBasicFragment,
 } from '__generated__/graphql'
 import { ErrorNotifier, Pagination, SpinnerOverlay, Table } from 'components'
@@ -121,6 +119,10 @@ const IndexUserExperimentTable: React.FC<Props> = ({
       column: 'simulation_time',
       name: t('user_experiments.columns.simulation_time'),
     },
+    {
+      column: 'created_at',
+      name: t('user_experiments.columns.created_at'),
+    },
   ]
 
   const actions: TableAction[] = [
@@ -129,7 +131,7 @@ const IndexUserExperimentTable: React.FC<Props> = ({
       icon: <CIcon content={cilAlbum} />,
       // permission: 'user_experiment.update',
       handleClick: (id: string) => {
-        navigate(`/app/user-experiment/${id}/show`)
+        navigate(`/app/user-experiments/${id}/show`)
       },
     },
     {

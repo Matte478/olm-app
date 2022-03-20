@@ -21,6 +21,27 @@ fragment UserExperimentBasic on UserExperiment {
   deleted_at
 }
 
+fragment UserExperimentSchema on Schema {
+  name
+  preview
+}
+
 fragment UserExperimentExtended on UserExperiment {
   ...UserExperimentBasic
+  note
+  schema {
+    ...UserExperimentSchema
+  }
+  input {
+    script_name
+    input {
+      name
+      value
+      label
+    }
+  }
+  output {
+    name
+    data
+  }
 }

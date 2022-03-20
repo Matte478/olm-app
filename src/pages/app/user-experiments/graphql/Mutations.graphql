@@ -9,3 +9,9 @@ mutation RestoreUserExperiment($id: ID!) {
     id
   }
 }
+
+mutation UpdateUserExperiment($updateUserExperimentInput: UpdateUserExperimentInput!) {
+  updateUserExperiment(input: $updateUserExperimentInput) {
+    id
+  }
+}

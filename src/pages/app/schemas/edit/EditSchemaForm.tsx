@@ -82,7 +82,6 @@ const EditSchemaForm = ({ schema }: Props) => {
   }
 
   const handleDownloadSchema = () => {
-    console.log('download', schema.schema)
     if (!schema.schema) {
       toast.error(t('schemas.download.error'))
       return

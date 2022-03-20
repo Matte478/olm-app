@@ -294,6 +294,9 @@
     }
   },
   "user_experiments": {
+    "executed_commands": "Vykonané príkazy",
+    "simulation_time": "Čas simulácie",
+    "measurement_value": "Nameraná hodnota",
     "columns": {
       "id": "ID",
       "filled": "Vyplnené",
@@ -301,11 +304,18 @@
       "device": "Zariadenie",
       "device_type": "Typ Zariadenia",
       "software": "Softvér",
+      "note": "Poznámky",
+      "schema": "Schéma",
       "simulation_time": "Čas simulácie",
-      "created-at": "Registrovaný"
+      "created_at": "Vytvorený",
+      "deleted_at": "Zmazaný"
     },
     "index": {
       "title": "Experimenty používateľov"
+    },
+    "update": {
+      "success": "Poznámky boli upravené!",
+      "error": "Poznámky nebolo možné upraviť!"
     },
     "delete": {
       "confirm": "Naozaj chcete vymazať daný report experimentu?",
@@ -315,6 +325,11 @@
       "button": "Obnoviť",
       "confirm": "Naozaj chcete obnoviť daný report experimentu?",
       "success": "Report experimentu bol obnovený!"
+    },
+    "download": {
+      "button": "Stiahnúť",
+      "success": "Export bol stiahnutý!",
+      "error": "Export nebolo možné stiahnúť!"
     }
   }
 }

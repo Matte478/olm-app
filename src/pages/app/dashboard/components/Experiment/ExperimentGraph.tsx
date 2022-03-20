@@ -49,7 +49,7 @@ const ExperimentGraph: React.FC<Props> = ({ userExperiment }: Props) => {
       echo.channel('channel').stopListening('DataBroadcaster')
       echo.leaveChannel('channel')
     }
-  }, [])
+  }, [userExperiment])
 
   const updateGraphData = (data: any[]) => {
     // const simTime = 10
@@ -74,7 +74,7 @@ const ExperimentGraph: React.FC<Props> = ({ userExperiment }: Props) => {
           // divId="plotlyChart"
           layout={{
             // autosize: true,
-            title: 'A Fancy Plot',
+            // title: 'A Fancy Plot',
           }}
           useResizeHandler={true}
           config={{

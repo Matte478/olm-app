@@ -5,14 +5,11 @@ import { cilUser } from '@coreui/icons'
 import {
   PaginatorInfo,
   Trashed,
-  UserBasicFragment,
   UserExperimentBasicFragment,
   useUserExperimentsQuery,
-  useUsersQuery,
 } from '__generated__/graphql'
 import { Card, ErrorNotifier, PerPageDropdown, SpinnerOverlay, TrashedDropdown } from 'components'
 import IndexUserExperimentTable from './IndexUserExperimentTable'
-// import IndexUserTable from './IndexUserTable'
 
 const IndexUserExperiment: React.FC = () => {
   const { t } = useTranslation()

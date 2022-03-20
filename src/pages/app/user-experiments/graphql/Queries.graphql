@@ -13,3 +13,9 @@ query UserExperiments($first: Int!, $page: Int, $trashed: Trashed) {
     }
   }
 }
+
+query UserExperiment($id: ID!, $trashed: Trashed = WITH) {
+  userExperiment(id: $id, trashed: $trashed) {
+    ...UserExperimentExtended
+  }
+}

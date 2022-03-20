@@ -273,7 +273,7 @@
     },
     "delete": {
       "confirm": "Are you sure you want to delete this schema?",
-      "success": "Schema could not be deleted!"
+      "success": "Schema has been deleted!"
     },
     "download": {
       "success": "Schema has been downloaded!",
@@ -296,6 +296,42 @@
     }
   },
   "user_experiments": {
-    "title": "User experiments"
+    "executed_commands": "Executed commands",
+    "simulation_time": "Simulation time",
+    "measurement_value": "Measurement value",
+    "columns": {
+      "id": "ID",
+      "filled": "Filled",
+      "user": "Author",
+      "device": "Device",
+      "device_type": "Device type",
+      "software": "Software",
+      "note": "Notes",
+      "schema": "Schema",
+      "simulation_time": "Simulation time",
+      "created_at": "Created at",
+      "deleted_at": "Deleted at"
+    },
+    "index": {
+      "title": "User experiments"
+    },
+    "update": {
+      "success": "Note has been updated!",
+      "error": "Note could not be updated!"
+    },
+    "delete": {
+      "confirm": "Are you sure you want to delete this user experiment?",
+      "success": "User experiment has been deleted!"
+    },
+    "restore": {
+      "button": "Restore",
+      "confirm": "Are you sure you want to restore this user experiment?",
+      "success": "User experiment has been restored!"
+    },
+    "download": {
+      "button": "Download",
+      "success": "Export has been downloaded!",
+      "error": "Export could not be downloaded!"
+    }
   }
 }

@@ -28,7 +28,7 @@ const ExperimentFormArgument: React.FC<Props> = ({
       name: argument.name,
       value: value,
     })
-  }, [value, argument.name, handleChange])
+  }, [value, argument, handleChange])
 
   useEffect(() => {
     setValue(val !== undefined ? val : argument?.default_value?.toString() || '')
@@ -57,6 +57,7 @@ const ExperimentFormArgument: React.FC<Props> = ({
         id={argument.name}
         value={value}
         onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+          // eslint-disable-next-line
           setValue(event.target.value.replace(/[^0-9\,\]\[\s]/g, ''))
         }}
       />

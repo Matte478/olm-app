@@ -106,6 +106,7 @@ const SchemaFormArgumentsRow: React.FC<Props> = ({
               onChange={(event) => {
                 setArgumentInput({
                   ...argumentInput,
+                  // eslint-disable-next-line
                   default_value: event.target.value.replace(/[^0-9\,\]\[\s]/g, ''),
                 })
               }}

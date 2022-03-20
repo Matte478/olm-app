@@ -1,22 +1,10 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import {
-  CButton,
-  CCol,
-  CForm,
-  CFormLabel,
-  CFormSelect,
-  CImage,
-  CModal,
-  CModalHeader,
-  CModalTitle,
-  CRow,
-} from '@coreui/react'
+import { CButton, CCol, CForm, CFormLabel, CFormSelect, CRow } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilImage } from '@coreui/icons'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toast'
 
-import { ErrorNotifier, ModalPreview, SpinnerOverlay } from 'components'
 import {
   ArgumentBasicFragment,
   DeviceWithServerFragment,
@@ -26,9 +14,9 @@ import {
   useExperimentSchemasQuery,
   useRunUserExperimentMutation,
   UserExperimentArgInput,
-  UserExperimentArgsInput,
   UserExperimentDashboardFragment,
 } from '__generated__/graphql'
+import { ErrorNotifier, ModalPreview, SpinnerOverlay } from 'components'
 import ExperimentFormArgument from './ExperimentFormArgument'
 import ExperimentGraph from './ExperimentGraph'
 
@@ -74,10 +62,7 @@ const ExperimentForm: React.FC<Props> = ({ device, experiments, userExperimentCu
     experiments[0].commands[0] || undefined,
   )
 
-  const [experimentInput, setExperimentInput] = useState<UserExperimentArgsInput>({
-    script_name: selectedCommand || '',
-    input: [],
-  })
+  const [experimentInput, setExperimentInput] = useState<UserExperimentArgInput[]>([])
 
   const { data, loading, error } = useExperimentSchemasQuery({
     notifyOnNetworkStatusChange: true,
@@ -91,46 +76,43 @@ const ExperimentForm: React.FC<Props> = ({ device, experiments, userExperimentCu
 
   const [runUserExperimentMutation, runUserExperimentVariables] = useRunUserExperimentMutation()
 
-  useEffect(() => {
-    // setSelectedSchema(data?.schemas.length ? data.schemas[0] : undefined)
-    setSelectedSchema(
-      userExperimentCurrent
-        ? userExperimentCurrent.schema || undefined
-        : data?.schemas.length
-        ? data.schemas[0]
-        : undefined,
-    )
-  }, [data, userExperimentCurrent])
+  const getCommands = useCallback(
+    (ue?: UserExperimentDashboardFragment) => {
+      if (!ue && !userExperiment && selectedExperiment?.commands.includes('start')) return ['start']
 
-  useEffect(() => {
-    if (userExperimentCurrent) {
-      setUserExperiment(userExperimentCurrent)
+      let experiment
+      if (ue) {
+        experiment = experiments.find((e) => e.id === ue.experiment.id)
+      } else if (userExperiment) {
+        experiment = experiments.find((e) => e.id === userExperiment.experiment.id)
+      }
 
+      if (experiment)
+        return (
+          experiment.commands.filter((command) => command !== 'start' && command !== 'stop') || []
+        )
+
+      return selectedExperiment?.commands || []
+    },
+    [experiments, userExperiment, selectedExperiment],
+  )
+
+  const setupSettings = useCallback(
+    (userExperiment: UserExperimentDashboardFragment) => {
       const experiment = experiments?.find(
-        (experiment) => experiment.id === userExperimentCurrent.experiment.id,
+        (experiment) => experiment.id === userExperiment.experiment.id,
       )
       setSelectedExperiment(experiment)
-      setSelectedCommand(experiment?.commands[0] || undefined)
-      setExperimentInput({
-        ...experimentInput,
-        script_name: experiment?.commands[0] || '',
-      })
-      setSelectedSchema(userExperimentCurrent.schema || undefined)
-    }
-  }, [userExperimentCurrent])
 
-  useEffect(() => {
-    replaceExperimentInput()
-  }, [selectedExperiment, selectedSchema])
+      const commands = getCommands(userExperiment)
+      setSelectedCommand(commands[0] || undefined)
 
-  const replaceExperimentInput = () => {
-    setExperimentInput({
-      ...experimentInput,
-      input: [...getExperimentInput(), ...getSchemaInput()],
-    })
-  }
+      setSelectedSchema(userExperiment.schema || undefined)
+    },
+    [experiments, getCommands],
+  )
 
-  const getExperimentInput = () => {
+  const getExperimentInput = useCallback(() => {
     return (
       selectedExperiment?.experiment_commands
         .find((command) => command?.name === selectedCommand)
@@ -141,9 +123,9 @@ const ExperimentForm: React.FC<Props> = ({ device, experiments, userExperimentCu
           }
         }) || []
     )
-  }
+  }, [selectedExperiment, selectedCommand])
 
-  const getSchemaInput = () => {
+  const getSchemaInput = useCallback(() => {
     return (
       selectedSchema?.arguments.map((arg) => {
         return {
@@ -152,7 +134,39 @@ const ExperimentForm: React.FC<Props> = ({ device, experiments, userExperimentCu
         }
       }) || []
     )
-  }
+  }, [selectedSchema])
+
+  useEffect(() => {
+    if (userExperimentCurrent) {
+      const experiment = experiments?.find(
+        (experiment) => experiment.id === userExperimentCurrent?.experiment.id,
+      )
+      setSelectedExperiment(experiment)
+    }
+
+    setSelectedSchema(
+      userExperimentCurrent
+        ? userExperimentCurrent.schema || undefined
+        : data?.schemas.length
+        ? data.schemas[0]
+        : undefined,
+    )
+  }, [data, userExperimentCurrent, experiments])
+
+  useEffect(() => {
+    if (userExperimentCurrent) {
+      setUserExperiment(userExperimentCurrent)
+      setupSettings(userExperimentCurrent)
+    }
+  }, [userExperimentCurrent, setupSettings])
+
+  const replaceExperimentInput = useCallback(() => {
+    setExperimentInput([...getExperimentInput(), ...getSchemaInput()])
+  }, [getExperimentInput, getSchemaInput])
+
+  useEffect(() => {
+    replaceExperimentInput()
+  }, [selectedExperiment, selectedSchema, replaceExperimentInput])
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
@@ -160,6 +174,7 @@ const ExperimentForm: React.FC<Props> = ({ device, experiments, userExperimentCu
     console.log('handle', experimentInput, selectedSchema, selectedExperiment)
 
     if (
+      !selectedCommand ||
       !experimentInput ||
       !selectedExperiment ||
       (selectedExperiment?.has_schema && !selectedExperiment)
@@ -173,7 +188,12 @@ const ExperimentForm: React.FC<Props> = ({ device, experiments, userExperimentCu
           user_experiment_id: userExperiment?.id,
           schema_id: selectedSchema?.id,
           software_id: selectedExperiment.software.id,
-          input: [experimentInput],
+          input: [
+            {
+              script_name: selectedCommand,
+              input: experimentInput,
+            },
+          ],
         },
       },
     })
@@ -181,6 +201,7 @@ const ExperimentForm: React.FC<Props> = ({ device, experiments, userExperimentCu
         if (data.data?.runUserExperiment) {
           toast.success(t('experiments.run.success'))
           setUserExperiment(data.data.runUserExperiment)
+          setupSettings(data.data.runUserExperiment)
         }
       })
       .catch(() => {})
@@ -215,11 +236,11 @@ const ExperimentForm: React.FC<Props> = ({ device, experiments, userExperimentCu
 
   const upsertArgument = useCallback((argument: UserExperimentArgInput) => {
     setExperimentInput((experimentInput) => {
-      const i = experimentInput.input.findIndex((arg) => arg.name === argument.name)
-      if (i > -1) experimentInput.input[i] = argument
-      else experimentInput.input = [...experimentInput.input, argument]
+      const i = experimentInput.findIndex((arg) => arg.name === argument.name)
+      if (i > -1) experimentInput[i] = argument
+      else experimentInput = [...experimentInput, argument]
 
-      return { ...experimentInput, input: experimentInput.input }
+      return experimentInput
     })
   }, [])
 
@@ -237,7 +258,7 @@ const ExperimentForm: React.FC<Props> = ({ device, experiments, userExperimentCu
           <CCol key={colIndex}>
             <ExperimentFormArgument
               argument={argument}
-              val={experimentInput.input.find((arg) => arg.name === argument.name)?.value}
+              val={experimentInput.find((arg) => arg.name === argument.name)?.value}
               handleChange={upsertArgument}
               className="mb-3"
               style={{ minWidth: '150px', maxWidth: '100%' }}
@@ -255,19 +276,6 @@ const ExperimentForm: React.FC<Props> = ({ device, experiments, userExperimentCu
     })
 
     return rows
-  }
-
-  const getCommands = () => {
-    if (!userExperiment && selectedExperiment?.commands.includes('start')) return ['start']
-
-    if (userExperiment)
-      return (
-        selectedExperiment?.commands.filter(
-          (command) => command !== 'start' && command !== 'stop',
-        ) || []
-      )
-
-    return selectedExperiment?.commands || []
   }
 
   const schemas = data?.schemas
@@ -308,10 +316,6 @@ const ExperimentForm: React.FC<Props> = ({ device, experiments, userExperimentCu
                 )
                 setSelectedExperiment(experiment)
                 setSelectedCommand(experiment?.commands[0] || undefined)
-                setExperimentInput({
-                  ...experimentInput,
-                  script_name: experiment?.commands[0] || '',
-                })
               }}
             >
               {experiments.map((experiment) => (
@@ -367,7 +371,6 @@ const ExperimentForm: React.FC<Props> = ({ device, experiments, userExperimentCu
               value={selectedCommand || undefined}
               onChange={(event: React.ChangeEvent<HTMLSelectElement>) => {
                 setSelectedCommand(event.target.value)
-                setExperimentInput({ ...experimentInput, script_name: event.target.value })
               }}
             >
               {getCommands().map((command) => (
@@ -385,9 +388,7 @@ const ExperimentForm: React.FC<Props> = ({ device, experiments, userExperimentCu
                     <CCol sm={6} md={6} key={index}>
                       <ExperimentFormArgument
                         argument={argument as ExperimentArgument}
-                        val={
-                          experimentInput.input.find((arg) => arg.name === argument?.name)?.value
-                        }
+                        val={experimentInput.find((arg) => arg.name === argument?.name)?.value}
                         handleChange={upsertArgument}
                         className="mb-3 flex-1"
                       />

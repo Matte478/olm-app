@@ -39,6 +39,7 @@ const SchemaFormOptions: React.FC<Props> = ({ option, handleChange, handleDelete
             required
             value={value}
             onChange={(event) => {
+              // eslint-disable-next-line
               const val = event.target.value.replace(/[^0-9\,\]\[\s]/g, '')
               setValue(val)
               handleChange({ ...option, value: val })

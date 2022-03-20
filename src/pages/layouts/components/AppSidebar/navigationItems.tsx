@@ -7,7 +7,6 @@ import {
   cilLan,
   cilLockLocked,
   cilPuzzle,
-  cilReportSlash,
   cilSpeedometer,
   cilUser,
 } from '@coreui/icons'
@@ -19,10 +18,10 @@ const navigationItems = [
     name: 'sidebar.dashboard',
     to: '/app/dashboard',
     icon: <CIcon content={cilSpeedometer} customClasses="nav-icon" />,
-    badge: {
-      color: 'info',
-      text: 'NEW',
-    },
+    // badge: {
+    //   color: 'info',
+    //   text: 'NEW',
+    // },
   },
   {
     component: CNavItem,

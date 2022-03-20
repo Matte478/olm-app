@@ -45,6 +45,7 @@ import EditSchema from 'pages/app/schemas/edit'
 
 // user experiments
 import IndexUserExperiment from 'pages/app/user-experiments/index'
+import ShowUserExperiment from 'pages/app/user-experiments/show'
 
 const routes = (loggedIn: boolean) => [
   {
@@ -217,6 +218,14 @@ const routes = (loggedIn: boolean) => [
             element: (
               // <Can permission="user_experiment.show" notify={true}>
               <IndexUserExperiment />
+              // </Can>
+            ),
+          },
+          {
+            path: ':id/show',
+            element: (
+              // <Can permission="user_experiment.show" notify={true}>
+                <ShowUserExperiment />
               // </Can>
             ),
           },
