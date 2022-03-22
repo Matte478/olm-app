@@ -17,11 +17,6 @@ window.Pusher = require('pusher-js')
 const ExperimentGraph: React.FC<Props> = ({ userExperiment }: Props) => {
   const [graphData, setGraphData] = useState<Plotly.Data[]>()
 
-  // useEffect(() => {
-  //   console.log('resize')
-  //   Plotly.Plots.resize('plotlyChart')
-  // }, [])
-
   useEffect(() => {
     const echo = new Echo({
       broadcaster: 'pusher',
@@ -33,15 +28,17 @@ const ExperimentGraph: React.FC<Props> = ({ userExperiment }: Props) => {
       disableStats: true,
     })
 
-    echo.channel('channel').listen('DataBroadcaster', (e: any) => {
-      console.log(e)
-      if (e.hello) {
-        console.log(e.hello)
-        updateGraphData(e.hello)
-      } else {
-        // probably end of stream
-      }
-    })
+    echo
+      .channel(userExperiment.experiment.device?.name || 'channel')
+      .listen('DataBroadcaster', (e: any) => {
+        console.log(e)
+        if (e.error) {
+          console.log(e.error)
+        } else if (e.data) {
+          console.log(e.data)
+          updateGraphData(e.data)
+        }
+      })
 
     return () => {
       console.log('disable')
@@ -72,14 +69,18 @@ const ExperimentGraph: React.FC<Props> = ({ userExperiment }: Props) => {
         <PlotlyChart
           data={graphData || []}
           // divId="plotlyChart"
-          layout={{
-            // autosize: true,
-            // title: 'A Fancy Plot',
-          }}
+          layout={
+            {
+              // autosize: true,
+              // title: 'A Fancy Plot',
+            }
+          }
           useResizeHandler={true}
-          config={{
-            // responsive: true,
-          }}
+          config={
+            {
+              // responsive: true,
+            }
+          }
           style={{ width: '100%' }}
         />
       </CCol>

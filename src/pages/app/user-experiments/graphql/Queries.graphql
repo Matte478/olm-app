@@ -1,8 +1,9 @@
-query UserExperiments($first: Int!, $page: Int, $trashed: Trashed) {
+query UserExperiments($first: Int!, $page: Int, $trashed: Trashed, $onlyMine: Boolean = true) {
   userExperiments(
     first: $first
     page: $page
     trashed: $trashed
+    onlyMine: $onlyMine
     orderBy: { column: CREATED_AT, order: DESC }
   ) {
     paginatorInfo {

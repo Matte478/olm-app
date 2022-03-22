@@ -299,6 +299,7 @@
     "executed_commands": "Executed commands",
     "simulation_time": "Simulation time",
     "measurement_value": "Measurement value",
+    "only_mine": "Only mine experiments",
     "columns": {
       "id": "ID",
       "filled": "Filled",
@@ -321,7 +322,8 @@
     },
     "delete": {
       "confirm": "Are you sure you want to delete this user experiment?",
-      "success": "User experiment has been deleted!"
+      "success": "User experiment has been deleted!",
+      "error": "User experiment could not be deleted!"
     },
     "restore": {
       "button": "Restore",

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { CAlert, CCol, CRow } from '@coreui/react'
@@ -6,6 +6,8 @@ import { cilFile } from '@coreui/icons'
 
 import { UserExperimentExtendedFragment, useUserExperimentQuery } from '__generated__/graphql'
 import { Card, ErrorNotifier, SpinnerOverlay } from 'components'
+import { can } from 'utils/permissions'
+import { AppStateContext } from 'provider'
 import ShowUserExperimentGraph from './ShowUserExperimentGraph'
 import ShowUserExperimentInput from './ShowUserExperimentInput'
 import ShowUserExperimentForm from './ShowUserExperimentForm'
@@ -18,6 +20,7 @@ const formatExperimentName = (userExperiment: UserExperimentExtendedFragment) =>
 
 const ShowUserExperiment: React.FC = () => {
   const { id } = useParams()
+  const { appState } = useContext(AppStateContext)
   const { t } = useTranslation()
   const [userExperiment, setUserExperiment] = useState<UserExperimentExtendedFragment>()
   const { data, loading, error } = useUserExperimentQuery({
@@ -34,6 +37,7 @@ const ShowUserExperiment: React.FC = () => {
 
   if (!loading && !data?.userExperiment) return <div>404</div>
   if (error) return <ErrorNotifier error={error} />
+
   console.log(userExperiment?.result)
   return (
     <Card
@@ -72,7 +76,16 @@ const ShowUserExperiment: React.FC = () => {
               <ShowUserExperimentForm
                 id={userExperiment.id}
                 note={userExperiment?.note}
-                disabled={userExperiment.deleted_at !== null}
+                disabled={
+                  !(
+                    can('user_experiment.update_all', appState.authUser) ||
+                    can(
+                      'user_experiment.update_own',
+                      appState.authUser,
+                      (user) => user.id === userExperiment.user.id,
+                    )
+                  ) || userExperiment.deleted_at !== null
+                }
               />
             )}
           </CCol>

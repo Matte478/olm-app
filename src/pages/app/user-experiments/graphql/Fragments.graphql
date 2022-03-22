@@ -4,6 +4,7 @@ fragment UserExperimentBasic on UserExperiment {
   simulation_time
   result
   user {
+    id
     name
   }
   experiment {

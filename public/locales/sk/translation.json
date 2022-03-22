@@ -297,6 +297,7 @@
     "executed_commands": "Vykonané príkazy",
     "simulation_time": "Čas simulácie",
     "measurement_value": "Nameraná hodnota",
+    "only_mine": "Len moje experimenty",
     "columns": {
       "id": "ID",
       "filled": "Vyplnené",
@@ -319,7 +320,8 @@
     },
     "delete": {
       "confirm": "Naozaj chcete vymazať daný report experimentu?",
-      "success": "Report experimentu bol vymazaný!"
+      "success": "Report experimentu bol vymazaný!",
+      "error": "Report experimentu nebol vymazaný!"
     },
     "restore": {
       "button": "Obnoviť",

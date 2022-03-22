@@ -14,7 +14,7 @@ const TrashedDropdown: React.FC<Props> = ({ initial = Trashed.Without, handleCha
 
   return (
     <>
-      <CFormLabel className="me-2">{t('trashed.label')}</CFormLabel>
+      <CFormLabel className="me-2 mb-0">{t('trashed.label')}</CFormLabel>
       <CFormSelect
         className="d-inline-block w-auto"
         aria-label="Trashed"

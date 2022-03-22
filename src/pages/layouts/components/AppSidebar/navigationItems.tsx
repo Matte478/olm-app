@@ -26,12 +26,14 @@ const navigationItems = [
   {
     component: CNavItem,
     name: 'sidebar.reservations',
+    permission: 'reservation.show',
     to: '/app/reservations',
     icon: <CIcon content={cilCalendar} customClasses="nav-icon" />,
   },
   {
     component: CNavItem,
     name: 'sidebar.user_experiments',
+    permission: ['user_experiment.show_own', 'user_experiment.show_all'],
     to: '/app/user-experiments',
     icon: <CIcon content={cilFile} customClasses="nav-icon" />,
   },

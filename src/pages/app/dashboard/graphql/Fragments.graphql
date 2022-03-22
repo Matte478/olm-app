@@ -58,6 +58,9 @@ fragment UserExperimentDashboard on UserExperiment {
   id
   experiment {
     id
+    device {
+      name
+    }
     server {
       ip_address
       api_domain

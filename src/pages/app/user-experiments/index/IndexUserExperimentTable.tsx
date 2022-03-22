@@ -44,7 +44,9 @@ const IndexUserExperimentTable: React.FC<Props> = ({
           refetch()
           toast.success(t('user_experiments.delete.success'))
         })
-        .catch(() => {})
+        .catch(() => {
+          toast.error(t('user_experiments.delete.error'))
+        })
     }
   }
 
@@ -129,7 +131,7 @@ const IndexUserExperimentTable: React.FC<Props> = ({
     {
       color: 'warning',
       icon: <CIcon content={cilAlbum} />,
-      // permission: 'user_experiment.update',
+      permission: ['user_experiment.show_all', 'user_experiment.show_own'],
       handleClick: (id: string) => {
         navigate(`/app/user-experiments/${id}/show`)
       },
@@ -137,14 +139,14 @@ const IndexUserExperimentTable: React.FC<Props> = ({
     {
       color: 'success',
       textColor: 'light',
-      // permission: 'user_experiment.show',
+      permission: ['user_experiment.show_all', 'user_experiment.show_own'],
       icon: <CIcon content={cilCloudDownload} />,
       handleClick: handleDownloadResult,
     },
     {
       color: 'danger',
       textColor: 'light',
-      // permission: 'user_experiment.delete',
+      permission: ['user_experiment.delete_all', 'user_experiment.delete_own'],
       onDeleted: false,
       icon: <CIcon content={cilTrash} />,
       handleClick: handleDeleteUserExperiment,
