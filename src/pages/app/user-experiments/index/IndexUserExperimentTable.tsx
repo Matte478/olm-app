@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { cilActionUndo, cilAlbum, cilCloudDownload, cilTrash } from '@coreui/icons'
@@ -13,6 +13,8 @@ import {
   UserExperimentBasicFragment,
 } from '__generated__/graphql'
 import { ErrorNotifier, Pagination, SpinnerOverlay, Table } from 'components'
+import { can } from 'utils/permissions'
+import { AppStateContext } from 'provider'
 
 interface Props {
   userExperiments: UserExperimentBasicFragment[]
@@ -29,12 +31,34 @@ const IndexUserExperimentTable: React.FC<Props> = ({
   currentPage,
   setCurrentPage,
 }: Props) => {
+  const { appState } = useContext(AppStateContext)
   const { t } = useTranslation()
   const navigate = useNavigate()
   const [deleteUserExperimentMutation, deleteUserExperiment] = useDeleteUserExperimentMutation()
   const [restoreUserExperimentMutation, restoreUserExperiment] = useRestoreUserExperimentMutation()
 
+  const checkPermission = (id: string, permission: string) => {
+    const userExperiment = userExperiments.find((ue) => ue.id === id)
+    if (!userExperiment) return false
+
+    if (
+      can(`user_experiment.${permission}_all`, appState.authUser) ||
+      can(
+        `user_experiment.${permission}_own`,
+        appState.authUser,
+        (user) => user.id === userExperiment.user.id,
+      )
+    ) {
+      return true
+    }
+
+    toast.error(t('actions.error.not-authorized'))
+    return false
+  }
+
   const handleDeleteUserExperiment = async (id: string) => {
+    if (!checkPermission(id, 'delete')) return
+
     let response = window.confirm(t('user_experiments.delete.confirm'))
     if (response) {
       await deleteUserExperimentMutation({
@@ -51,6 +75,8 @@ const IndexUserExperimentTable: React.FC<Props> = ({
   }
 
   const handleRestoreUserExperiment = async (id: string) => {
+    if (!checkPermission(id, 'restore')) return
+
     let response = window.confirm(t('user_experiments.restore.confirm'))
     if (response) {
       await restoreUserExperimentMutation({
@@ -65,6 +91,8 @@ const IndexUserExperimentTable: React.FC<Props> = ({
   }
 
   const handleDownloadResult = (id: string) => {
+    if (!checkPermission(id, 'show')) return
+
     userExperiments.forEach((userExperiment) => {
       if (userExperiment.id === id) {
         if (!userExperiment.result) {
@@ -133,6 +161,7 @@ const IndexUserExperimentTable: React.FC<Props> = ({
       icon: <CIcon content={cilAlbum} />,
       permission: ['user_experiment.show_all', 'user_experiment.show_own'],
       handleClick: (id: string) => {
+        if (!checkPermission(id, 'show')) return
         navigate(`/app/user-experiments/${id}/show`)
       },
     },
@@ -154,7 +183,7 @@ const IndexUserExperimentTable: React.FC<Props> = ({
     {
       color: 'dark',
       textColor: 'light',
-      // permission: 'user_experiment.restore',
+      permission: ['user_experiment.restore_all', 'user_experiment.restore_own'],
       onNonDeleted: false,
       text: t('user_experiments.restore.button'),
       icon: <CIcon content={cilActionUndo} />,
