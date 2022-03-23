@@ -11,8 +11,8 @@ import {
 } from '__generated__/graphql'
 import { AppStateContext } from 'provider'
 import { Card, ErrorNotifier, PerPageDropdown, SpinnerOverlay, TrashedDropdown } from 'components'
-import IndexUserExperimentTable from './IndexUserExperimentTable'
 import { can } from 'utils/permissions'
+import IndexUserExperimentTable from './IndexUserExperimentTable'
 
 const IndexUserExperiment: React.FC = () => {
   const { appState } = useContext(AppStateContext)

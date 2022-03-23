@@ -55,7 +55,8 @@
   },
 
   "sidebar": {
-    "dashboard": "Dashboard",
+    "lab": "Laboratórium",
+    "dashboard": "Kontrolný panel",
     "reservations": "Rezervácie",
     "settings": "Nastavenia",
     "users": "Používatelia",
@@ -283,6 +284,7 @@
     "no_experiments": "Zariadenie nemá žiadne experimenty",
     "no_reservation": "Nemáte žiadnu rezerváciu",
     "create_reservation": "Vytvoriť rezerváciu",
+    "select_value": "Vyberte hodnotu",
     "columns": {
       "experiment": "Experiment",
       "schema": "Schéma",

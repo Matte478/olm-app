@@ -14,8 +14,6 @@ interface Props {
 const SchemaFormOptions: React.FC<Props> = ({ option, handleChange, handleDelete }: Props) => {
   const { t } = useTranslation()
 
-  const [value, setValue] = useState<string>(option.value.toString())
-
   return (
     <CRow className="mb-3">
       <CCol xs={{ span: 4, offset: 2 }}>
@@ -35,13 +33,11 @@ const SchemaFormOptions: React.FC<Props> = ({ option, handleChange, handleDelete
         <CFormFloating>
           <CFormInput
             type="text"
-            pattern="[a-zA-Z]"
             required
-            value={value}
+            value={option.value}
             onChange={(event) => {
               // eslint-disable-next-line
-              const val = event.target.value.replace(/[^0-9\,\]\[\s]/g, '')
-              setValue(val)
+              const val = event.target.value.replace(/[^0-9\,.\]\[\s]/g, '')
               handleChange({ ...option, value: val })
             }}
           />

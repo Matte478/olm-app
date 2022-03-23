@@ -1,5 +1,6 @@
 import { CFormFloating, CFormInput, CFormLabel, CFormSelect } from '@coreui/react'
 import React, { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import {
   ArgumentBasicFragment,
   ExperimentArgument,
@@ -21,6 +22,7 @@ const ExperimentFormArgument: React.FC<Props> = ({
   className = '',
   style = {},
 }: Props) => {
+  const { t } = useTranslation()
   const [value, setValue] = useState<string>(val || argument?.default_value?.toString() || '')
 
   useEffect(() => {
@@ -41,8 +43,10 @@ const ExperimentFormArgument: React.FC<Props> = ({
         aria-label="schema"
         id="schema"
         value={value}
+        // required
         onChange={(event: React.ChangeEvent<HTMLSelectElement>) => setValue(event.target.value)}
       >
+        <option value="">{t('experiments.select_value')}</option>
         {argument.options.map((option) => (
           <option value={option?.value} key={option?.name}>
             {option?.name}
@@ -56,9 +60,10 @@ const ExperimentFormArgument: React.FC<Props> = ({
         type="text"
         id={argument.name}
         value={value}
+        // required
         onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
           // eslint-disable-next-line
-          setValue(event.target.value.replace(/[^0-9\,\]\[\s]/g, ''))
+          setValue(event.target.value.replace(/[^0-9\,.\]\[\s]/g, ''))
         }}
       />
       <CFormLabel>{argument.label}</CFormLabel>

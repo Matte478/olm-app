@@ -55,6 +55,7 @@
   },
 
   "sidebar": {
+    "lab": "Lab",
     "dashboard": "Dashboard",
     "reservations": "Reservations",
     "settings": "Settings",
@@ -285,6 +286,7 @@
     "no_experiments": "The device has no experiments",
     "no_reservation": "You have no reservation",
     "create_reservation": "Make a reservation",
+    "select_value": "Select value",
     "columns": {
       "experiment": "Experiment",
       "schema": "Schema",

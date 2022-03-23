@@ -72,11 +72,20 @@ const routes = (loggedIn: boolean) => [
     children: [
       {
         path: '/',
-        element: <Navigate to="/app/dashboard" />,
+
+        element: (
+          <Can permission="user_experiment.create" notify={false}>
+            <Navigate to="/app/dashboard" />
+          </Can>
+        ),
       },
       {
         path: '/dashboard',
-        element: <Dashboard />,
+        element: (
+          <Can permission="user_experiment.create" notify={true}>
+            <Dashboard />
+          </Can>
+        ),
       },
       {
         path: '/update-profile',
@@ -216,17 +225,23 @@ const routes = (loggedIn: boolean) => [
           {
             path: '/',
             element: (
-              // <Can permission="user_experiment.show" notify={true}>
-              <IndexUserExperiment />
-              // </Can>
+              <Can
+                permission={['user_experiment.show_all', 'user_experiment.show_own']}
+                notify={true}
+              >
+                <IndexUserExperiment />
+              </Can>
             ),
           },
           {
             path: ':id/show',
             element: (
-              // <Can permission="user_experiment.show" notify={true}>
+              <Can
+                permission={['user_experiment.show_all', 'user_experiment.show_own']}
+                notify={true}
+              >
                 <ShowUserExperiment />
-              // </Can>
+              </Can>
             ),
           },
         ],

@@ -37,7 +37,7 @@ const SchemaFormArgumentsRow: React.FC<Props> = ({
       ...options,
       {
         name: '',
-        value: '0',
+        value: '',
       },
     ]
 
@@ -107,7 +107,7 @@ const SchemaFormArgumentsRow: React.FC<Props> = ({
                 setArgumentInput({
                   ...argumentInput,
                   // eslint-disable-next-line
-                  default_value: event.target.value.replace(/[^0-9\,\]\[\s]/g, ''),
+                  default_value: event.target.value.replace(/[^0-9\,.\]\[\s]/g, ''),
                 })
               }}
             />

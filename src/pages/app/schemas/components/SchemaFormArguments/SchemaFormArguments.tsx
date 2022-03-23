@@ -57,6 +57,7 @@ const SchemaFormArguments: React.FC<Props> = ({
               {
                 name: '',
                 label: '',
+                default_value: '',
                 row: 1,
                 order: 1,
                 options: [],
