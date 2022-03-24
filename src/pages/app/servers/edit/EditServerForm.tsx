@@ -21,7 +21,6 @@ const EditServerForm: React.FC<Props> = ({ server }: Props) => {
     name: server.name,
     ip_address: server.ip_address,
     api_domain: server.api_domain,
-    port: server.port,
     websocket_port: server.websocket_port,
     production: server.production,
     enabled: server.enabled,
@@ -80,17 +79,6 @@ const EditServerForm: React.FC<Props> = ({ server }: Props) => {
           }
         />
         <CFormLabel>{t('servers.columns.api_domain')}</CFormLabel>
-      </CFormFloating>
-      <CFormFloating className="mb-3">
-        <CFormInput
-          type="number"
-          id="port"
-          value={updateServerInput.port}
-          onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-            setUpdateServerInput({ ...updateServerInput, port: parseInt(event.target.value) })
-          }
-        />
-        <CFormLabel>{t('servers.columns.port')}</CFormLabel>
       </CFormFloating>
       <CFormFloating className="mb-3">
         <CFormInput

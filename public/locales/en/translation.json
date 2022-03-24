@@ -63,7 +63,7 @@
     "roles": "Roles and permissions",
     "servers": "Servers",
     "schemas": "Schemas",
-    "user_experiments": "User experiments"
+    "user_experiments": "Reports"
   },
 
   "actions": {
@@ -188,7 +188,6 @@
       "name": "Name",
       "ip_address": "IP address",
       "api_domain": "API Domain",
-      "port": "Port",
       "websocket_port": "Websocket port",
       "available": "Available",
       "production": "Production",
@@ -307,7 +306,7 @@
     "executed_commands": "Executed commands",
     "simulation_time": "Simulation time",
     "measurement_value": "Measurement value",
-    "only_mine": "Only mine experiments",
+    "only_mine": "Only mine reports",
     "columns": {
       "id": "ID",
       "filled": "Filled",
@@ -322,7 +321,7 @@
       "deleted_at": "Deleted at"
     },
     "index": {
-      "title": "User experiments"
+      "title": "Reports"
     },
     "update": {
       "success": "Note has been updated!",

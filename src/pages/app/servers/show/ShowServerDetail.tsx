@@ -32,10 +32,6 @@ const ShowServerDetail: React.FC<Props> = ({ server, actions }: Props) => {
           <CFormLabel>{t('servers.columns.ip_address')}</CFormLabel>
         </CFormFloating>
         <CFormFloating className="mb-3">
-          <CFormInput type="number" id="port" value={server.port} disabled />
-          <CFormLabel>{t('servers.columns.port')}</CFormLabel>
-        </CFormFloating>
-        <CFormFloating className="mb-3">
           <CFormInput type="number" id="websocket_port" value={server.websocket_port} disabled />
           <CFormLabel>{t('servers.columns.websocket_port')}</CFormLabel>
         </CFormFloating>

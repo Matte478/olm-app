@@ -14,7 +14,6 @@ const CreateServerForm: React.FC<Props> = ({}: Props) => {
     name: '',
     ip_address: '',
     api_domain: '',
-    port: 80,
     websocket_port: 6001,
     production: false,
     enabled: false,
@@ -73,17 +72,6 @@ const CreateServerForm: React.FC<Props> = ({}: Props) => {
           }
         />
         <CFormLabel>{t('servers.columns.api_domain')}</CFormLabel>
-      </CFormFloating>
-      <CFormFloating className="mb-3">
-        <CFormInput
-          type="number"
-          id="port"
-          value={createServerInput.port}
-          onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
-            setCreateServerInput({ ...createServerInput, port: parseInt(event.target.value) })
-          }
-        />
-        <CFormLabel>{t('servers.columns.port')}</CFormLabel>
       </CFormFloating>
       <CFormFloating className="mb-3">
         <CFormInput

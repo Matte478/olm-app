@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { cilUser } from '@coreui/icons'
+import { cilFile } from '@coreui/icons'
 import { CFormSwitch } from '@coreui/react'
 
 import {
@@ -52,7 +52,7 @@ const IndexUserExperiment: React.FC = () => {
 
   return (
     <Card
-      icon={cilUser}
+      icon={cilFile}
       title={t('user_experiments.index.title')}
       actions={<PerPageDropdown selected={perPage} handleChange={setPerPage} />}
     >

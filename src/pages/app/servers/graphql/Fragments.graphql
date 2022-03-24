@@ -15,7 +15,6 @@ fragment ServerBasic on Server {
 
 fragment ServerExtended on Server {
   ...ServerBasic
-  port
   websocket_port
 }
 
