@@ -64,7 +64,7 @@ const ShowUserExperiment: React.FC = () => {
             {t('user_experiments.columns.deleted_at')}: {userExperiment.deleted_at}
           </CAlert>
         )}
-        {userExperiment && (
+        {userExperiment?.output && (
           <ShowUserExperimentGraph
             data={userExperiment.output}
             title={formatExperimentName(userExperiment)}

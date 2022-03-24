@@ -30,7 +30,7 @@ fragment UserExperimentSchema on Schema {
 fragment UserExperimentExtended on UserExperiment {
   ...UserExperimentBasic
   note
-  schema {
+  schema(trashed: WITH) {
     ...UserExperimentSchema
   }
   input {

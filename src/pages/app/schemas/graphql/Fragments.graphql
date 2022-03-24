@@ -9,6 +9,7 @@ fragment SchemaBasic on Schema {
   software {
     name
   }
+  deleted_at
 }
 
 fragment SchemaExtended on Schema {

@@ -274,7 +274,13 @@
     },
     "delete": {
       "confirm": "Are you sure you want to delete this schema?",
-      "success": "Schema has been deleted!"
+      "success": "Schema has been deleted!",
+      "error": "Schema could not be deleted!"
+    },
+    "restore": {
+      "confirm": "Are you sure you want to restore this schema?",
+      "success": "Schema has been restored!",
+      "error": "Schema could not be restored!"
     },
     "download": {
       "success": "Schema has been downloaded!",

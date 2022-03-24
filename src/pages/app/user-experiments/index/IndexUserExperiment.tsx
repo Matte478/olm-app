@@ -20,7 +20,7 @@ const IndexUserExperiment: React.FC = () => {
   const [currentPage, setCurrentPage] = useState(1)
   const [perPage, setPerPage] = useState(10)
   const [userExperiments, setUserExperiments] = useState<UserExperimentBasicFragment[]>()
-  const [withTrashedUsers, setWithTrashedUsers] = useState(Trashed.Without)
+  const [withTrashed, setWithTrashed] = useState(Trashed.Without)
   const [paginatorInfo, setPaginatorInfo] = useState<PaginatorInfo>()
   const [onlyMine, setOnlyMine] = useState(!can('user_experiment.show_all', appState.authUser))
 
@@ -28,7 +28,7 @@ const IndexUserExperiment: React.FC = () => {
     variables: {
       first: perPage,
       page: currentPage,
-      trashed: withTrashedUsers,
+      trashed: withTrashed,
       onlyMine: onlyMine,
     },
   })
@@ -59,7 +59,7 @@ const IndexUserExperiment: React.FC = () => {
       <>
         {loading && <SpinnerOverlay transparent={true} />}
         <div className="d-flex align-items-center">
-          <TrashedDropdown initial={withTrashedUsers} handleChange={setWithTrashedUsers} />
+          <TrashedDropdown initial={withTrashed} handleChange={setWithTrashed} />
           <CFormSwitch
             label={t('user_experiments.only_mine')}
             id="withTrashedServers"

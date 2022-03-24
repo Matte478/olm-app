@@ -11,7 +11,7 @@ query Experiments($serverId: ID, $deviceId: ID) {
 }
 
 query ExperimentSchemas($deviceTypeId: ID!, $softwareId: ID!) {
-  schemas(device_type_id: $deviceTypeId, software_id: $softwareId) {
+  schemas(device_type_id: $deviceTypeId, software_id: $softwareId, trashed: WITHOUT) {
     ...ExperimentSchema
   }
 }

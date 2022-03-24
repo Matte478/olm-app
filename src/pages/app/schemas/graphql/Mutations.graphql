@@ -16,3 +16,9 @@ mutation DeleteSchema($id: ID!) {
     id
   }
 }
+
+mutation RestoreSchema($id: ID!) {
+  restoreSchema(id: $id) {
+    id
+  }
+}

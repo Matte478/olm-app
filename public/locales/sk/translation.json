@@ -272,7 +272,13 @@
     },
     "delete": {
       "confirm": "Naozaj chcete vymazať danú schému?",
-      "success": "Schéma bola vymazaná!"
+      "success": "Schéma bola vymazaná!",
+      "error": "Schému nebolo možné zmazať!"
+    },
+    "restore": {
+      "confirm": "Naozaj chcete obnoviť danú schému?",
+      "success": "Schéma bola obnovená!",
+      "error": "Schému nebolo možné obnoviť!"
     },
     "download": {
       "success": "Schéma bola stiahnutá!",

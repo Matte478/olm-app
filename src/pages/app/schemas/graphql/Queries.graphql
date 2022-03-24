@@ -1,5 +1,5 @@
-query Schemas {
-  schemas {
+query Schemas($trashed: Trashed) {
+  schemas(trashed: $trashed) {
     ...SchemaBasic
   }
 }
