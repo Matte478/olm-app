@@ -3,7 +3,7 @@ import { ApolloError } from '@apollo/client'
 import { CAlert } from '@coreui/react'
 
 interface Props {
-  error?: ApolloError | string
+  error?: ApolloError | string | string[]
 }
 
 const ErrorNotifier: React.FC<Props> = ({ error }: Props) => {
@@ -11,6 +11,14 @@ const ErrorNotifier: React.FC<Props> = ({ error }: Props) => {
 
   const formatError = () => {
     if (typeof error === 'string') return error
+    if (Array.isArray(error))
+      return (
+        <ul className="mb-0">
+          {error.map((entry, index) => (
+            <li key={index}>{entry}</li>
+          ))}
+        </ul>
+      )
 
     const { graphQLErrors, message } = error
     const msg = graphQLErrors[0].message

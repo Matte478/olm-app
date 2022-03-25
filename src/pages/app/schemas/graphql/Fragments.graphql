@@ -9,6 +9,7 @@ fragment SchemaBasic on Schema {
   software {
     name
   }
+  deleted_at
 }
 
 fragment SchemaExtended on Schema {
@@ -26,14 +27,18 @@ fragment SchemaExtended on Schema {
     name
   }
   arguments {
-      name
-      label
-      default_value
-      row
-      order
-      options {
-        name
-        value
-      }
-    }
+    ...ArgumentBasic
+  }
+}
+
+fragment ArgumentBasic on Argument {
+  name
+  label
+  default_value
+  row
+  order
+  options {
+    name
+    value
+  }
 }

@@ -1,14 +1,17 @@
 import React, { useState } from 'react'
-import { cilCloudDownload, cilImage, cilPencil, cilTrash } from '@coreui/icons'
+import { cilActionUndo, cilCloudDownload, cilImage, cilPencil, cilTrash } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
-import { CImage, CModal, CModalHeader, CModalTitle } from '@coreui/react'
 import { useTranslation } from 'react-i18next'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toast'
 
-import { ErrorNotifier, Table } from 'components'
+import { ErrorNotifier, ModalPreview, SpinnerOverlay, Table } from 'components'
 import { TableAction, TableColumn } from 'types'
-import { SchemaBasicFragment, useDeleteSchemaMutation } from '__generated__/graphql'
+import {
+  SchemaBasicFragment,
+  useDeleteSchemaMutation,
+  useRestoreSchemaMutation,
+} from '__generated__/graphql'
 
 interface Props {
   schemas: SchemaBasicFragment[]
@@ -19,9 +22,10 @@ const IndexSchemaTable: React.FC<Props> = ({ schemas, refetch }: Props) => {
   const { t } = useTranslation()
   const navigate = useNavigate()
   const [visiblePreview, setVisiblePreview] = useState(false)
-  const [previewUrl, setPreviewUrl] = useState<string | null>()
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null)
 
-  const [deleteSchemaMutation, { error }] = useDeleteSchemaMutation()
+  const [deleteSchemaMutation, deleteSchemaVariables] = useDeleteSchemaMutation()
+  const [restoreSchemaMutation, restoreSchemaVariables] = useRestoreSchemaMutation()
 
   const handleDeleteSchema = async (id: string) => {
     let response = window.confirm(t('schemas.delete.confirm'))
@@ -39,6 +43,22 @@ const IndexSchemaTable: React.FC<Props> = ({ schemas, refetch }: Props) => {
     }
   }
 
+  const handleRestoreSchema = async (id: string) => {
+    let response = window.confirm(t('schemas.restore.confirm'))
+    if (response) {
+      await restoreSchemaMutation({
+        variables: { id },
+      })
+        .then(() => {
+          refetch()
+          toast.success(t('schemas.restore.success'))
+        })
+        .catch(() => {
+          toast.error(t('schemas.restore.error'))
+        })
+    }
+  }
+
   const handleDownloadSchema = (id: string) => {
     schemas.forEach((schema) => {
       if (schema.id === id) {
@@ -46,11 +66,10 @@ const IndexSchemaTable: React.FC<Props> = ({ schemas, refetch }: Props) => {
           toast.error(t('schemas.download.error'))
           return
         }
-        console.log(schema.schema)
         fetch(schema.schema)
           .then((response) => {
             response.blob().then((blob) => {
-              const fileExt = schema.schema?.split('.').pop();
+              const fileExt = schema.schema?.split('.').pop()
               const url = window.URL.createObjectURL(blob)
               let a = document.createElement('a')
               a.href = url
@@ -76,7 +95,6 @@ const IndexSchemaTable: React.FC<Props> = ({ schemas, refetch }: Props) => {
         }
         setPreviewUrl(schema.preview)
         setVisiblePreview(true)
-        console.log(schema.preview)
       }
     })
   }
@@ -118,6 +136,7 @@ const IndexSchemaTable: React.FC<Props> = ({ schemas, refetch }: Props) => {
     },
     {
       color: 'primary',
+      onDeleted: false,
       icon: <CIcon content={cilPencil} />,
       permission: 'schema.update',
       handleClick: (id: string) => {
@@ -128,29 +147,38 @@ const IndexSchemaTable: React.FC<Props> = ({ schemas, refetch }: Props) => {
       color: 'danger',
       textColor: 'light',
       permission: 'schema.delete',
+      onDeleted: false,
       icon: <CIcon content={cilTrash} />,
       handleClick: handleDeleteSchema,
     },
+    {
+      color: 'dark',
+      textColor: 'light',
+      permission: 'schema.restore',
+      onNonDeleted: false,
+      text: t('user_experiments.restore.button'),
+      icon: <CIcon content={cilActionUndo} />,
+      handleClick: handleRestoreSchema,
+    },
   ]
-
-  if (error) return <ErrorNotifier error={error} />
 
   return (
     <>
-      <CModal
-        visible={visiblePreview}
-        alignment="center"
-        size="xl"
-        onDismiss={() => {
+      {deleteSchemaVariables.error && <ErrorNotifier error={deleteSchemaVariables.error} />}
+      {restoreSchemaVariables.error && <ErrorNotifier error={restoreSchemaVariables.error} />}
+      {(deleteSchemaVariables.loading || restoreSchemaVariables.loading) && (
+        <SpinnerOverlay transparent={true} />
+      )}
+
+      <ModalPreview
+        active={visiblePreview}
+        src={previewUrl}
+        handleDismiss={() => {
           setVisiblePreview(false)
           setPreviewUrl(null)
         }}
-      >
-        <CModalHeader>
-          <CModalTitle>{t('schemas.preview.title')}</CModalTitle>
-        </CModalHeader>
-        {previewUrl && <CImage className="m-2" fluid src={previewUrl} />}
-      </CModal>
+      />
+
       <Table columns={columns} data={schemas} actions={actions} />
     </>
   )

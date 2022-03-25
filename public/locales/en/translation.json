@@ -55,13 +55,15 @@
   },
 
   "sidebar": {
+    "lab": "Lab",
     "dashboard": "Dashboard",
     "reservations": "Reservations",
     "settings": "Settings",
     "users": "Users",
     "roles": "Roles and permissions",
     "servers": "Servers",
-    "schemas": "Schemas"
+    "schemas": "Schemas",
+    "user_experiments": "Reports"
   },
 
   "actions": {
@@ -185,7 +187,7 @@
       "id": "ID",
       "name": "Name",
       "ip_address": "IP address",
-      "port": "Port",
+      "api_domain": "API Domain",
       "websocket_port": "Websocket port",
       "available": "Available",
       "production": "Production",
@@ -271,11 +273,74 @@
     },
     "delete": {
       "confirm": "Are you sure you want to delete this schema?",
-      "success": "Schema could not be deleted!"
+      "success": "Schema has been deleted!",
+      "error": "Schema could not be deleted!"
+    },
+    "restore": {
+      "confirm": "Are you sure you want to restore this schema?",
+      "success": "Schema has been restored!",
+      "error": "Schema could not be restored!"
     },
     "download": {
       "success": "Schema has been downloaded!",
       "error": "Schema could not be downloaded!"
+    }
+  },
+  "experiments": {
+    "title": "Real-time experiment",
+    "no_experiments": "The device has no experiments",
+    "no_reservation": "You have no reservation",
+    "create_reservation": "Make a reservation",
+    "select_value": "Select value",
+    "columns": {
+      "experiment": "Experiment",
+      "schema": "Schema",
+      "command": "Command"
+    },
+    "actions": {
+      "run": "Run experiment command",
+      "stop": "Stop experiment"
+    }
+  },
+  "user_experiments": {
+    "executed_commands": "Executed commands",
+    "simulation_time": "Simulation time",
+    "measurement_value": "Measurement value",
+    "only_mine": "Only mine reports",
+    "columns": {
+      "id": "ID",
+      "filled": "Filled",
+      "user": "Author",
+      "device": "Device",
+      "device_type": "Device type",
+      "software": "Software",
+      "note": "Notes",
+      "schema": "Schema",
+      "simulation_time": "Simulation time",
+      "created_at": "Created at",
+      "deleted_at": "Deleted at"
+    },
+    "index": {
+      "title": "Reports"
+    },
+    "update": {
+      "success": "Note has been updated!",
+      "error": "Note could not be updated!"
+    },
+    "delete": {
+      "confirm": "Are you sure you want to delete this user experiment?",
+      "success": "User experiment has been deleted!",
+      "error": "User experiment could not be deleted!"
+    },
+    "restore": {
+      "button": "Restore",
+      "confirm": "Are you sure you want to restore this user experiment?",
+      "success": "User experiment has been restored!"
+    },
+    "download": {
+      "button": "Download",
+      "success": "Export has been downloaded!",
+      "error": "Export could not be downloaded!"
     }
   }
 }

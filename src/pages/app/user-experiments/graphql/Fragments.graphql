@@ -1,0 +1,48 @@
+fragment UserExperimentBasic on UserExperiment {
+  id
+  filled
+  simulation_time
+  result
+  user {
+    id
+    name
+  }
+  experiment {
+    deviceType {
+      name
+    }
+    device {
+      name
+    }
+    software {
+      name
+    }
+  }
+  created_at
+  deleted_at
+}
+
+fragment UserExperimentSchema on Schema {
+  name
+  preview
+}
+
+fragment UserExperimentExtended on UserExperiment {
+  ...UserExperimentBasic
+  note
+  schema(trashed: WITH) {
+    ...UserExperimentSchema
+  }
+  input {
+    script_name
+    input {
+      name
+      value
+      label
+    }
+  }
+  output {
+    name
+    data
+  }
+}

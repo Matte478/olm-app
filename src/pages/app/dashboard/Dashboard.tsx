@@ -1,42 +1,33 @@
-import React, { 
-  // useEffect 
-} from 'react'
+import React from 'react'
+import { useTranslation } from 'react-i18next'
 
-import { Card } from 'components'
-
-// import Echo from 'laravel-echo'
-// //@ts-ignore
-// window.Pusher = require('pusher-js')
-
-// //@ts-ignore
-// window.Echo = new Echo({
-//   broadcaster: 'pusher',
-//   key: process.env.REACT_APP_PUSHER_ENV_KEY,
-//   cluster: process.env.REACT_APP_PUSHER_ENV_CLUSTER,
-//   wsHost: process.env.REACT_APP_PUSHER_HOST,
-//   wsPort: 6001,
-//   forceTLS: false,
-//   disableStats: true,
-// })
+import { Card, ErrorNotifier, SpinnerOverlay } from 'components'
+import { useReservationsCurrentQuery } from '__generated__/graphql'
+import { Experiment, NoReservation } from './components'
 
 const Dashboard: React.FC = () => {
-  // let init = false
+  const { t } = useTranslation()
+  const { data, loading, error } = useReservationsCurrentQuery({
+    notifyOnNetworkStatusChange: true,
+  })
 
-  // useEffect(() => {
-  //   //@ts-ignore
-  //   if (!window.Echo) return
+  if (loading) return <SpinnerOverlay transparent={true} />
+  if (error) return <ErrorNotifier error={error} />
 
-  //   window.Echo.channel('channel').listen('DataBroadcaster', (e: any) => {
-  //     console.log(e)
-  //     if (e.hello) {
-  //       console.log(e.hello)
-  //     } else {
-  //       // probably end of stream
-  //     }
-  //   })
-  // }, [init])
+  const reservation = data?.reservationsCurrent[0]
 
-  return <Card title="Dashboard">Dashboard</Card>
+  if (!reservation)
+    return (
+      <Card title="Dashboard">
+        <NoReservation />
+      </Card>
+    )
+
+  return (
+    <Card title={t('experiments.title')}>
+      <Experiment device={reservation.device} />
+    </Card>
+  )
 }
 
 export default Dashboard

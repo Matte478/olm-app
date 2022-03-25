@@ -80,6 +80,10 @@ const IndexServerTable: React.FC<Props> = ({ servers, refetch }: Props) => {
       column: 'ip_address',
       name: t('servers.columns.ip_address'),
     },
+    {
+      column: 'api_domain',
+      name: t('servers.columns.api_domain'),
+    },
     // {
     //   column: 'port',
     //   name: t('servers.columns.port'),
@@ -189,7 +193,7 @@ const IndexServerTable: React.FC<Props> = ({ servers, refetch }: Props) => {
       {(deleteServer.loading || restoreServer.loading || syncServer.loading) && (
         <SpinnerOverlay transparent={true} />
       )}
-      <Table columns={columns} columnsNested={columnsNested} data={servers} actions={actions} />
+      <Table columns={columns} columnsNested={columnsNested} data={servers} actions={actions} layout="auto" />
     </div>
   )
 }

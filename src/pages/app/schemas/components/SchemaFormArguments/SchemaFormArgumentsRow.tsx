@@ -37,7 +37,7 @@ const SchemaFormArgumentsRow: React.FC<Props> = ({
       ...options,
       {
         name: '',
-        value: 0,
+        value: '',
       },
     ]
 
@@ -99,15 +99,15 @@ const SchemaFormArgumentsRow: React.FC<Props> = ({
         <CCol md={3}>
           <CFormFloating>
             <CFormInput
-              type="number"
+              type="text"
               id="default_value"
               step="any"
               value={argumentInput?.default_value !== null ? argumentInput?.default_value : ''}
               onChange={(event) => {
-                const val = parseFloat(event.target.value)
                 setArgumentInput({
                   ...argumentInput,
-                  default_value: isNaN(val) ? null : val,
+                  // eslint-disable-next-line
+                  default_value: event.target.value.replace(/[^0-9\,.\]\[\s]/g, ''),
                 })
               }}
             />

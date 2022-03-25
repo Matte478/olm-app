@@ -1,30 +1,46 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { cilCalculator } from '@coreui/icons'
 
-import { ButtonAdd, Can, Card, ErrorNotifier, SpinnerOverlay } from 'components'
-import { useSchemasQuery } from '__generated__/graphql'
+import { ButtonAdd, Can, Card, ErrorNotifier, SpinnerOverlay, TrashedDropdown } from 'components'
+import { SchemaBasicFragment, Trashed, useSchemasQuery } from '__generated__/graphql'
 import IndexSchemaTable from './IndexSchemaTable'
 
 const IndexSchema: React.FC = () => {
   const { t } = useTranslation()
-  const { data, loading, error, refetch } = useSchemasQuery()
+  const [withTrashed, setWithTrashed] = useState(Trashed.Without)
+  const [schemas, setSchemas] = useState<SchemaBasicFragment[]>()
+  const { data, loading, error, refetch } = useSchemasQuery({
+    variables: {
+      trashed: withTrashed,
+    },
+  })
 
-  if (loading) return <SpinnerOverlay transparent={true} />
+  useEffect(() => {
+    if (data?.schemas) setSchemas(data.schemas)
+  }, [data])
+
   if (error) return <ErrorNotifier error={error} />
 
   return (
-    <Card
-      icon={cilCalculator}
-      title={t('schemas.index.title')}
-      actions={
-        <Can permission="schema.create">
-          <ButtonAdd to="/app/schemas/create" />
-        </Can>
-      }
-    >
-      {data?.schemas && <IndexSchemaTable schemas={data.schemas} refetch={refetch} />}
-    </Card>
+    <>
+      {loading && <SpinnerOverlay transparent={true} />}
+      <Card
+        icon={cilCalculator}
+        title={t('schemas.index.title')}
+        actions={
+          <Can permission="schema.create">
+            <ButtonAdd to="/app/schemas/create" />
+          </Can>
+        }
+      >
+        <>
+          <TrashedDropdown initial={withTrashed} handleChange={setWithTrashed} />
+          <hr />
+          {schemas && <IndexSchemaTable schemas={schemas} refetch={refetch} />}
+        </>
+      </Card>
+    </>
   )
 }
 

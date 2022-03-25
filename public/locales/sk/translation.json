@@ -55,13 +55,15 @@
   },
 
   "sidebar": {
-    "dashboard": "Dashboard",
+    "lab": "Laboratórium",
+    "dashboard": "Kontrolný panel",
     "reservations": "Rezervácie",
     "settings": "Nastavenia",
-    "users": "Užívatelia",
+    "users": "Používatelia",
     "roles": "Role a práva",
     "servers": "Servery",
-    "schemas": "Schémy"
+    "schemas": "Schémy",
+    "user_experiments": "Reporty"
   },
 
   "actions": {
@@ -91,19 +93,19 @@
       "created-at": "Registrovaný"
     },
     "index": {
-      "title": "Užívatelia"
+      "title": "Používatelia"
     },
     "delete": {
-      "confirm": "Naozaj chcete vymazať daného užívateľa?",
-      "success": "Užívateľ bol vymazaný!"
+      "confirm": "Naozaj chcete vymazať daného používateľa?",
+      "success": "Používateľ bol vymazaný!"
     },
     "restore": {
       "button": "Obnoviť",
-      "confirm": "Naozaj chcete obnoviť daného užívateľa?",
-      "success": "Užívateľ bol obnovený!"
+      "confirm": "Naozaj chcete obnoviť daného používateľa?",
+      "success": "Používateľ bol obnovený!"
     },
     "update": {
-      "success": "Užívateľ bol upravený!"
+      "success": "Používateľ bol upravený!"
     }
   },
 
@@ -185,7 +187,7 @@
       "id": "ID",
       "name": "Názov",
       "ip_address": "IP adresa",
-      "port": "Port",
+      "api_domain": "API Doména",
       "websocket_port": "Websocket port",
       "available": "Dostupný",
       "production": "Produkčný",
@@ -269,11 +271,74 @@
     },
     "delete": {
       "confirm": "Naozaj chcete vymazať danú schému?",
-      "success": "Schéma bola vymazaná!"
+      "success": "Schéma bola vymazaná!",
+      "error": "Schému nebolo možné zmazať!"
+    },
+    "restore": {
+      "confirm": "Naozaj chcete obnoviť danú schému?",
+      "success": "Schéma bola obnovená!",
+      "error": "Schému nebolo možné obnoviť!"
     },
     "download": {
       "success": "Schéma bola stiahnutá!",
       "error": "Schému nebolo možné stiahnúť!"
+    }
+  },
+  "experiments": {
+    "title": "Experiment v reálnom čase",
+    "no_experiments": "Zariadenie nemá žiadne experimenty",
+    "no_reservation": "Nemáte žiadnu rezerváciu",
+    "create_reservation": "Vytvoriť rezerváciu",
+    "select_value": "Vyberte hodnotu",
+    "columns": {
+      "experiment": "Experiment",
+      "schema": "Schéma",
+      "command": "Príkaz"
+    },
+    "actions": {
+      "run": "Spustiť príkaz experimentu",
+      "stop": "Zastaviť experiment"
+    }
+  },
+  "user_experiments": {
+    "executed_commands": "Vykonané príkazy",
+    "simulation_time": "Čas simulácie",
+    "measurement_value": "Nameraná hodnota",
+    "only_mine": "Len moje reporty",
+    "columns": {
+      "id": "ID",
+      "filled": "Vyplnené",
+      "user": "Autor",
+      "device": "Zariadenie",
+      "device_type": "Typ Zariadenia",
+      "software": "Softvér",
+      "note": "Poznámky",
+      "schema": "Schéma",
+      "simulation_time": "Čas simulácie",
+      "created_at": "Vytvorený",
+      "deleted_at": "Zmazaný"
+    },
+    "index": {
+      "title": "Reporty"
+    },
+    "update": {
+      "success": "Poznámky boli upravené!",
+      "error": "Poznámky nebolo možné upraviť!"
+    },
+    "delete": {
+      "confirm": "Naozaj chcete vymazať daný report experimentu?",
+      "success": "Report experimentu bol vymazaný!",
+      "error": "Report experimentu nebol vymazaný!"
+    },
+    "restore": {
+      "button": "Obnoviť",
+      "confirm": "Naozaj chcete obnoviť daný report experimentu?",
+      "success": "Report experimentu bol obnovený!"
+    },
+    "download": {
+      "button": "Stiahnúť",
+      "success": "Export bol stiahnutý!",
+      "error": "Export nebolo možné stiahnúť!"
     }
   }
 }

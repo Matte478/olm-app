@@ -6,7 +6,7 @@ interface Props {
   handleChange: (value: number) => void
 }
 
-const options = [1, 3, 5, 10]
+const options = [10, 25, 50, 100]
 
 const PerPageDropdown: React.FC<Props> = ({ selected, handleChange }: Props) => {
   return (

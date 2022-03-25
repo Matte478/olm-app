@@ -1,0 +1,17 @@
+mutation DeleteUserExperiment($id: ID!) {
+  deleteUserExperiment(id: $id) {
+    id
+  }
+}
+
+mutation RestoreUserExperiment($id: ID!) {
+  restoreUserExperiment(id: $id) {
+    id
+  }
+}
+
+mutation UpdateUserExperiment($updateUserExperimentInput: UpdateUserExperimentInput!) {
+  updateUserExperiment(input: $updateUserExperimentInput) {
+    id
+  }
+}

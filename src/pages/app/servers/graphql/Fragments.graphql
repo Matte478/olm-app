@@ -2,6 +2,7 @@ fragment ServerBasic on Server {
   id
   name
   ip_address
+  api_domain
   available
   production
   enabled
@@ -14,7 +15,6 @@ fragment ServerBasic on Server {
 
 fragment ServerExtended on Server {
   ...ServerBasic
-  port
   websocket_port
 }
 
@@ -31,9 +31,11 @@ fragment DeviceBasic on Device {
 }
 
 fragment DeviceTypeBasic on DeviceType {
+  id
   name
 }
 
 fragment SoftwareBasic on Software {
+  id
   name
 }

@@ -1,4 +1,3 @@
-import React from 'react'
 import { Navigate } from 'react-router-dom'
 
 // layout
@@ -44,6 +43,10 @@ import IndexSchema from 'pages/app/schemas/index'
 import CreateSchema from 'pages/app/schemas/create'
 import EditSchema from 'pages/app/schemas/edit'
 
+// user experiments
+import IndexUserExperiment from 'pages/app/user-experiments/index'
+import ShowUserExperiment from 'pages/app/user-experiments/show'
+
 const routes = (loggedIn: boolean) => [
   {
     path: '/',
@@ -69,11 +72,20 @@ const routes = (loggedIn: boolean) => [
     children: [
       {
         path: '/',
-        element: <Navigate to="/app/dashboard" />,
+
+        element: (
+          <Can permission="user_experiment.create" notify={false}>
+            <Navigate to="/app/dashboard" />
+          </Can>
+        ),
       },
       {
         path: '/dashboard',
-        element: <Dashboard />,
+        element: (
+          <Can permission="user_experiment.create" notify={true}>
+            <Dashboard />
+          </Can>
+        ),
       },
       {
         path: '/update-profile',
@@ -202,6 +214,33 @@ const routes = (loggedIn: boolean) => [
             element: (
               <Can permission="schema.update" notify={true}>
                 <EditSchema />
+              </Can>
+            ),
+          },
+        ],
+      },
+      {
+        path: '/user-experiments',
+        children: [
+          {
+            path: '/',
+            element: (
+              <Can
+                permission={['user_experiment.show_all', 'user_experiment.show_own']}
+                notify={true}
+              >
+                <IndexUserExperiment />
+              </Can>
+            ),
+          },
+          {
+            path: ':id/show',
+            element: (
+              <Can
+                permission={['user_experiment.show_all', 'user_experiment.show_own']}
+                notify={true}
+              >
+                <ShowUserExperiment />
               </Can>
             ),
           },

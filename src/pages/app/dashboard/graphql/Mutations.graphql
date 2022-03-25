@@ -1,0 +1,5 @@
+mutation RunUserExperiment($runUserExperimentInput: RunUserExperimentInput!) {
+  runUserExperiment(input: $runUserExperimentInput) {
+    ...UserExperimentDashboard
+  }
+}

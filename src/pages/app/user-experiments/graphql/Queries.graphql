@@ -1,0 +1,22 @@
+query UserExperiments($first: Int!, $page: Int, $trashed: Trashed, $onlyMine: Boolean = true) {
+  userExperiments(
+    first: $first
+    page: $page
+    trashed: $trashed
+    onlyMine: $onlyMine
+    orderBy: { column: CREATED_AT, order: DESC }
+  ) {
+    paginatorInfo {
+      ...PaginatorInfo
+    }
+    data {
+      ...UserExperimentBasic
+    }
+  }
+}
+
+query UserExperiment($id: ID!, $trashed: Trashed = WITH) {
+  userExperiment(id: $id, trashed: $trashed) {
+    ...UserExperimentExtended
+  }
+}
