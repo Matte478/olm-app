@@ -1,5 +1,5 @@
 import CIcon from '@coreui/icons-react'
-import { DeviceWithReservationsFragment, ReservationBasicFragment } from '__generated__/graphql'
+import { DeviceWithReservationsFragment, ReservationBasicFragment, UserExperimentArgInput } from '__generated__/graphql'
 
 export interface SidebarNavItemBadge {
   color:
@@ -92,4 +92,12 @@ export interface PlaceholderReservation {
   title: string
   start: Date
   end: Date
+}
+
+export interface ExperimentFormInput {
+  experimentId: string
+  schemaId: string | undefined
+  softwareId: string
+  command: string
+  experimentInput: UserExperimentArgInput[]
 }

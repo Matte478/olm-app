@@ -6,6 +6,7 @@ import { UserExperimentDashboardFragment } from '__generated__/graphql'
 import { CCol, CRow } from '@coreui/react'
 import ExperimentAnimation from './ExperimentAnimation'
 import Plotly from 'plotly.js'
+import { ErrorNotifier } from 'components'
 
 type Props = {
   userExperiment: UserExperimentDashboardFragment
@@ -16,14 +17,15 @@ window.Pusher = require('pusher-js')
 
 const ExperimentGraph: React.FC<Props> = ({ userExperiment }: Props) => {
   const [graphData, setGraphData] = useState<Plotly.Data[]>()
+  const [wsError, setWsError] = useState<string>()
 
   useEffect(() => {
     const echo = new Echo({
       broadcaster: 'pusher',
       key: process.env.REACT_APP_PUSHER_ENV_KEY,
       cluster: process.env.REACT_APP_PUSHER_ENV_CLUSTER,
-      wsHost: userExperiment.experiment.server.api_domain,
-      wssPort: userExperiment.experiment.server.websocket_port,
+      wsHost: userExperiment.experiment.server?.api_domain,
+      wssPort: userExperiment.experiment.server?.websocket_port,
       forceTLS: true,
       disableStats: true,
     })
@@ -34,23 +36,21 @@ const ExperimentGraph: React.FC<Props> = ({ userExperiment }: Props) => {
         console.log(e)
         if (e.error) {
           console.log(e.error)
+          setWsError(e.error)
         } else if (e.data) {
           console.log(e.data)
           updateGraphData(e.data)
+          setWsError(undefined)
         }
       })
 
     return () => {
-      console.log('disable')
-
       echo.channel('channel').stopListening('DataBroadcaster')
       echo.leaveChannel('channel')
     }
   }, [userExperiment])
 
   const updateGraphData = (data: any[]) => {
-    // const simTime = 10
-
     setGraphData(
       data.map((d) => {
         return {
@@ -64,30 +64,33 @@ const ExperimentGraph: React.FC<Props> = ({ userExperiment }: Props) => {
   }
 
   return (
-    <CRow>
-      <CCol md={6}>
-        <PlotlyChart
-          data={graphData || []}
-          // divId="plotlyChart"
-          layout={
-            {
-              // autosize: true,
-              // title: 'A Fancy Plot',
+    <>
+      <CRow>
+        <CCol md={6}>
+          <PlotlyChart
+            data={graphData || []}
+            layout={
+              {
+                // autosize: true,
+                // title: 'A Fancy Plot',
+              }
             }
-          }
-          useResizeHandler={true}
-          config={
-            {
-              // responsive: true,
-            }
-          }
-          style={{ width: '100%' }}
-        />
-      </CCol>
-      <CCol md={6}>
-        <ExperimentAnimation />
-      </CCol>
-    </CRow>
+            useResizeHandler={true}
+            style={{ width: '100%' }}
+          />
+        </CCol>
+        <CCol md={6}>
+          <ExperimentAnimation />
+        </CCol>
+      </CRow>
+      {wsError && (
+        <CRow>
+          <CCol md={12}>
+            <ErrorNotifier error={wsError} />
+          </CCol>
+        </CRow>
+      )}
+    </>
   )
 }
 

@@ -15,7 +15,7 @@ import ShowUserExperimentDownload from './ShowUserExperimentDownload'
 import ShowUserExperimentSchema from './ShowUserExperimentSchema'
 
 const formatExperimentName = (userExperiment: UserExperimentExtendedFragment) => {
-  return `${userExperiment.experiment.deviceType.name} [${userExperiment.experiment.device?.name}] | ${userExperiment.experiment.software.name}`
+  return `${userExperiment.experiment.deviceType.name} [${userExperiment.device?.name}] | ${userExperiment.experiment.software.name}`
 }
 
 const ShowUserExperiment: React.FC = () => {
@@ -38,7 +38,6 @@ const ShowUserExperiment: React.FC = () => {
   if (!loading && !data?.userExperiment) return <div>404</div>
   if (error) return <ErrorNotifier error={error} />
 
-  console.log(userExperiment?.result)
   return (
     <Card
       icon={cilFile}
@@ -62,6 +61,11 @@ const ShowUserExperiment: React.FC = () => {
         {userExperiment?.deleted_at && (
           <CAlert color="danger" className="p-2 text-center">
             {t('user_experiments.columns.deleted_at')}: {userExperiment.deleted_at}
+          </CAlert>
+        )}
+        {userExperiment?.filled === null && (
+          <CAlert color="warning" className="p-2 text-center">
+            {userExperiment?.remote_id ? t('user_experiments.processing') : t('user_experiments.in_queue')}
           </CAlert>
         )}
         {userExperiment?.output && (

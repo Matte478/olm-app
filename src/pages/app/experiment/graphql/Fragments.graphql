@@ -35,8 +35,12 @@ fragment ExperimentSchema on Schema {
 
 fragment ExperimentBasic on Experiment {
   id
+  name
   software {
     ...SoftwareBasic
+  }
+  deviceType {
+    id
   }
   experiment_commands {
     name
@@ -60,6 +64,10 @@ fragment UserExperimentDashboard on UserExperiment {
     id
     device {
       name
+      deviceType {
+        id
+        name
+      }
     }
     server {
       ip_address

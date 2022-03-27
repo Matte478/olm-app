@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { CButton, CCol, CFormFloating, CFormInput, CFormLabel, CRow } from '@coreui/react'
 import CIcon from '@coreui/icons-react'
 import { cilTrash } from '@coreui/icons'

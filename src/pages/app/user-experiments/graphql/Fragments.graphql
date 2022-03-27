@@ -7,11 +7,11 @@ fragment UserExperimentBasic on UserExperiment {
     id
     name
   }
+  device {
+    name
+  }
   experiment {
     deviceType {
-      name
-    }
-    device {
       name
     }
     software {
@@ -30,6 +30,7 @@ fragment UserExperimentSchema on Schema {
 fragment UserExperimentExtended on UserExperiment {
   ...UserExperimentBasic
   note
+  remote_id
   schema(trashed: WITH) {
     ...UserExperimentSchema
   }
