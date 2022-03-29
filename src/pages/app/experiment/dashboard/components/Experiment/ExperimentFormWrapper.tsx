@@ -9,7 +9,7 @@ import {
   useRunUserExperimentMutation,
 } from '__generated__/graphql'
 import { ErrorNotifier, SpinnerOverlay } from 'components'
-import ExperimentGraph from './ExperimentGraph'
+import ExperimentVisualization from './ExperimentVisualization'
 import { ExperimentForm } from 'pages/app/experiment/components'
 import { ExperimentFormInput } from 'types'
 
@@ -93,10 +93,11 @@ const ExperimentFormWrapper: React.FC<Props> = ({ experiments, userExperimentCur
       {runUserExperimentVariables.error && (
         <ErrorNotifier error={runUserExperimentVariables.error} />
       )}
+
       {runUserExperimentVariables.loading && <SpinnerOverlay transparent={true} />}
       {userExperiment && (
         <CRow>
-          <CCol md={12}>{<ExperimentGraph userExperiment={userExperiment} />}</CCol>
+          <CCol md={12}>{<ExperimentVisualization userExperiment={userExperiment} />}</CCol>
           <hr className="my-4" />
         </CRow>
       )}

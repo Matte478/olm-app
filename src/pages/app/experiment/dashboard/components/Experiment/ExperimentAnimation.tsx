@@ -1,177 +1,138 @@
-import React from 'react'
+// @ts-nocheck
+import React, { useEffect, useState } from 'react'
 import {
-  FreeCamera,
   Vector3,
   HemisphericLight,
-  MeshBuilder,
   Color3,
   ArcRotateCamera,
   Tools,
-  PointLight,
   SceneLoader,
   StandardMaterial,
-  Texture,
 } from '@babylonjs/core'
-import SceneComponent from 'babylonjs-hook'
+import '@babylonjs/loaders'
+import { SceneComponent } from './SceneComponent'
 import { CButton } from '@coreui/react'
 
-type Props = {}
-
-let called = 1
-let dissapeard = 0
-let led_intensity = 0
-let range = 0
-let time = 0
-let step = 0.5
+type Props = {
+  data: any,
+  isRunning: boolean
+}
 
 const onSceneReady = (scene: any) => {
-  scene.clearColor = Color3.White()
+  scene.getEngine().enableOfflineSupport = false;
+
+  scene.clearColor = Color3.White();
   // scene.clearColor = Color3.Red()
 
-  let camera = new ArcRotateCamera(
-    'arcCamera',
-    Tools.ToRadians(45),
-    Tools.ToRadians(45),
-    10.0,
-    Vector3.Zero(),
-    scene,
-  )
+  const camera = new ArcRotateCamera("arcCamera", Tools.ToRadians(45), Tools.ToRadians(45), 10.0, Vector3.Zero(), scene);
+
   const canvas = scene.getEngine().getRenderingCanvas()
-  camera.attachControl(canvas, true)
+  camera.attachControl(canvas, true);
 
-  camera.keysUp.push(87)
-  camera.keysDown.push(83)
-  camera.keysLeft.push(65)
-  camera.keysRight.push(68)
+  const lightHT = new HemisphericLight("light1", new Vector3(0, 2, 0), scene);
+  const lightHB = new HemisphericLight("light1", new Vector3(0, -1, 0), scene);
 
-  let light = new PointLight('pointLight', new Vector3(0, 10, 0), scene)
-  light.parent = camera
-  light.intensity = 1.0
+  lightHT.intensity = 0.75;
+  lightHB.intensity = 0.4;
 
-  // let light = new HemisphericLight('light', new Vector3(0, 1, 0), scene)
-  // light.intensity = 1
+  SceneLoader.Append("/model/", "tos_new.glb", scene, function (scene) {
+    const materialBlack = new StandardMaterial('materialBlack', scene);
+    materialBlack.diffuseColor = new Color3(0.25, 0.25, 0.25);
 
-  SceneLoader.ImportMesh('', '/model/', 'vrch.babylon', scene, function (newMeshes) {
-    newMeshes.forEach(function (element) {
-      console.log(element.name)
-    })
+    const materialGrey = new StandardMaterial('materialGrey', scene);
+    materialGrey.diffuseColor = new Color3(0.9, 0.9, 0.9);
+
+    const materialGreyFanCover = new StandardMaterial('materialGreyFanCover', scene);
+    materialGreyFanCover.diffuseColor = new Color3(0.9, 0.9, 0.9);
+
+    const materialBulb = new StandardMaterial('materialBulb', scene);
+    materialBulb.diffuseColor = new Color3(0, 0, 0);
+
+    const materialLed = new StandardMaterial('materialLed', scene);
+    materialLed.diffuseColor = new Color3(1, 1, 1);
+
+    if (scene.getMeshByID("case1")) scene.getMeshByID("case1").material = materialGrey;
+    if (scene.getMeshByID("case2")) scene.getMeshByID("case2").material = materialGrey;
+    if (scene.getMeshByID("Cube.001")) scene.getMeshByID("Cube.001").material = materialGrey;
+
+    if (scene.getMeshByID("fan_cover1")) scene.getMeshByID("fan_cover1").material = materialGreyFanCover; //open case
+
+    if (scene.getMeshByID("front_top_black")) scene.getMeshByID("front_top_black").material = materialBlack;
+    if (scene.getMeshByID("front_bottom_black")) scene.getMeshByID("front_bottom_black").material = materialBlack;
+    if (scene.getMeshByID("back_black")) scene.getMeshByID("back_black").material = materialBlack;
+    if (scene.getMeshByID("fan")) scene.getMeshByID("fan").material = materialBlack;
+
+    if (scene.getMeshByID("fan")) scene.getMeshByID("fan").rotation = new Vector3(0, 0, 0);
+
+    if (scene.getMeshByID("inside_yellow_bulb_bottom")) scene.getMeshByID("inside_yellow_bulb_bottom").material = materialBulb;
+    if (scene.getMeshByID("inside_led_yellow")) scene.getMeshByID("inside_led_yellow").material = materialLed;
   })
 }
 
 const onRender = (scene: any) => {
-  let fanCover1 = scene.getMeshByID('fan_cover1')
-  let fanCover2 = scene.getMeshByID('fan_cover2')
-  let frontTopBlack = scene.getMeshByID('front_top_black')
-
-  let insideLed = scene.getMeshByID('inside_led_yellow')
-  let insideLedBottom = scene.getMeshByID('inside_yellow_bulb_bottom')
-
-  let fan = scene.getMeshByID('fan')
-
-  if (fanCover1 && fanCover2 && called) {
-    addMaterial(scene.getMeshByID('case1'), 'case', scene)
-    addMaterial(scene.getMeshByID('case2'), 'case', scene)
-
-    addMaterial(fanCover1, 'case', scene)
-    addMaterial(fanCover2, 'case', scene)
-
-    addMaterial(scene.getMeshByID('front_bottom_black'), 'fan', scene)
-    addMaterial(frontTopBlack, 'fan', scene)
-    addMaterial(scene.getMeshByID('back_black'), 'fan', scene)
-
-    addMaterial(scene.getMeshByID('legs'), 'fan', scene)
-
-    addMaterial(fan, 'fan', scene)
-
-    addMaterial(insideLed, 'light_bulb', scene)
-    addMaterial(insideLedBottom, 'light_bulb', scene)
-
-    addMaterial(scene.getMeshByID('top_bulb_cable_red'), 'cable_red', scene)
-    addMaterial(scene.getMeshByID('top_bulb_cable_black'), 'cable_black', scene)
-
-    addMaterial(scene.getMeshByID('top_bulb_cable_black.001'), 'cable_black', scene)
-    addMaterial(scene.getMeshByID('top_bulb_cable_black.002'), 'cable_black', scene)
-
-    addMaterial(scene.getMeshByID('top_bulb_cable_red.001'), 'cable_red', scene)
-    addMaterial(scene.getMeshByID('top_bulb_cable_red.002'), 'cable_red', scene)
-
-    addMaterial(scene.getMeshByID('bulb_case_1'), 'bulb_case', scene)
-    addMaterial(scene.getMeshByID('bulb_case_2'), 'bulb_case', scene)
-
-    addMaterial(scene.getMeshByID('Cube.001'), 'white_case', scene)
-    called = 0
+  if (window.range <= 0) {
+    if (scene.getMeshByID("fan")) scene.getMeshByID("fan").rotation.y = 0
+  } else {
+    if (scene.getMeshByID("fan")) scene.getMeshByID("fan").rotation.y += ((window.range / 360) * (Math.PI / 180))
   }
 
-  if (fanCover1 && fanCover2 && dissapeard) {
-    console.log(fanCover1.material.alpha)
-    fanCover1.material.alpha -= 0.01
-    fanCover2.material.alpha -= 0.01
-    frontTopBlack.material.alpha -= 0.01
-    if (fanCover1.material.alpha <= 0) dissapeard = 0
+  if (window.ledIntensity != null && scene.getMeshByID("fan")) {
+    scene.getMeshByID("inside_yellow_bulb_bottom").material.diffuseColor = new Color3(window.ledIntensity / 100, window.ledIntensity / 100, 0);
   }
 
-  if (fan) {
-    fan.rotation.y += range / 1100
+  if (window.bulbIntensity != null && scene.getMeshByID("inside_led_yellow")) {
+    scene.getMeshByID("inside_led_yellow").material.diffuseColor = new Color3(window.bulbIntensity / 100, window.bulbIntensity / 100, 0);
   }
-  if (insideLed) {
-    //led_intensity = 0 -> žltá, ak 1 čierna -> Color3(1,1,0) žltá 000 čierna
-    insideLed.material.diffuseColor = new Color3(led_intensity, led_intensity, 0)
+
+  if (window.cover) {
+    if (scene.getMeshByID("fan_cover1") && scene.getMeshByID("fan_cover1").material.alpha > 0) {
+      scene.getMeshByID("fan_cover1").material.alpha -= 0.03;
+    }
+  } else {
+    if (scene.getMeshByID("fan_cover1") && scene.getMeshByID("fan_cover1").material.alpha <= 1) {
+      scene.getMeshByID("fan_cover1").material.alpha += 0.05;
+    }
   }
 }
 
-function addMaterial(item: any, name: string, scene: any) {
-  let material: any
-  switch (name) {
-    case 'case':
-      material = new StandardMaterial('material1', scene)
-      material.diffuseTexture = new Texture('/img/silver_texture.png', scene)
-      material.roughness = 0.5
-      break
-    case 'light_bulb':
-      material = new StandardMaterial('material2', scene)
-      material.diffuseColor = Color3.Yellow()
-      break
-    case 'fan':
-      material = new StandardMaterial('material3', scene)
-      material.diffuseColor = Color3.Black()
-      break
-    case 'cable_red':
-      material = new StandardMaterial('material4', scene)
-      material.diffuseColor = Color3.Red()
-      break
-    case 'cable_black':
-      material = new StandardMaterial('material5', scene)
-      material.diffuseColor = Color3.Black()
-      break
-    case 'bulb_case':
-      material = new StandardMaterial('material6', scene)
-      material.diffuseColor = new Color3(0.52, 0.627, 0.627)
-      break
-    case 'white_cae':
-      material = new StandardMaterial('material7', scene)
-      material.diffuseColor = Color3.White()
-      break
-  }
-  item.material = material
-}
+const ExperimentAnimation: React.FC<Props> = ({ data, isRunning }: Props) => {
+  const [cover, setCover] = useState(false)
 
-const ExperimentAnimation = ({}: Props) => {
+  useEffect(() => {
+    window.cover = false
+    window.range = 60000
+    window.ledIntensity = 44700
+    window.bulbIntensity = 580
+  }, [])
+
+  useEffect(() => {
+    if (!isRunning) {
+      window.range = 0
+      window.ledIntensity = 0
+      window.bulbIntensity = 0
+    } else {
+      // window.range = 60000
+      // window.ledIntensity = 44700
+      // window.bulbIntensity = 580
+    }
+  }, [data, isRunning])
+
   return (
     <div className="d-flex flex-column">
-    {/* <div> */}
       <SceneComponent
         antialias
         onSceneReady={onSceneReady}
         onRender={onRender}
         id="canvas"
-        style={{ width: '100%' }}
       />
+
       <CButton
         onClick={() => {
-          // dissapeard = 0
+          setCover(!cover)
+          window.cover = !window.cover
         }}
       >
-        Remove cover
+        {cover ? 'add cover' : 'remove cover'}
       </CButton>
     </div>
   )

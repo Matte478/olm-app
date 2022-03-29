@@ -29,11 +29,11 @@ const TableRowItem: React.FC<Props> = ({ item, keys }: Props) => {
       ))}
     </>
   ) : data === null ? (
-    <CIcon content={cilMinus} size="xl" className="text-secondary" />
+    <CIcon content={cilMinus} size="xl" className="text-secondary" key={data} />
   ): data === true ? (
-    <CIcon content={cilCheckAlt} size="xl" className="text-success" />
+    <CIcon content={cilCheckAlt} size="xl" className="text-success" key={data} />
   ) : data === false ? (
-    <CIcon content={cilX} size="xl" className="text-danger" />
+    <CIcon content={cilX} size="xl" className="text-danger" key={data} />
   ) : (
     <span>{data}</span>
   )

@@ -15,9 +15,11 @@ type Props = {
 //@ts-ignore
 window.Pusher = require('pusher-js')
 
-const ExperimentGraph: React.FC<Props> = ({ userExperiment }: Props) => {
+const ExperimentVisualization: React.FC<Props> = ({ userExperiment }: Props) => {
   const [graphData, setGraphData] = useState<Plotly.Data[]>()
   const [wsError, setWsError] = useState<string>()
+  const [running, setRunning] = useState(true)
+  const [data, setData] = useState<any>()
 
   useEffect(() => {
     const echo = new Echo({
@@ -34,7 +36,9 @@ const ExperimentGraph: React.FC<Props> = ({ userExperiment }: Props) => {
       .channel(userExperiment.experiment.device?.name || 'channel')
       .listen('DataBroadcaster', (e: any) => {
         console.log(e)
-        if (e.error) {
+        if (e.finished) {
+          setRunning(false)
+        } else if (e.error) {
           console.log(e.error)
           setWsError(e.error)
         } else if (e.data) {
@@ -69,18 +73,13 @@ const ExperimentGraph: React.FC<Props> = ({ userExperiment }: Props) => {
         <CCol md={6}>
           <PlotlyChart
             data={graphData || []}
-            layout={
-              {
-                // autosize: true,
-                // title: 'A Fancy Plot',
-              }
-            }
+            layout={{}}
             useResizeHandler={true}
             style={{ width: '100%' }}
           />
         </CCol>
         <CCol md={6}>
-          <ExperimentAnimation />
+          {userExperiment.experiment.device?.deviceType.name === 'tos1a' && <ExperimentAnimation data={data} isRunning={running} />}
         </CCol>
       </CRow>
       {wsError && (
@@ -94,4 +93,4 @@ const ExperimentGraph: React.FC<Props> = ({ userExperiment }: Props) => {
   )
 }
 
-export default React.memo(ExperimentGraph)
+export default React.memo(ExperimentVisualization)
