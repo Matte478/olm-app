@@ -15,9 +15,6 @@ import Register from 'pages/auth/Register'
 import Error404 from 'pages/errors/Error404'
 import Error500 from 'pages/errors/Error500'
 
-// dashboard
-import Dashboard from 'pages/app/dashboard'
-
 // users
 import IndexUser from 'pages/app/users/index'
 import EditUser from 'pages/app/users/edit'
@@ -46,6 +43,10 @@ import EditSchema from 'pages/app/schemas/edit'
 // user experiments
 import IndexUserExperiment from 'pages/app/user-experiments/index'
 import ShowUserExperiment from 'pages/app/user-experiments/show'
+
+// experiment
+import Dashboard from 'pages/app/experiment/dashboard'
+import Queue from 'pages/app/experiment/queue'
 
 const routes = (loggedIn: boolean) => [
   {
@@ -84,6 +85,14 @@ const routes = (loggedIn: boolean) => [
         element: (
           <Can permission="user_experiment.create" notify={true}>
             <Dashboard />
+          </Can>
+        ),
+      },
+      {
+        path: '/queue',
+        element: (
+          <Can permission="user_experiment.create" notify={true}>
+            <Queue />
           </Can>
         ),
       },

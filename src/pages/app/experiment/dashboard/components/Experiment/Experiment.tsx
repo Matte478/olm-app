@@ -7,7 +7,7 @@ import {
   useExperimentsQuery,
   useUserExperimentCurrentQuery,
 } from '__generated__/graphql'
-import ExperimentForm from './ExperimentForm'
+import ExperimentFormWrapper from './ExperimentFormWrapper'
 
 type Props = {
   device: DeviceWithServerFragment
@@ -36,8 +36,7 @@ const Experiment: React.FC<Props> = ({ device }: Props) => {
     return <ErrorNotifier error={t('experiments.no_experiments')} />
 
   return (
-    <ExperimentForm
-      device={device}
+    <ExperimentFormWrapper
       experiments={experimentsResponse.data.experiments}
       userExperimentCurrent={userExperimentResponse.data?.userExperimentCurrent || undefined}
     />

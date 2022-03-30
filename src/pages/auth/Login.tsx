@@ -104,11 +104,11 @@ const Login: React.FC = () => {
                           {t('login.form.button')}
                         </CButton>
                       </CCol>
-                      <CCol sm={6} className="text-left text-sm-right">
+                      {/* <CCol sm={6} className="text-left text-sm-right">
                         <CButton color="link" className="mt-2 mt-sm-0 px-0">
                           {t('login.forgot-password')}
                         </CButton>
-                      </CCol>
+                      </CCol> */}
                     </CRow>
                   </CForm>
                 </CCardBody>

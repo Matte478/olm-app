@@ -57,8 +57,10 @@
   "sidebar": {
     "lab": "Laboratórium",
     "dashboard": "Kontrolný panel",
+    "queue": "Dávkovanie experimentov",
     "reservations": "Rezervácie",
     "settings": "Nastavenia",
+    "settings-experiments": "Nastavenia experimentov",
     "users": "Používatelia",
     "roles": "Role a práva",
     "servers": "Servery",
@@ -290,14 +292,35 @@
     "no_reservation": "Nemáte žiadnu rezerváciu",
     "create_reservation": "Vytvoriť rezerváciu",
     "select_value": "Vyberte hodnotu",
+    "remove_cover": "Odstrániť kryt",
+    "add_cover": "Pridať kryt",
     "columns": {
       "experiment": "Experiment",
       "schema": "Schéma",
       "command": "Príkaz"
     },
     "actions": {
-      "run": "Spustiť príkaz experimentu",
-      "stop": "Zastaviť experiment"
+      "run": {
+        "btn": "Spustiť príkaz experimentu",
+        "success": "Príkaz bol spustený!",
+        "error": "Príkaz nebolo možné spustiť!"
+      },
+      "stop": {
+        "btn": "Zastaviť experiment",
+        "success": "Expriment bol zastavený!",
+        "error": "Expriment nebolo možné zastaviť!"
+      }
+    }
+  },
+  "queue": {
+    "title": "Dávkovanie experimentov",
+    "no_experiments": "Zariadenia nemajú žiadne experimenty",
+    "actions": {
+      "run": {
+        "btn": "Naplánovať experiment",
+        "success": "Experiment bol pridaný do fronty!",
+        "error": "Experiment nebolo možné pridať do fronty!"
+      }
     }
   },
   "user_experiments": {
@@ -305,6 +328,8 @@
     "simulation_time": "Čas simulácie",
     "measurement_value": "Nameraná hodnota",
     "only_mine": "Len moje reporty",
+    "in_queue": "Experiment čaká na spracovanie",
+    "processing": "Experiment sa spracováva",
     "columns": {
       "id": "ID",
       "filled": "Vyplnené",

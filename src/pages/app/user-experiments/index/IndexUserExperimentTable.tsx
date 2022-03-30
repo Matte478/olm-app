@@ -138,7 +138,7 @@ const IndexUserExperimentTable: React.FC<Props> = ({
       name: t('user_experiments.columns.device_type'),
     },
     {
-      column: 'experiment.device.name',
+      column: 'device.name',
       name: t('user_experiments.columns.device'),
     },
     {

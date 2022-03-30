@@ -1,5 +1,5 @@
 import React from 'react'
-import { cilCheckAlt, cilX } from '@coreui/icons'
+import { cilCheckAlt, cilMinus, cilX } from '@coreui/icons'
 import CIcon from '@coreui/icons-react'
 import { CBadge } from '@coreui/react'
 
@@ -28,10 +28,12 @@ const TableRowItem: React.FC<Props> = ({ item, keys }: Props) => {
         </CBadge>
       ))}
     </>
-  ) : data === true ? (
-    <CIcon content={cilCheckAlt} size="xl" className="text-success" />
+  ) : data === null ? (
+    <CIcon content={cilMinus} size="xl" className="text-secondary" key={data} />
+  ): data === true ? (
+    <CIcon content={cilCheckAlt} size="xl" className="text-success" key={data} />
   ) : data === false ? (
-    <CIcon content={cilX} size="xl" className="text-danger" />
+    <CIcon content={cilX} size="xl" className="text-danger" key={data} />
   ) : (
     <span>{data}</span>
   )

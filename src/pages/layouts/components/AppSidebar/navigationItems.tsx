@@ -2,15 +2,14 @@ import CIcon from '@coreui/icons-react'
 import {
   cilCalculator,
   cilCalendar,
-  cilCursor,
   cilFile,
   cilLan,
+  cilLibraryAdd,
   cilLockLocked,
-  cilPuzzle,
   cilSpeedometer,
   cilUser,
 } from '@coreui/icons'
-import { CNavGroup, CNavItem, CNavTitle } from '@coreui/react'
+import { CNavItem, CNavTitle } from '@coreui/react'
 
 const navigationItems = [
   {
@@ -23,6 +22,13 @@ const navigationItems = [
     permission: 'user_experiment.create',
     to: '/app/dashboard',
     icon: <CIcon content={cilSpeedometer} customClasses="nav-icon" />,
+  },
+  {
+    component: CNavItem,
+    name: 'sidebar.queue',
+    permission: 'user_experiment.create',
+    to: '/app/queue',
+    icon: <CIcon content={cilLibraryAdd} customClasses="nav-icon" />,
   },
   {
     component: CNavItem,
@@ -41,7 +47,8 @@ const navigationItems = [
 
   {
     component: CNavTitle,
-    name: 'sidebar.settings',
+    name: 'sidebar.settings-experiments',
+    permission: ['server.show', 'schema.show'],
   },
   {
     component: CNavItem,
@@ -56,6 +63,12 @@ const navigationItems = [
     permission: 'schema.show',
     to: '/app/schemas',
     icon: <CIcon content={cilCalculator} customClasses="nav-icon" />,
+  },
+
+  {
+    component: CNavTitle,
+    name: 'sidebar.settings',
+    permission: ['user.show', 'role.show'],
   },
   {
     component: CNavItem,

@@ -1,0 +1,11 @@
+mutation RunUserExperiment($runUserExperimentInput: RunUserExperimentInput!) {
+  runUserExperiment(input: $runUserExperimentInput) {
+    ...UserExperimentDashboard
+  }
+}
+
+mutation QueueUserExperiment($queueUserExperimentInput: QueueUserExperimentInput!) {
+  queueUserExperiment(input: $queueUserExperimentInput) {
+    ...UserExperimentDashboard
+  }
+}

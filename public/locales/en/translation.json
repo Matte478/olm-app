@@ -57,8 +57,10 @@
   "sidebar": {
     "lab": "Lab",
     "dashboard": "Dashboard",
+    "queue": "Queue experiments",
     "reservations": "Reservations",
     "settings": "Settings",
+    "settings-experiments": "Experiment settings",
     "users": "Users",
     "roles": "Roles and permissions",
     "servers": "Servers",
@@ -292,14 +294,33 @@
     "no_reservation": "You have no reservation",
     "create_reservation": "Make a reservation",
     "select_value": "Select value",
+    "remove_cover": "Remove cover",
+    "add_cover": "Add cover",
     "columns": {
       "experiment": "Experiment",
       "schema": "Schema",
       "command": "Command"
     },
     "actions": {
-      "run": "Run experiment command",
-      "stop": "Stop experiment"
+      "run": {
+        "btn": "Run experiment command",
+        "success": "Command has been run!",
+        "error": "Command could not be run!"
+      },
+      "stop": {
+        "btn": "Stop experiment",
+        "success": "Expriment has been stopped!",
+        "error": "Command could not be stopped!"
+      }
+    }
+  },
+  "queue": {
+    "title": "Queue experiments",
+    "no_experiments": "The devices has no experiments",
+    "run": {
+      "btn": "Request experiment",
+      "success": "Experiment has been queued!",
+      "error": "Experiment could not be queued!"
     }
   },
   "user_experiments": {
@@ -307,6 +328,8 @@
     "simulation_time": "Simulation time",
     "measurement_value": "Measurement value",
     "only_mine": "Only mine reports",
+    "in_queue": "Experiment is waiting for processing",
+    "processing": "Experiment is being processed",
     "columns": {
       "id": "ID",
       "filled": "Filled",

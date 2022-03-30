@@ -1,8 +1,9 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
+import { cilSpeedometer } from '@coreui/icons'
 
-import { Card, ErrorNotifier, SpinnerOverlay } from 'components'
 import { useReservationsCurrentQuery } from '__generated__/graphql'
+import { Card, ErrorNotifier, SpinnerOverlay } from 'components'
 import { Experiment, NoReservation } from './components'
 
 const Dashboard: React.FC = () => {
@@ -18,13 +19,13 @@ const Dashboard: React.FC = () => {
 
   if (!reservation)
     return (
-      <Card title="Dashboard">
+      <Card title="Dashboard" icon={cilSpeedometer}>
         <NoReservation />
       </Card>
     )
 
   return (
-    <Card title={t('experiments.title')}>
+    <Card title={t('experiments.title')} icon={cilSpeedometer}>
       <Experiment device={reservation.device} />
     </Card>
   )
