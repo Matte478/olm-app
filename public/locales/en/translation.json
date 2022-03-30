@@ -294,6 +294,8 @@
     "no_reservation": "You have no reservation",
     "create_reservation": "Make a reservation",
     "select_value": "Select value",
+    "remove_cover": "Remove cover",
+    "add_cover": "Add cover",
     "columns": {
       "experiment": "Experiment",
       "schema": "Schema",

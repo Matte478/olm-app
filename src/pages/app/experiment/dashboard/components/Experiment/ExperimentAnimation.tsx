@@ -10,8 +10,10 @@ import {
   StandardMaterial,
 } from '@babylonjs/core'
 import '@babylonjs/loaders'
-import { SceneComponent } from './SceneComponent'
+import { useTranslation } from 'react-i18next'
 import { CButton } from '@coreui/react'
+
+import { SceneComponent } from './SceneComponent'
 
 type Props = {
   data: any,
@@ -22,7 +24,6 @@ const onSceneReady = (scene: any) => {
   scene.getEngine().enableOfflineSupport = false;
 
   scene.clearColor = Color3.White();
-  // scene.clearColor = Color3.Red()
 
   const camera = new ArcRotateCamera("arcCamera", Tools.ToRadians(45), Tools.ToRadians(45), 10.0, Vector3.Zero(), scene);
 
@@ -84,7 +85,7 @@ const onRender = (scene: any) => {
     scene.getMeshByID("inside_led_yellow").material.diffuseColor = new Color3(window.bulbIntensity / 100, window.bulbIntensity / 100, 0);
   }
 
-  if (window.cover) {
+  if (!window.cover) {
     if (scene.getMeshByID("fan_cover1") && scene.getMeshByID("fan_cover1").material.alpha > 0) {
       scene.getMeshByID("fan_cover1").material.alpha -= 0.03;
     }
@@ -96,13 +97,11 @@ const onRender = (scene: any) => {
 }
 
 const ExperimentAnimation: React.FC<Props> = ({ data, isRunning }: Props) => {
-  const [cover, setCover] = useState(false)
+  const { t } = useTranslation()
+  const [cover, setCover] = useState(true)
 
   useEffect(() => {
-    window.cover = false
-    window.range = 60000
-    window.ledIntensity = 44700
-    window.bulbIntensity = 580
+    window.cover = true
   }, [])
 
   useEffect(() => {
@@ -111,14 +110,14 @@ const ExperimentAnimation: React.FC<Props> = ({ data, isRunning }: Props) => {
       window.ledIntensity = 0
       window.bulbIntensity = 0
     } else {
-      // window.range = 60000
-      // window.ledIntensity = 44700
-      // window.bulbIntensity = 580
+      window.range = 60000
+      window.ledIntensity = 44700
+      window.bulbIntensity = 580
     }
   }, [data, isRunning])
 
   return (
-    <div className="d-flex flex-column">
+    <div className="d-flex flex-column justify-content-center h-100">
       <SceneComponent
         antialias
         onSceneReady={onSceneReady}
@@ -132,7 +131,7 @@ const ExperimentAnimation: React.FC<Props> = ({ data, isRunning }: Props) => {
           window.cover = !window.cover
         }}
       >
-        {cover ? 'add cover' : 'remove cover'}
+        {cover ? t('experiments.remove_cover') : t('experiments.add_cover')}
       </CButton>
     </div>
   )

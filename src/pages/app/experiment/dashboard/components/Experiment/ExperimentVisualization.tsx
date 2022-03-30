@@ -6,7 +6,7 @@ import { UserExperimentDashboardFragment } from '__generated__/graphql'
 import { CCol, CRow } from '@coreui/react'
 import ExperimentAnimation from './ExperimentAnimation'
 import Plotly from 'plotly.js'
-import { ErrorNotifier } from 'components'
+import { ErrorNotifier, SpinnerOverlay } from 'components'
 
 type Props = {
   userExperiment: UserExperimentDashboardFragment
@@ -18,8 +18,9 @@ window.Pusher = require('pusher-js')
 const ExperimentVisualization: React.FC<Props> = ({ userExperiment }: Props) => {
   const [graphData, setGraphData] = useState<Plotly.Data[]>()
   const [wsError, setWsError] = useState<string>()
-  const [running, setRunning] = useState(true)
   const [data, setData] = useState<any>()
+  const [loading, setLoading] = useState(true)
+  const [running, setRunning] = useState(false)
 
   useEffect(() => {
     const echo = new Echo({
@@ -35,15 +36,18 @@ const ExperimentVisualization: React.FC<Props> = ({ userExperiment }: Props) => 
     echo
       .channel(userExperiment.experiment.device?.name || 'channel')
       .listen('DataBroadcaster', (e: any) => {
-        console.log(e)
+        setLoading(false)
+        setRunning(true)
+
         if (e.finished) {
           setRunning(false)
         } else if (e.error) {
-          console.log(e.error)
+          // console.log(e.error)
           setWsError(e.error)
         } else if (e.data) {
-          console.log(e.data)
-          updateGraphData(e.data)
+          // console.log(e.data)
+          const time = e.data[0].data.map((timestamp: string) => parseFloat(timestamp) / 1000)
+          updateGraphData(e.data, time)
           setWsError(undefined)
         }
       })
@@ -54,12 +58,12 @@ const ExperimentVisualization: React.FC<Props> = ({ userExperiment }: Props) => 
     }
   }, [userExperiment])
 
-  const updateGraphData = (data: any[]) => {
+  const updateGraphData = (data: any[], time: number[]) => {
     setGraphData(
       data.map((d) => {
         return {
           name: d['name'],
-          x: d['data'].keys(),
+          x: time,
           y: d['data'],
           type: 'scatter',
         }
@@ -68,7 +72,8 @@ const ExperimentVisualization: React.FC<Props> = ({ userExperiment }: Props) => 
   }
 
   return (
-    <>
+    <div className="position-relative">
+      {loading && <SpinnerOverlay transparent={true} className="position-absolute" />}
       <CRow>
         <CCol md={6}>
           <PlotlyChart
@@ -89,7 +94,7 @@ const ExperimentVisualization: React.FC<Props> = ({ userExperiment }: Props) => 
           </CCol>
         </CRow>
       )}
-    </>
+    </div>
   )
 }
 
