@@ -9,6 +9,7 @@ import ButtonIcon from './ButtonIcon/ButtonIcon'
 import ButtonSave from './ButtonSave/ButtonSave'
 import ButtonAdd from './ButtonAdd/ButtonAdd'
 import ButtonEdit from './ButtonEdit/ButtonEdit'
+import ButtonBack from './ButtonBack/ButtonBack'
 import Can from './Can/Can'
 import DnDCalendar from './DnDCalendar/DnDCalendar'
 import TrashedDropdown from './TrashedDropdown/TrashedDropdown'
@@ -26,6 +27,7 @@ export {
   ButtonSave,
   ButtonAdd,
   ButtonEdit,
+  ButtonBack,
   Can,
   DnDCalendar,
   TrashedDropdown,

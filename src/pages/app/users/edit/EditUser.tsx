@@ -1,6 +1,6 @@
 import React from 'react'
 import { useTranslation } from 'react-i18next'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { cilUser } from '@coreui/icons'
 
 import { Trashed, useUserQuery } from '__generated__/graphql'
@@ -10,6 +10,8 @@ import EditUserForm from './EditUserForm'
 const EditUser: React.FC = () => {
   const { t } = useTranslation()
   const { id } = useParams()
+  const navigate = useNavigate()
+
   const { data, loading, error } = useUserQuery({
     variables: {
       id,
@@ -24,7 +26,9 @@ const EditUser: React.FC = () => {
   return (
     <Can permission="user.update" notify={true}>
       <Card icon={cilUser} title={t('actions.edit')}>
-        <EditUserForm user={data.user} />
+        <EditUserForm user={data.user} handleUpdateUser={() => {
+          navigate('/app/users/')
+        }} />
       </Card>
     </Can>
   )

@@ -2,8 +2,9 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toast'
 import { CForm, CFormFloating, CFormInput, CFormLabel, CFormSwitch } from '@coreui/react'
+import { useNavigate } from 'react-router-dom'
 
-import { ButtonSave, ErrorNotifier, SpinnerOverlay } from 'components'
+import { ButtonBack, ButtonSave, ErrorNotifier, SpinnerOverlay } from 'components'
 import {
   ServerExtendedFragment,
   UpdateServerInput,
@@ -16,6 +17,8 @@ interface Props {
 
 const EditServerForm: React.FC<Props> = ({ server }: Props) => {
   const { t } = useTranslation()
+  const navigate = useNavigate()
+  
   const [updateServerInput, setUpdateServerInput] = useState<UpdateServerInput>({
     id: server.id,
     name: server.name,
@@ -39,9 +42,10 @@ const EditServerForm: React.FC<Props> = ({ server }: Props) => {
       .then((data) => {
         if (data.data?.updateServer) {
           toast.success(t('servers.update.success'))
+          navigate('/app/servers/')
         }
       })
-      .catch(() => {})
+      .catch(() => { })
   }
   return (
     <CForm onSubmit={handleEdit}>
@@ -118,6 +122,7 @@ const EditServerForm: React.FC<Props> = ({ server }: Props) => {
       />
 
       <div className="text-right">
+        <ButtonBack className="me-2" />
         <ButtonSave />
       </div>
     </CForm>

@@ -74,6 +74,7 @@
     "show": "Detail",
     "save": "Uložiť",
     "delete": "Zmazať",
+    "back": "Späť",
     "error": {
       "not-authorized": "Neoprávnené"
     }

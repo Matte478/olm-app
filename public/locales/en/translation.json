@@ -74,6 +74,7 @@
     "show": "Detail",
     "save": "Save",
     "delete": "Delete",
+    "back": "Back",
     "error": {
       "not-authorized": "Not authorized"
     }

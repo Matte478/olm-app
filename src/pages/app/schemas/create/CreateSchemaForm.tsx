@@ -8,9 +8,10 @@ import {
   CFormTextarea,
   CRow,
 } from '@coreui/react'
-import { ButtonSave, ErrorNotifier, SpinnerOverlay } from 'components'
+import { ButtonBack, ButtonSave, ErrorNotifier, SpinnerOverlay } from 'components'
 import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toast'
 
 import {
@@ -23,6 +24,7 @@ import { SchemaFormArguments } from '../components'
 
 const CreateSchemaForm: React.FC = () => {
   const { t } = useTranslation()
+  const navigate = useNavigate()
 
   const deviceTypesAndSoftware = useDeviceTypesAndSoftwareQuery()
 
@@ -48,6 +50,7 @@ const CreateSchemaForm: React.FC = () => {
       .then((data) => {
         if (data.data?.createSchema) {
           toast.success(t('schemas.create.success'))
+          navigate('/app/schemas/')
         }
       })
       .catch(() => {
@@ -159,6 +162,7 @@ const CreateSchemaForm: React.FC = () => {
       />
 
       <div className="text-right">
+        <ButtonBack className="me-2" />
         <ButtonSave />
       </div>
     </CForm>

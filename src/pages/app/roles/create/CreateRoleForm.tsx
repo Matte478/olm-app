@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toast'
 
 import { Role, CreateRoleInput, useCreateRoleMutation } from '__generated__/graphql'
-import { ButtonSave, ErrorNotifier, SpinnerOverlay } from 'components'
+import { ButtonBack, ButtonSave, ErrorNotifier, SpinnerOverlay } from 'components'
 import RoleFormPermissions from '../RoleFormPermissions'
 
 interface Props {
@@ -13,7 +13,7 @@ interface Props {
 
 const CreateRoleForm = ({ handleCreateRole }: Props) => {
   const { t } = useTranslation()
-  
+
   const [createRoleInput, setCreateRoleInput] = useState<CreateRoleInput>({
     name: '',
     permissions: [],
@@ -37,7 +37,7 @@ const CreateRoleForm = ({ handleCreateRole }: Props) => {
           }
         }
       })
-      .catch(() => {})
+      .catch(() => { })
   }
 
   return (
@@ -61,6 +61,7 @@ const CreateRoleForm = ({ handleCreateRole }: Props) => {
         }}
       />
       <div className="text-right">
+        <ButtonBack className="me-2" />
         <ButtonSave />
       </div>
     </CForm>

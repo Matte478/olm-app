@@ -10,7 +10,7 @@ import {
   useUpdateUserMutation,
   useRolesQuery,
 } from '__generated__/graphql'
-import { ButtonSave, ErrorNotifier, SpinnerOverlay } from 'components'
+import { ButtonBack, ButtonSave, ErrorNotifier, SpinnerOverlay } from 'components'
 
 interface Props {
   user: UserExtendedFragment
@@ -45,7 +45,7 @@ const EditUserForm: React.FC<Props> = ({ user, withRoles = true, handleUpdateUse
           }
         }
       })
-      .catch(() => {})
+      .catch(() => { })
   }
 
   return (
@@ -102,6 +102,7 @@ const EditUserForm: React.FC<Props> = ({ user, withRoles = true, handleUpdateUse
       )}
 
       <div className="text-right">
+        <ButtonBack className="me-2" />
         <ButtonSave />
       </div>
     </CForm>

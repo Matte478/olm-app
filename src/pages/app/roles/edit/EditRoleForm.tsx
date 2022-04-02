@@ -10,7 +10,7 @@ import {
   UpdateRoleInput,
   useUpdateRoleMutation,
 } from '__generated__/graphql'
-import { ButtonSave, ErrorNotifier, SpinnerOverlay } from 'components'
+import { ButtonBack, ButtonSave, ErrorNotifier, SpinnerOverlay } from 'components'
 import RoleFormPermissions from '../RoleFormPermissions'
 
 interface Props {
@@ -44,7 +44,7 @@ const EditRoleForm = ({ role, handleUpdateRole }: Props) => {
           }
         }
       })
-      .catch(() => {})
+      .catch(() => { })
   }
 
   return (
@@ -69,6 +69,7 @@ const EditRoleForm = ({ role, handleUpdateRole }: Props) => {
         }}
       />
       <div className="text-right">
+        <ButtonBack className="me-2" />
         <ButtonSave />
       </div>
     </CForm>

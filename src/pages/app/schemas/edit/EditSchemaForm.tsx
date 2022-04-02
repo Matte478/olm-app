@@ -22,8 +22,9 @@ import {
   useDeviceTypesAndSoftwareQuery,
   useUpdateSchemaMutation,
 } from '__generated__/graphql'
-import { ButtonSave, ErrorNotifier, ModalPreview, SpinnerOverlay } from 'components'
+import { ButtonBack, ButtonSave, ErrorNotifier, ModalPreview, SpinnerOverlay } from 'components'
 import { SchemaFormArguments } from '../components'
+import { useNavigate } from 'react-router-dom'
 
 interface Props {
   schema: SchemaExtendedFragment
@@ -56,6 +57,7 @@ const formatSchemaInput = (schema: SchemaExtendedFragment) => {
 
 const EditSchemaForm = ({ schema }: Props) => {
   const { t } = useTranslation()
+  const navigate = useNavigate()
   const [visiblePreview, setVisiblePreview] = useState(false)
   const deviceTypesAndSoftware = useDeviceTypesAndSoftwareQuery()
   const [updateSchemaInput, setUpdateSchemaInput] = useState<UpdateSchemaInput>(
@@ -74,6 +76,7 @@ const EditSchemaForm = ({ schema }: Props) => {
       .then((data) => {
         if (data.data?.updateSchema) {
           toast.success(t('schemas.update.success'))
+          navigate('/app/schemas/')
         }
       })
       .catch(() => {
@@ -204,7 +207,7 @@ const EditSchemaForm = ({ schema }: Props) => {
                   onClick={handleDownloadSchema}
                 >
                   <CIcon content={cilCloudDownload} />
-                  <span className="ms-1">{schema.schema.split('/').pop()}</span>
+                  <span className="ms-1 text-nowrap">{schema.schema.split('/').pop()}</span>
                 </CButton>
               )}
             </div>
@@ -256,6 +259,7 @@ const EditSchemaForm = ({ schema }: Props) => {
         />
 
         <div className="text-right">
+          <ButtonBack className="me-2" />
           <ButtonSave />
         </div>
       </CForm>
