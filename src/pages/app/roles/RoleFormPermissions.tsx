@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import Select from 'react-select'
 
 import { PermissionBasicFragment, usePermissionsQuery } from '__generated__/graphql'
@@ -28,6 +29,7 @@ const formattedPermissions = (permissions: PermissionBasicFragment[], preselecte
 }
 
 const RoleFormPermissions: React.FC<Props> = ({ preselected = [], handleChange }: Props) => {
+  const { t } = useTranslation()
   const { data, error, loading } = usePermissionsQuery()
   const [selected, setSelected] = useState<format>({})
   const [allFormatted, setAllFormatted] = useState<format>({})
@@ -76,7 +78,7 @@ const RoleFormPermissions: React.FC<Props> = ({ preselected = [], handleChange }
       selects = [
         ...selects,
         <div key={key}>
-          <label>{key}</label>
+          <label>{t(`permissions.${key}`)}</label>
           <Select
             className="mb-3"
             options={allFormatted[key]}

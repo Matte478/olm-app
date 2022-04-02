@@ -87,6 +87,15 @@
     "only": "Len vymazané"
   },
 
+  "permissions": {
+    "user": "Používateľ",
+    "role": "Rola",
+    "server": "Server",
+    "reservation": "Rezervácia",
+    "schema": "Schéma",
+    "user_experiment": "Report"
+  },
+
   "users": {
     "columns": {
       "id": "ID",
@@ -343,6 +352,10 @@
       "simulation_time": "Čas simulácie",
       "created_at": "Vytvorený",
       "deleted_at": "Zmazaný"
+    },
+    "preview": {
+      "title": "Náhľad schémy",
+      "error": "Schéma nemá preview."
     },
     "index": {
       "title": "Reporty"

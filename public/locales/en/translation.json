@@ -87,6 +87,15 @@
     "only": "Only deleted"
   },
 
+  "permissions": {
+    "user": "User",
+    "role": "Role",
+    "server": "Server",
+    "reservation": "Reservation",
+    "schema": "Schema",
+    "user_experiment": "Report"
+  },
+
   "users": {
     "columns": {
       "id": "ID",
@@ -318,10 +327,12 @@
   "queue": {
     "title": "Queue experiments",
     "no_experiments": "The devices has no experiments",
-    "run": {
-      "btn": "Request experiment",
-      "success": "Experiment has been queued!",
-      "error": "Experiment could not be queued!"
+    "actions": {
+      "run": {
+        "btn": "Request experiment",
+        "success": "Experiment has been queued!",
+        "error": "Experiment could not be queued!"
+      }
     }
   },
   "user_experiments": {
@@ -343,6 +354,10 @@
       "simulation_time": "Simulation time",
       "created_at": "Created at",
       "deleted_at": "Deleted at"
+    },
+    "preview": {
+      "title": "Schema preview",
+      "error": "Schema has no preview."
     },
     "index": {
       "title": "Reports"
