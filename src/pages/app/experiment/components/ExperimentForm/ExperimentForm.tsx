@@ -25,6 +25,7 @@ type Props = {
   handleSubmitForm: (input: ExperimentFormInput) => void
   submitBtnText?: string
   handleStop?: () => void
+  disabled?: boolean
 }
 
 interface ArugmentsRow {
@@ -56,6 +57,7 @@ const ExperimentForm: React.FC<Props> = ({
   handleSubmitForm,
   submitBtnText,
   handleStop,
+  disabled = false
 }: Props) => {
   const { t } = useTranslation()
 
@@ -362,6 +364,7 @@ const ExperimentForm: React.FC<Props> = ({
             type="submit"
             className="d-inline-flex justify-content-center align-items-center"
             color="primary"
+            disabled={disabled}
           >
             {submitBtnText ? submitBtnText : t('experiments.actions.run.btn')}
           </CButton>

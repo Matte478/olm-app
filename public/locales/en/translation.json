@@ -342,6 +342,7 @@
     "only_mine": "Only mine reports",
     "in_queue": "Experiment is waiting for processing",
     "processing": "Experiment is being processed",
+    "finished": "Experiment is finished",
     "columns": {
       "id": "ID",
       "filled": "Filled",

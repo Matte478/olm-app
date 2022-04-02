@@ -7,10 +7,10 @@ fragment UserExperimentBasic on UserExperiment {
     id
     name
   }
-  device {
+  device(trashed: WITH) {
     name
   }
-  experiment {
+  experiment(trashed: WITH) {
     deviceType {
       name
     }

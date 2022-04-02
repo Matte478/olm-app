@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { CCol, CRow } from '@coreui/react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toast'
@@ -20,10 +20,16 @@ type Props = {
 
 const ExperimentFormWrapper: React.FC<Props> = ({ experiments, userExperimentCurrent }: Props) => {
   const { t } = useTranslation()
+  const [running, setRunning] = useState(false)
+  const [disabledForm, setDisabledForm] = useState(false)
   const [runUserExperimentMutation, runUserExperimentVariables] = useRunUserExperimentMutation()
   const [userExperiment, setUserExperiment] = useState<UserExperimentDashboardFragment | undefined>(
     userExperimentCurrent,
   )
+
+  useEffect(() => {
+    if (running) setDisabledForm(false)
+  }, [running])
 
   const handleSubmit = async ({
     experimentId,
@@ -32,11 +38,12 @@ const ExperimentFormWrapper: React.FC<Props> = ({ experiments, userExperimentCur
     command,
     experimentInput,
   }: ExperimentFormInput) => {
+    if (command === 'start') setDisabledForm(true)
     await runUserExperimentMutation({
       variables: {
         runUserExperimentInput: {
           experiment_id: experimentId,
-          user_experiment_id: userExperiment?.id,
+          user_experiment_id: running ? userExperiment?.id : undefined,
           schema_id: schemaId,
           software_id: softwareId,
           input: [
@@ -60,7 +67,7 @@ const ExperimentFormWrapper: React.FC<Props> = ({ experiments, userExperimentCur
   }
 
   const stopExperiment = async () => {
-    if (!userExperiment) return
+    if (!userExperiment || !running) return
 
     await runUserExperimentMutation({
       variables: {
@@ -80,7 +87,7 @@ const ExperimentFormWrapper: React.FC<Props> = ({ experiments, userExperimentCur
       .then((data) => {
         if (data.data?.runUserExperiment) {
           toast.success(t('experiments.actions.stop.success'))
-          setUserExperiment(undefined)
+          // setUserExperiment(undefined)
         }
       })
       .catch(() => {
@@ -97,15 +104,16 @@ const ExperimentFormWrapper: React.FC<Props> = ({ experiments, userExperimentCur
       {runUserExperimentVariables.loading && <SpinnerOverlay transparent={true} />}
       {userExperiment && (
         <CRow>
-          <CCol md={12}>{<ExperimentVisualization userExperiment={userExperiment} />}</CCol>
+          <CCol md={12}>{<ExperimentVisualization userExperiment={userExperiment} running={running} setRunning={setRunning} />}</CCol>
           <hr className="my-4" />
         </CRow>
       )}
       <ExperimentForm
         experiments={experiments}
-        userExperimentCurrent={userExperiment}
+        userExperimentCurrent={running ? userExperiment : undefined}
         handleSubmitForm={handleSubmit}
-        handleStop={userExperiment ? stopExperiment : undefined}
+        handleStop={userExperiment && running ? stopExperiment : undefined}
+        disabled={disabledForm}
       />
     </>
   )
