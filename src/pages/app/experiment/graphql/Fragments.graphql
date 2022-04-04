@@ -47,6 +47,8 @@ fragment ExperimentBasic on Experiment {
     arguments {
       name
       label
+      row
+      order
       default_value
       options {
         name
