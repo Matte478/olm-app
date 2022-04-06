@@ -115,3 +115,14 @@ export type ArgumentOption = {
   name: string,
   value: string
 } | null
+
+export type WsData = {
+  name: string,
+  data: string[]
+}
+
+export type WsResponse = {
+  finished?: boolean,
+  error?: string,
+  data?: WsData[]
+}

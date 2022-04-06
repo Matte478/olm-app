@@ -7,6 +7,7 @@ import { CCol, CRow } from '@coreui/react'
 import ExperimentAnimation from './ExperimentAnimation'
 import Plotly from 'plotly.js'
 import { ErrorNotifier, SpinnerOverlay } from 'components'
+import { WsData, WsResponse } from 'types'
 
 type Props = {
   userExperiment: UserExperimentDashboardFragment
@@ -20,7 +21,7 @@ window.Pusher = require('pusher-js')
 const ExperimentVisualization: React.FC<Props> = ({ userExperiment, running, setRunning }: Props) => {
   const [graphData, setGraphData] = useState<Plotly.Data[]>()
   const [wsError, setWsError] = useState<string>()
-  const [data, setData] = useState<any>()
+  const [data, setData] = useState<WsData[]>()
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -37,19 +38,22 @@ const ExperimentVisualization: React.FC<Props> = ({ userExperiment, running, set
 
     echo
       .channel(userExperiment.experiment.device?.name || 'channel')
-      .listen('DataBroadcaster', (e: any) => {
+      .listen('DataBroadcaster', (e: WsResponse) => {
         setLoading(false)
         setRunning(true)
 
         if (e.finished) {
+          setData(undefined)
           setRunning(false)
         } else if (e.error) {
-          // console.log(e.error)
+          setData(undefined)
           setWsError(e.error)
         } else if (e.data) {
+          console.log(e.data)
+          setData(e.data)
           const time = e.data[0].name === 'Timestamp'
             ? e.data[0].data.map((timestamp: string) => parseFloat(timestamp))
-            : e.data[0].data.keys()
+            : Array.from(Array(e.data[0].data).keys()).map((i) => i)
           updateGraphData(e.data, time)
           setWsError(undefined)
         }
@@ -59,9 +63,9 @@ const ExperimentVisualization: React.FC<Props> = ({ userExperiment, running, set
       echo.channel('channel').stopListening('DataBroadcaster')
       echo.leaveChannel('channel')
     }
-  }, [userExperiment])
+  }, [userExperiment, setRunning])
 
-  const updateGraphData = (data: any[], time: number[]) => {
+  const updateGraphData = (data: WsData[], time: number[]) => {
     setGraphData(
       data.map((d) => {
         return {

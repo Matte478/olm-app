@@ -14,9 +14,10 @@ import { useTranslation } from 'react-i18next'
 import { CButton } from '@coreui/react'
 
 import { SceneComponent } from './SceneComponent'
+import { WsData } from 'types'
 
 type Props = {
-  data: any,
+  data?: WsData[],
   isRunning: boolean
 }
 
@@ -96,6 +97,11 @@ const onRender = (scene: any) => {
   }
 }
 
+const getParamValue = (data: WsData[], name: string) => {
+  let param = data ? data.find(p => p.name === name) : null
+  return param ? parseFloat(param.data[param.data.length - 1]) : 0
+}
+
 const ExperimentAnimation: React.FC<Props> = ({ data, isRunning }: Props) => {
   const { t } = useTranslation()
   const [cover, setCover] = useState(true)
@@ -105,14 +111,14 @@ const ExperimentAnimation: React.FC<Props> = ({ data, isRunning }: Props) => {
   }, [])
 
   useEffect(() => {
-    if (!isRunning) {
+    if (!isRunning || !data) {
       window.range = 0
       window.ledIntensity = 0
       window.bulbIntensity = 0
     } else {
-      window.range = 60000
-      window.ledIntensity = 44700
-      window.bulbIntensity = 580
+      window.range = getParamValue(data, 'Fan filtered rpm') // 13 // 14
+      window.ledIntensity = getParamValue(data, 'LED control signal') // 17 // 19
+      window.bulbIntensity = getParamValue(data, 'Lamp control signal') // 16 // 18
     }
   }, [data, isRunning])
 
