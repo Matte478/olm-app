@@ -235,7 +235,7 @@ export const fetchAccessToken = async (): Promise<any> => {
   }
   return fetch(apiUri, {
     method: 'POST',
-    credentials: 'include',
+    credentials: 'omit',
     body: JSON.stringify(payload),
     headers: {
       'Content-Type': 'application/json; charset=utf-8',
@@ -280,7 +280,7 @@ export const fetchAuthUser = async (): Promise<any> => {
   }
   return fetch(apiUri, {
     method: 'POST',
-    credentials: 'include',
+    credentials: 'omit',
     body: JSON.stringify(payload),
     headers: {
       'Content-Type': 'application/json; charset=utf-8',
