@@ -1,14 +1,12 @@
 import { CFormFloating, CFormInput, CFormLabel, CFormSelect } from '@coreui/react'
 import React, { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import {
-  ArgumentBasicFragment,
-  ExperimentArgument,
-  UserExperimentArgInput,
-} from '__generated__/graphql'
+
+import { ArgumentBasic } from 'types'
+import { UserExperimentArgInput } from '__generated__/graphql'
 
 type Props = {
-  argument: ArgumentBasicFragment | ExperimentArgument
+  argument: ArgumentBasic
   handleChange: (value: UserExperimentArgInput) => void
   val?: string
   className?: string

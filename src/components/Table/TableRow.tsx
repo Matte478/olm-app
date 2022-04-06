@@ -42,9 +42,7 @@ const TableRow: React.FC<Props> = ({
                   className={'ms-1 d-inline-flex justify-content-center align-items-center'}
                   onClick={() => setOpen(!open)}
                 >
-                  {open && <CIcon content={cilArrowTop} />}
-                  {!open && <CIcon content={cilArrowBottom} />}
-                  {/* <CIcon content={open ? cilArrowTop : cilArrowBottom} /> */}
+                  <CIcon content={open ? cilArrowTop : cilArrowBottom} key={open.toString()} />
                   {columnsNested.name}
                 </CButton>
               )}

@@ -15,7 +15,7 @@ import {
   UserExperimentDashboardFragment,
 } from '__generated__/graphql'
 import { ErrorNotifier, ModalPreview, SpinnerOverlay } from 'components'
-import { ExperimentFormInput } from 'types'
+import { ArgumentBasic, ExperimentFormInput } from 'types'
 import ExperimentFormArgument from './ExperimentFormArgument'
 
 type Props = {
@@ -25,13 +25,14 @@ type Props = {
   handleSubmitForm: (input: ExperimentFormInput) => void
   submitBtnText?: string
   handleStop?: () => void
+  disabled?: boolean
 }
 
 interface ArugmentsRow {
-  [key: number]: ArgumentBasicFragment[]
+  [key: number]: ArgumentBasic[]
 }
 
-const formatSchemasArgument = (args: ArgumentBasicFragment[]) => {
+const formatArguments = (args: ArgumentBasic[]) => {
   let formatted: ArugmentsRow = {}
   args.forEach((arg) => {
     if (!(arg.row in formatted)) formatted[arg.row] = []
@@ -42,7 +43,7 @@ const formatSchemasArgument = (args: ArgumentBasicFragment[]) => {
   Object.keys(formatted).forEach((key) => {
     const index = parseInt(key)
     formatted[index] = formatted[index].sort(
-      (a: ArgumentBasicFragment, b: ArgumentBasicFragment) => a.order - b.order,
+      (a, b) => a.order - b.order,
     )
   })
 
@@ -56,6 +57,7 @@ const ExperimentForm: React.FC<Props> = ({
   handleSubmitForm,
   submitBtnText,
   handleStop,
+  disabled = false
 }: Props) => {
   const { t } = useTranslation()
 
@@ -202,15 +204,15 @@ const ExperimentForm: React.FC<Props> = ({
     })
   }, [])
 
-  const getArguments = (args: ArgumentBasicFragment[]) => {
-    const formatted = formatSchemasArgument(args)
+  const getArguments = (args: ArgumentBasic[]) => {
+    const formatted = formatArguments(args)
 
     let rows: React.ReactNode[] = []
 
-    Object.values(formatted).forEach((val: ArgumentBasicFragment[], rowIndex: number) => {
+    Object.values(formatted).forEach((val: ArgumentBasic[], rowIndex: number) => {
       let cols: React.ReactNode[] = []
 
-      val.forEach((argument: ArgumentBasicFragment, colIndex: number) => {
+      val.forEach((argument: ArgumentBasic, colIndex: number) => {
         cols = [
           ...cols,
           <CCol key={colIndex}>
@@ -328,22 +330,8 @@ const ExperimentForm: React.FC<Props> = ({
                 </option>
               ))}
             </CFormSelect>
-            <CRow>
-              {selectedCommand &&
-                selectedExperiment?.experiment_commands &&
-                selectedExperiment?.experiment_commands
-                  .find((command) => command?.name === selectedCommand)
-                  ?.arguments.map((argument, index) => (
-                    <CCol sm={6} md={6} key={index}>
-                      <ExperimentFormArgument
-                        argument={argument as ExperimentArgument}
-                        val={experimentInput.find((arg) => arg.name === argument?.name)?.value}
-                        handleChange={upsertArgument}
-                        className="mb-3 flex-1"
-                      />
-                    </CCol>
-                  ))}
-            </CRow>
+            {selectedCommand && selectedExperiment?.experiment_commands && getArguments((selectedExperiment?.experiment_commands
+              .find((command) => command?.name === selectedCommand)?.arguments || []))}
             {selectedSchema?.arguments && getArguments(selectedSchema?.arguments)}
           </CCol>
         </CRow>
@@ -362,6 +350,7 @@ const ExperimentForm: React.FC<Props> = ({
             type="submit"
             className="d-inline-flex justify-content-center align-items-center"
             color="primary"
+            disabled={disabled}
           >
             {submitBtnText ? submitBtnText : t('experiments.actions.run.btn')}
           </CButton>

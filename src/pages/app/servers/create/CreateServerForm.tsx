@@ -2,14 +2,17 @@ import React, { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toast'
 import { CForm, CFormFloating, CFormInput, CFormLabel, CFormSwitch } from '@coreui/react'
+import { useNavigate } from 'react-router-dom'
 
-import { ButtonSave, ErrorNotifier, SpinnerOverlay } from 'components'
+import { ButtonBack, ButtonSave, ErrorNotifier, SpinnerOverlay } from 'components'
 import { CreateServerInput, useCreateServerMutation } from '__generated__/graphql'
 
-interface Props {}
+interface Props { }
 
-const CreateServerForm: React.FC<Props> = ({}: Props) => {
+const CreateServerForm: React.FC<Props> = ({ }: Props) => {
   const { t } = useTranslation()
+  const navigate = useNavigate()
+
   const [createServerInput, setCreateServerInput] = useState<CreateServerInput>({
     name: '',
     ip_address: '',
@@ -31,9 +34,10 @@ const CreateServerForm: React.FC<Props> = ({}: Props) => {
       .then((data) => {
         if (data.data?.createServer) {
           toast.success(t('servers.create.success'))
+          navigate('/app/servers/')
         }
       })
-      .catch(() => {})
+      .catch(() => { })
   }
 
   return (
@@ -111,6 +115,7 @@ const CreateServerForm: React.FC<Props> = ({}: Props) => {
       />
 
       <div className="text-right">
+        <ButtonBack className="me-2" />
         <ButtonSave />
       </div>
     </CForm>

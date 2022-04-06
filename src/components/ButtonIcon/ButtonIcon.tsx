@@ -8,12 +8,13 @@ interface Props {
   icon: any
   text?: string
   className?: string
+  color?: string
 }
 
-const ButtonIcon: React.FC<Props> = ({ to, icon, text, className = '' }: Props) => {
+const ButtonIcon: React.FC<Props> = ({ to, icon, text, className = '', color }: Props) => {
   return (
     <Link to={to}>
-      <CButton className={`d-inline-flex justify-content-center align-items-center ${className}`}>
+      <CButton color={color} className={`d-inline-flex justify-content-center align-items-center ${className}`}>
         <CIcon className="me-1" content={icon} />
         {text && text}
       </CButton>

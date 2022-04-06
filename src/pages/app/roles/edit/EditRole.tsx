@@ -1,7 +1,7 @@
 import React from 'react'
 import { cilLockLocked } from '@coreui/icons'
 import { useTranslation } from 'react-i18next'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 
 import { useRoleQuery } from '__generated__/graphql'
 import { Card, ErrorNotifier, SpinnerOverlay } from 'components'
@@ -10,6 +10,7 @@ import EditRoleForm from './EditRoleForm'
 const EditRole: React.FC = () => {
   const { t } = useTranslation()
   const { id } = useParams()
+  const navigate = useNavigate()
 
   const { data, loading, error } = useRoleQuery({
     variables: {
@@ -23,7 +24,9 @@ const EditRole: React.FC = () => {
 
   return (
     <Card icon={cilLockLocked} title={t('actions.edit')}>
-      <EditRoleForm role={data.role} />
+      <EditRoleForm role={data.role} handleUpdateRole={() => {
+        navigate('/app/roles/')
+      }} />
     </Card>
   )
 }

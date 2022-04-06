@@ -5,7 +5,7 @@ import { CAlert, CCol, CRow } from '@coreui/react'
 import { cilFile } from '@coreui/icons'
 
 import { UserExperimentExtendedFragment, useUserExperimentQuery } from '__generated__/graphql'
-import { Card, ErrorNotifier, SpinnerOverlay } from 'components'
+import { ButtonBack, Card, ErrorNotifier, SpinnerOverlay } from 'components'
 import { can } from 'utils/permissions'
 import { AppStateContext } from 'provider'
 import ShowUserExperimentGraph from './ShowUserExperimentGraph'
@@ -100,6 +100,9 @@ const ShowUserExperiment: React.FC = () => {
             {userExperiment && <ShowUserExperimentInput input={userExperiment.input} />}
           </CCol>
         </CRow>
+        <div className="text-right">
+          <ButtonBack />
+        </div>
       </>
     </Card>
   )

@@ -101,3 +101,28 @@ export interface ExperimentFormInput {
   command: string
   experimentInput: UserExperimentArgInput[]
 }
+
+export type ArgumentBasic = {
+  name: string,
+  label: string,
+  default_value?: string | null,
+  row: number,
+  order: number,
+  options?: ArgumentOption[] | null
+}
+
+export type ArgumentOption = {
+  name: string,
+  value: string
+} | null
+
+export type WsData = {
+  name: string,
+  data: string[]
+}
+
+export type WsResponse = {
+  finished?: boolean,
+  error?: string,
+  data?: WsData[]
+}

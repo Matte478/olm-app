@@ -74,6 +74,7 @@
     "show": "Detail",
     "save": "Save",
     "delete": "Delete",
+    "back": "Back",
     "error": {
       "not-authorized": "Not authorized"
     }
@@ -84,6 +85,15 @@
     "without": "Only not deleted",
     "with": "With deleted",
     "only": "Only deleted"
+  },
+
+  "permissions": {
+    "user": "User",
+    "role": "Role",
+    "server": "Server",
+    "reservation": "Reservation",
+    "schema": "Schema",
+    "user_experiment": "Report"
   },
 
   "users": {
@@ -317,10 +327,12 @@
   "queue": {
     "title": "Queue experiments",
     "no_experiments": "The devices has no experiments",
-    "run": {
-      "btn": "Request experiment",
-      "success": "Experiment has been queued!",
-      "error": "Experiment could not be queued!"
+    "actions": {
+      "run": {
+        "btn": "Request experiment",
+        "success": "Experiment has been queued!",
+        "error": "Experiment could not be queued!"
+      }
     }
   },
   "user_experiments": {
@@ -330,6 +342,7 @@
     "only_mine": "Only mine reports",
     "in_queue": "Experiment is waiting for processing",
     "processing": "Experiment is being processed",
+    "finished": "Experiment is finished",
     "columns": {
       "id": "ID",
       "filled": "Filled",
@@ -342,6 +355,10 @@
       "simulation_time": "Simulation time",
       "created_at": "Created at",
       "deleted_at": "Deleted at"
+    },
+    "preview": {
+      "title": "Schema preview",
+      "error": "Schema has no preview."
     },
     "index": {
       "title": "Reports"

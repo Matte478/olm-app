@@ -7,22 +7,25 @@ import { CCol, CRow } from '@coreui/react'
 import ExperimentAnimation from './ExperimentAnimation'
 import Plotly from 'plotly.js'
 import { ErrorNotifier, SpinnerOverlay } from 'components'
+import { WsData, WsResponse } from 'types'
 
 type Props = {
   userExperiment: UserExperimentDashboardFragment
+  running: boolean
+  setRunning: (running: boolean) => void
 }
 
 //@ts-ignore
 window.Pusher = require('pusher-js')
 
-const ExperimentVisualization: React.FC<Props> = ({ userExperiment }: Props) => {
+const ExperimentVisualization: React.FC<Props> = ({ userExperiment, running, setRunning }: Props) => {
   const [graphData, setGraphData] = useState<Plotly.Data[]>()
   const [wsError, setWsError] = useState<string>()
-  const [data, setData] = useState<any>()
+  const [data, setData] = useState<WsData[]>()
   const [loading, setLoading] = useState(true)
-  const [running, setRunning] = useState(false)
 
   useEffect(() => {
+    setLoading(true)
     const echo = new Echo({
       broadcaster: 'pusher',
       key: process.env.REACT_APP_PUSHER_ENV_KEY,
@@ -35,18 +38,22 @@ const ExperimentVisualization: React.FC<Props> = ({ userExperiment }: Props) => 
 
     echo
       .channel(userExperiment.experiment.device?.name || 'channel')
-      .listen('DataBroadcaster', (e: any) => {
+      .listen('DataBroadcaster', (e: WsResponse) => {
         setLoading(false)
         setRunning(true)
 
         if (e.finished) {
+          setData(undefined)
           setRunning(false)
         } else if (e.error) {
-          // console.log(e.error)
+          setData(undefined)
           setWsError(e.error)
         } else if (e.data) {
-          // console.log(e.data)
-          const time = e.data[0].data.map((timestamp: string) => parseFloat(timestamp) / 1000)
+          console.log(e.data)
+          setData(e.data)
+          const time = e.data[0].name === 'Timestamp'
+            ? e.data[0].data.map((timestamp: string) => parseFloat(timestamp))
+            : Array.from(Array(e.data[0].data).keys()).map((i) => i)
           updateGraphData(e.data, time)
           setWsError(undefined)
         }
@@ -56,9 +63,9 @@ const ExperimentVisualization: React.FC<Props> = ({ userExperiment }: Props) => 
       echo.channel('channel').stopListening('DataBroadcaster')
       echo.leaveChannel('channel')
     }
-  }, [userExperiment])
+  }, [userExperiment, setRunning])
 
-  const updateGraphData = (data: any[], time: number[]) => {
+  const updateGraphData = (data: WsData[], time: number[]) => {
     setGraphData(
       data.map((d) => {
         return {
@@ -84,7 +91,7 @@ const ExperimentVisualization: React.FC<Props> = ({ userExperiment }: Props) => 
           />
         </CCol>
         <CCol md={6}>
-          {userExperiment.experiment.device?.deviceType.name === 'tos1a' && <ExperimentAnimation data={data} isRunning={running} />}
+          {userExperiment.experiment.device?.deviceType.name === 'tom1a' && <ExperimentAnimation data={data} isRunning={running} />}
         </CCol>
       </CRow>
       {wsError && (

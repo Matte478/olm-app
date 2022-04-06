@@ -74,6 +74,7 @@
     "show": "Detail",
     "save": "Uložiť",
     "delete": "Zmazať",
+    "back": "Späť",
     "error": {
       "not-authorized": "Neoprávnené"
     }
@@ -84,6 +85,15 @@
     "without": "Len nevymazané",
     "with": "Aj vymazané",
     "only": "Len vymazané"
+  },
+
+  "permissions": {
+    "user": "Používateľ",
+    "role": "Rola",
+    "server": "Server",
+    "reservation": "Rezervácia",
+    "schema": "Schéma",
+    "user_experiment": "Report"
   },
 
   "users": {
@@ -330,18 +340,23 @@
     "only_mine": "Len moje reporty",
     "in_queue": "Experiment čaká na spracovanie",
     "processing": "Experiment sa spracováva",
+    "finished": "Experiment je ukončený",
     "columns": {
       "id": "ID",
       "filled": "Vyplnené",
       "user": "Autor",
       "device": "Zariadenie",
-      "device_type": "Typ Zariadenia",
+      "device_type": "Typ zariadenia",
       "software": "Softvér",
       "note": "Poznámky",
       "schema": "Schéma",
       "simulation_time": "Čas simulácie",
       "created_at": "Vytvorený",
       "deleted_at": "Zmazaný"
+    },
+    "preview": {
+      "title": "Náhľad schémy",
+      "error": "Schéma nemá preview."
     },
     "index": {
       "title": "Reporty"
