@@ -80,7 +80,7 @@ const ExperimentVisualization: React.FC<Props> = ({ userExperiment, running, set
 
   return (
     <div className="position-relative">
-      {loading && <SpinnerOverlay transparent={true} className="position-absolute" />}
+      {loading && <SpinnerOverlay transparent={true} className="position-absolute" style={{ zIndex: 999 }} />}
       <CRow>
         <CCol md={userExperiment.experiment.device?.deviceType.name === 'tom1a' ? 7 : 12}>
           <PlotlyChart

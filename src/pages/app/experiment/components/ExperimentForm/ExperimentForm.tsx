@@ -103,6 +103,28 @@ const ExperimentForm: React.FC<Props> = ({
     [experiments, userExperimentCurrent, selectedExperiment],
   )
 
+  const setupSettings = useCallback(
+    (userExperiment?: UserExperimentDashboardFragment) => {
+      const experiment = userExperiment ? experiments?.find(
+        (experiment) => experiment.id === userExperiment.experiment.id,
+      ) : selectedExperiment ? selectedExperiment : experiments[0]
+
+      setSelectedExperiment(experiment)
+
+      const commands = getCommands(userExperiment)
+      setSelectedCommand(commands[0] || undefined)
+
+      setSelectedSchema(
+        userExperiment
+          ? userExperiment.schema || undefined
+          : data?.schemas.length
+            ? data.schemas[0]
+            : undefined,
+      )
+    },
+    [experiments, getCommands, selectedExperiment, data?.schemas],
+  )
+
   const getExperimentInput = useCallback(() => {
     return (
       selectedExperiment?.experiment_commands
@@ -128,21 +150,8 @@ const ExperimentForm: React.FC<Props> = ({
   }, [selectedSchema])
 
   useEffect(() => {
-    if (userExperimentCurrent) {
-      const experiment = experiments?.find(
-        (experiment) => experiment.id === userExperimentCurrent?.experiment.id,
-      )
-      setSelectedExperiment(experiment)
-    }
-
-    setSelectedSchema(
-      userExperimentCurrent
-        ? userExperimentCurrent.schema || undefined
-        : data?.schemas.length
-          ? data.schemas[0]
-          : undefined,
-    )
-  }, [data, userExperimentCurrent, experiments])
+    setupSettings(userExperimentCurrent)
+  }, [userExperimentCurrent, setupSettings])
 
   const replaceExperimentInput = useCallback(() => {
     setExperimentInput([...getExperimentInput(), ...getSchemaInput()])
