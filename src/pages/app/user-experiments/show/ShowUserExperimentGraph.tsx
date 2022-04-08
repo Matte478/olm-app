@@ -15,10 +15,14 @@ const ShowUserExperimentGraph: React.FC<Props> = ({ data, title }: Props) => {
   const [graphData, setGraphData] = useState<Plotly.Data[]>()
 
   useEffect(() => {
-    const time: any = data[0].name === 'Timestamp'
-      ? data[0].data
-      : data[0].data.keys()
+    const time = data.length
+      ? data[0].name === 'Timestamp'
+        ? data[0].data
+        : Array.from(Array(data[0].data).keys()).map((i) => i)
+      : []
+
     const formatedData: Plotly.Data[] = data.map((d) => {
+      if (d.name === 'Timestamp') return {}
       return {
         name: d.name,
         x: time,

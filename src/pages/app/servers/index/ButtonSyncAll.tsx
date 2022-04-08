@@ -42,7 +42,6 @@ const ButtonSyncAll: React.FC<Props> = ({
         }
       })
       .catch(() => {
-        console.log('sdfjoisd')
         refetch()
       })
   }

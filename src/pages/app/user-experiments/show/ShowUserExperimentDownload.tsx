@@ -33,9 +33,8 @@ const ShowUserExperimentDownload: React.FC<Props> = ({
           toast.success(t('user_experiments.download.success'))
         })
       })
-      .catch((error) => {
+      .catch(() => {
         toast.error(t('user_experiments.download.error'))
-        console.log(error, error.error)
       })
   }
 
@@ -43,7 +42,7 @@ const ShowUserExperimentDownload: React.FC<Props> = ({
     <CButton
       className="me-2 text-light d-inline-flex justify-content-center align-items-center"
       color="success"
-        onClick={handleDownloadResult}
+      onClick={handleDownloadResult}
     >
       <CIcon content={cilCloudDownload} className="me-1 text-light" />
       {t('user_experiments.download.button')}

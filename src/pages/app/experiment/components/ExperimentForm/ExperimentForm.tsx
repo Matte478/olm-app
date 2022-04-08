@@ -6,8 +6,6 @@ import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toast'
 
 import {
-  ArgumentBasicFragment,
-  ExperimentArgument,
   ExperimentBasicFragment,
   ExperimentSchemaFragment,
   useExperimentSchemasQuery,
@@ -105,22 +103,6 @@ const ExperimentForm: React.FC<Props> = ({
     [experiments, userExperimentCurrent, selectedExperiment],
   )
 
-  const setupSettings = useCallback(
-    (userExperiment?: UserExperimentDashboardFragment) => {
-      const experiment = userExperiment ? experiments?.find(
-        (experiment) => experiment.id === userExperiment.experiment.id,
-      ) : selectedExperiment ? selectedExperiment : experiments[0]
-
-      setSelectedExperiment(experiment)
-
-      const commands = getCommands(userExperiment)
-      setSelectedCommand(commands[0] || undefined)
-
-      setSelectedSchema(userExperiment?.schema || undefined)
-    },
-    [experiments, getCommands, selectedExperiment],
-  )
-
   const getExperimentInput = useCallback(() => {
     return (
       selectedExperiment?.experiment_commands
@@ -161,10 +143,6 @@ const ExperimentForm: React.FC<Props> = ({
           : undefined,
     )
   }, [data, userExperimentCurrent, experiments])
-
-  useEffect(() => {
-    setupSettings(userExperimentCurrent)
-  }, [userExperimentCurrent, setupSettings])
 
   const replaceExperimentInput = useCallback(() => {
     setExperimentInput([...getExperimentInput(), ...getSchemaInput()])

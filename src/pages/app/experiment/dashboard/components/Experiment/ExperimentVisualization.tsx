@@ -49,7 +49,6 @@ const ExperimentVisualization: React.FC<Props> = ({ userExperiment, running, set
           setData(undefined)
           setWsError(e.error)
         } else if (e.data) {
-          console.log(e.data)
           setData(e.data)
           const time = e.data[0].name === 'Timestamp'
             ? e.data[0].data.map((timestamp: string) => parseFloat(timestamp))
@@ -68,6 +67,7 @@ const ExperimentVisualization: React.FC<Props> = ({ userExperiment, running, set
   const updateGraphData = (data: WsData[], time: number[]) => {
     setGraphData(
       data.map((d) => {
+        if (d.name === 'Timestamp') return {}
         return {
           name: d['name'],
           x: time,
@@ -82,7 +82,7 @@ const ExperimentVisualization: React.FC<Props> = ({ userExperiment, running, set
     <div className="position-relative">
       {loading && <SpinnerOverlay transparent={true} className="position-absolute" />}
       <CRow>
-        <CCol md={6}>
+        <CCol md={userExperiment.experiment.device?.deviceType.name === 'tom1a' ? 7 : 12}>
           <PlotlyChart
             data={graphData || []}
             layout={{}}
@@ -90,9 +90,11 @@ const ExperimentVisualization: React.FC<Props> = ({ userExperiment, running, set
             style={{ width: '100%' }}
           />
         </CCol>
-        <CCol md={6}>
-          {userExperiment.experiment.device?.deviceType.name === 'tom1a' && <ExperimentAnimation data={data} isRunning={running} />}
-        </CCol>
+        {userExperiment.experiment.device?.deviceType.name === 'tom1a' && (
+          <CCol md={5}>
+            <ExperimentAnimation data={data} isRunning={running} />
+          </CCol>
+        )}
       </CRow>
       {wsError && (
         <CRow>

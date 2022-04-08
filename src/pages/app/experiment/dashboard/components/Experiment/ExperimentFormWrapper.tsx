@@ -62,6 +62,7 @@ const ExperimentFormWrapper: React.FC<Props> = ({ experiments, userExperimentCur
         }
       })
       .catch(() => {
+        setDisabledForm(false)
         toast.error(t('experiments.actions.run.error'))
       })
   }

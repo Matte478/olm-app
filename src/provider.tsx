@@ -23,13 +23,13 @@ const appStateInitial: { authUser?: AuthenticatedUserFragment } = { authUser: un
 
 const initial = {
   appState: appStateInitial,
-  appSetLogin: (token: string, expSec: number, authUser: AuthenticatedUserFragment) => {},
-  appSetLogout: () => {},
-  appSetAuthToken: (token: string, expSec: number) => {},
-  appClearAuthToken: () => {},
-  appSetRefreshToken: (token: string) => {},
-  appSetAuthUser: (authUser: AuthenticatedUserFragment) => {},
-  appClearRefreshToken: () => {},
+  appSetLogin: (token: string, expSec: number, authUser: AuthenticatedUserFragment) => { },
+  appSetLogout: () => { },
+  appSetAuthToken: (token: string, expSec: number) => { },
+  appClearAuthToken: () => { },
+  appSetRefreshToken: (token: string) => { },
+  appSetAuthUser: (authUser: AuthenticatedUserFragment) => { },
+  appClearRefreshToken: () => { },
   appGetRefreshToken: (): string => '',
 }
 

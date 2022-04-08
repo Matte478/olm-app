@@ -78,9 +78,8 @@ const IndexSchemaTable: React.FC<Props> = ({ schemas, refetch }: Props) => {
               toast.success(t('schemas.download.success'))
             })
           })
-          .catch((error) => {
+          .catch(() => {
             toast.error(t('schemas.download.error'))
-            console.log(error, error.error)
           })
       }
     })

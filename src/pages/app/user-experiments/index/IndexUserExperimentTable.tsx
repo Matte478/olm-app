@@ -111,9 +111,8 @@ const IndexUserExperimentTable: React.FC<Props> = ({
               toast.success(t('user_experiments.download.success'))
             })
           })
-          .catch((error) => {
+          .catch(() => {
             toast.error(t('user_experiments.download.error'))
-            console.log(error, error.error)
           })
       }
     })
