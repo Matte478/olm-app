@@ -68,6 +68,11 @@ const ShowUserExperiment: React.FC = () => {
             {userExperiment?.remote_id ? t('user_experiments.processing') : t('user_experiments.in_queue')}
           </CAlert>
         )}
+        {userExperiment?.filled === false && (
+          <CAlert color="danger" className="p-2 text-center">
+            {t('user_experiments.error_occurred')}
+          </CAlert>
+        )}
         {userExperiment?.output && (
           <ShowUserExperimentGraph
             data={userExperiment.output}

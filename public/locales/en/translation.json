@@ -343,6 +343,7 @@
     "in_queue": "Experiment is waiting for processing",
     "processing": "Experiment is being processed",
     "finished": "Experiment is finished",
+    "error_occurred": "An error occurred in the processing of the experiment",
     "columns": {
       "id": "ID",
       "filled": "Filled",

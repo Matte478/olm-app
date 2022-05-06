@@ -341,6 +341,7 @@
     "in_queue": "Experiment čaká na spracovanie",
     "processing": "Experiment sa spracováva",
     "finished": "Experiment je ukončený",
+    "error_occurred": "Pri spracovaní experimentu došlo k chybe",
     "columns": {
       "id": "ID",
       "filled": "Vyplnené",
