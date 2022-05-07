@@ -154,7 +154,12 @@ const ExperimentForm: React.FC<Props> = ({
   }, [userExperimentCurrent, setupSettings])
 
   const replaceExperimentInput = useCallback(() => {
-    setExperimentInput([...getExperimentInput(), ...getSchemaInput()])
+    setExperimentInput((oldInput) => [...getExperimentInput(), ...getSchemaInput()].map((input) => {
+      return {
+        ...input,
+        value: oldInput.find(old => old.name === input.name)?.value ?? input.value
+      }
+    }))
   }, [getExperimentInput, getSchemaInput])
 
   useEffect(() => {
