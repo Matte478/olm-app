@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { CCol, CRow } from '@coreui/react'
 import { useTranslation } from 'react-i18next'
 import { toast } from 'react-toast'
+import { FormProvider, useForm } from 'react-hook-form'
+import { PlotData } from 'plotly.js'
 
 import {
   ExperimentBasicFragment,
@@ -20,6 +22,7 @@ type Props = {
 
 const ExperimentFormWrapper: React.FC<Props> = ({ experiments, userExperimentCurrent }: Props) => {
   const { t } = useTranslation()
+  const form = useForm<PlotData[]>()
   const [running, setRunning] = useState(false)
   const [disabledForm, setDisabledForm] = useState(false)
   const [runUserExperimentMutation, runUserExperimentVariables] = useRunUserExperimentMutation()
@@ -105,7 +108,11 @@ const ExperimentFormWrapper: React.FC<Props> = ({ experiments, userExperimentCur
       {runUserExperimentVariables.loading && <SpinnerOverlay transparent={true} />}
       {userExperiment && (
         <CRow>
-          <CCol md={12}>{<ExperimentVisualization userExperiment={userExperiment} running={running} setRunning={setRunning} />}</CCol>
+          <CCol md={12}>{
+            <FormProvider {...form}>
+              <ExperimentVisualization userExperiment={userExperiment} running={running} setRunning={setRunning} />
+            </FormProvider>
+          }</CCol>
           <hr className="my-4" />
         </CRow>
       )}

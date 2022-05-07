@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import Echo from 'laravel-echo'
+import { CCol, CRow } from '@coreui/react'
 import PlotlyChart from 'react-plotly.js'
+import { LegendClickEvent, PlotData } from 'plotly.js'
 
 import { UserExperimentDashboardFragment } from '__generated__/graphql'
-import { CCol, CRow } from '@coreui/react'
 import ExperimentAnimation from './ExperimentAnimation'
-import Plotly from 'plotly.js'
 import { ErrorNotifier, SpinnerOverlay } from 'components'
 import { WsData, WsResponse } from 'types'
+import { useFormContext } from 'react-hook-form'
 
 type Props = {
   userExperiment: UserExperimentDashboardFragment
@@ -15,11 +16,15 @@ type Props = {
   setRunning: (running: boolean) => void
 }
 
+const getAxisVisibility = (name: string, axis?: PlotData[]) => {
+  return axis?.find((item) => item.name === name)?.visible ?? 'legendonly'
+}
+
 //@ts-ignore
 window.Pusher = require('pusher-js')
 
 const ExperimentVisualization: React.FC<Props> = ({ userExperiment, running, setRunning }: Props) => {
-  const [graphData, setGraphData] = useState<Plotly.Data[]>()
+  const { watch, setValue, getValues } = useFormContext()
   const [wsError, setWsError] = useState<string>()
   const [data, setData] = useState<WsData[]>()
   const [loading, setLoading] = useState(true)
@@ -50,7 +55,7 @@ const ExperimentVisualization: React.FC<Props> = ({ userExperiment, running, set
           setWsError(e.error)
         } else if (e.data) {
           setData(e.data)
-          const time = e.data[0].name === 'Timestamp'
+          const time = e.data[0].name.toLowerCase() === 'timestamp'
             ? e.data[0].data.map((timestamp: string) => parseFloat(timestamp))
             : Array.from(Array(e.data[0].data).keys()).map((i) => i)
           updateGraphData(e.data, time)
@@ -65,17 +70,16 @@ const ExperimentVisualization: React.FC<Props> = ({ userExperiment, running, set
   }, [userExperiment, setRunning])
 
   const updateGraphData = (data: WsData[], time: number[]) => {
-    setGraphData(
-      data.map((d) => {
-        if (d.name === 'Timestamp') return {}
-        return {
-          name: d['name'],
-          x: time,
-          y: d['data'],
-          type: 'scatter',
-        }
-      }),
-    )
+    setValue("graphData", data.map((d) => {
+      if (d.name.toLowerCase() === 'timestamp') return {}
+      return {
+        name: d['name'],
+        type: 'scatter',
+        x: time,
+        y: d['data'],
+        visible: getAxisVisibility(d['name'], getValues()?.graphData)
+      } as PlotData
+    }))
   }
 
   return (
@@ -84,7 +88,11 @@ const ExperimentVisualization: React.FC<Props> = ({ userExperiment, running, set
       <CRow>
         <CCol md={userExperiment.experiment.device?.deviceType.name === 'tom1a' ? 7 : 12}>
           <PlotlyChart
-            data={graphData || []}
+            data={watch()?.graphData}
+            onLegendClick={(e: Readonly<LegendClickEvent>) => {
+              setValue("graphData", e?.data)
+              return true
+            }}
             layout={{}}
             useResizeHandler={true}
             style={{ width: '100%' }}
