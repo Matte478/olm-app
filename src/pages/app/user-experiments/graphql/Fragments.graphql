@@ -39,6 +39,7 @@ fragment UserExperimentExtended on UserExperiment {
     input {
       name
       value
+      formatted_value
       label
     }
   }
