@@ -18,19 +18,23 @@ const ShowUserExperimentInput: React.FC<Props> = ({ input }: Props) => {
         <div className="mb-3" key={input.script_name}>
           <h5>{input.script_name}</h5>
 
-          {input.input.map((commandInput, i) => (
-            <React.Fragment key={i}>
-              <CRow>
-                {commandInput.map((arg) => (
-                  <CCol sm={6} key={arg.name}>
-                    <strong>{arg.label || arg.name}</strong>&nbsp;
-                    <span>{arg.formatted_value || arg.value}</span>
-                  </CCol>
-                ))}
-              </CRow>
-              {commandInput.length > 0 && <hr className="my-3" />}
-            </React.Fragment>
-          ))}
+          <ol className="ps-4">
+            {input.input.map((commandInput, i) => (
+              <React.Fragment key={i}>
+                {commandInput.length > 0 && <li>
+                  <CRow>
+                    {commandInput.map((arg) => (
+                      <CCol sm={6} key={arg.name}>
+                        <strong>{arg.label || arg.name}</strong>&nbsp;
+                        <span>{arg.formatted_value || arg.value}</span>
+                      </CCol>
+                    ))}
+                  </CRow>
+                  {commandInput.length > 0 && <hr className="my-3" />}
+                </li>}
+              </React.Fragment>
+            ))}
+          </ol>
         </div>
       ))}
     </>
