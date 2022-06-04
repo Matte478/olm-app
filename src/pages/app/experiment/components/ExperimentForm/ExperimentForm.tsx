@@ -24,6 +24,7 @@ type Props = {
   submitBtnText?: string
   handleStop?: () => void
   disabled?: boolean
+  hasError?: boolean
 }
 
 interface ArugmentsRow {
@@ -55,7 +56,8 @@ const ExperimentForm: React.FC<Props> = ({
   handleSubmitForm,
   submitBtnText,
   handleStop,
-  disabled = false
+  disabled = false,
+  hasError = false
 }: Props) => {
   const { t } = useTranslation()
 
@@ -114,13 +116,9 @@ const ExperimentForm: React.FC<Props> = ({
       const commands = getCommands(userExperiment)
       setSelectedCommand(commands[0] || undefined)
 
-      setSelectedSchema(
-        userExperiment
-          ? userExperiment.schema || undefined
-          : data?.schemas.length
-            ? data.schemas[0]
-            : undefined,
-      )
+      const schema = userExperiment ? userExperiment.schema : undefined
+
+      if (schema) setSelectedSchema(schema)
     },
     [experiments, getCommands, selectedExperiment, data?.schemas],
   )
@@ -154,13 +152,17 @@ const ExperimentForm: React.FC<Props> = ({
   }, [userExperimentCurrent, setupSettings])
 
   const replaceExperimentInput = useCallback(() => {
-    setExperimentInput((oldInput) => [...getExperimentInput(), ...getSchemaInput()].map((input) => {
-      return {
-        ...input,
-        value: oldInput.find(old => old.name === input.name)?.value ?? input.value
-      }
-    }))
-  }, [getExperimentInput, getSchemaInput])
+    if (selectedCommand !== 'start' || hasError) {
+      setExperimentInput((oldInput) => [...getExperimentInput(), ...getSchemaInput()].map((input) => {
+        return {
+          ...input,
+          value: oldInput.find(old => old.name === input.name)?.value ?? input.value
+        }
+      }))
+    } else {
+      setExperimentInput([...getExperimentInput(), ...getSchemaInput()])
+    }
+  }, [getExperimentInput, getSchemaInput, selectedCommand, hasError])
 
   useEffect(() => {
     replaceExperimentInput()

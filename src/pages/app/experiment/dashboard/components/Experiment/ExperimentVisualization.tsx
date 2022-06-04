@@ -14,6 +14,7 @@ type Props = {
   userExperiment: UserExperimentDashboardFragment
   running: boolean
   setRunning: (running: boolean) => void
+  setHasError: (hasError: boolean) => void
 }
 
 const getAxisVisibility = (name: string, axis?: PlotData[]) => {
@@ -23,7 +24,7 @@ const getAxisVisibility = (name: string, axis?: PlotData[]) => {
 //@ts-ignore
 window.Pusher = require('pusher-js')
 
-const ExperimentVisualization: React.FC<Props> = ({ userExperiment, running, setRunning }: Props) => {
+const ExperimentVisualization: React.FC<Props> = ({ userExperiment, running, setRunning, setHasError }: Props) => {
   const { watch, setValue, getValues } = useFormContext()
   const [wsError, setWsError] = useState<string>()
   const [data, setData] = useState<WsData[]>()
@@ -53,6 +54,7 @@ const ExperimentVisualization: React.FC<Props> = ({ userExperiment, running, set
         } else if (e.error) {
           setData(undefined)
           setWsError(e.error)
+          setHasError(true)
         } else if (e.data) {
           setData(e.data)
           const time = e.data[0].name.toLowerCase() === 'timestamp'
@@ -60,6 +62,7 @@ const ExperimentVisualization: React.FC<Props> = ({ userExperiment, running, set
             : Array.from(Array(e.data[0].data).keys()).map((i) => i)
           updateGraphData(e.data, time)
           setWsError(undefined)
+          setHasError(false)
         }
       })
 

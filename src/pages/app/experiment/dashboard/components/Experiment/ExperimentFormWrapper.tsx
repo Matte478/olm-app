@@ -24,6 +24,7 @@ const ExperimentFormWrapper: React.FC<Props> = ({ experiments, userExperimentCur
   const { t } = useTranslation()
   const form = useForm<PlotData[]>()
   const [running, setRunning] = useState(false)
+  const [hasError, setHasError] = useState(false)
   const [disabledForm, setDisabledForm] = useState(false)
   const [runUserExperimentMutation, runUserExperimentVariables] = useRunUserExperimentMutation()
   const [userExperiment, setUserExperiment] = useState<UserExperimentDashboardFragment | undefined>(
@@ -110,7 +111,7 @@ const ExperimentFormWrapper: React.FC<Props> = ({ experiments, userExperimentCur
         <CRow>
           <CCol md={12}>{
             <FormProvider {...form}>
-              <ExperimentVisualization userExperiment={userExperiment} running={running} setRunning={setRunning} />
+              <ExperimentVisualization userExperiment={userExperiment} running={running} setRunning={setRunning} setHasError={setHasError} />
             </FormProvider>
           }</CCol>
           <hr className="my-4" />
@@ -122,6 +123,7 @@ const ExperimentFormWrapper: React.FC<Props> = ({ experiments, userExperimentCur
         handleSubmitForm={handleSubmit}
         handleStop={userExperiment && running ? stopExperiment : undefined}
         disabled={disabledForm}
+        hasError={hasError}
       />
     </>
   )
